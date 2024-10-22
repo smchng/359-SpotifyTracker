@@ -1,8 +1,8 @@
-// App.js
 import React from "react";
 import { Button, View, StyleSheet, Text } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import { getSpotifyAuthUrl, REDIRECT_URI } from "./SpotifyAuth"; // Adjust the path if necessary
+import * as Linking from "expo-linking"; // For URL parsing
 
 export default function App() {
   const handleLogin = async () => {
@@ -16,12 +16,18 @@ export default function App() {
       );
 
       // Check if the result is successful
-      if (result.type === "success") {
-        const { code } = result.params; // You will receive the authorization code here
-        // Exchange the code for an access token
-        console.log("Authorization Code:", code);
+      if (result.type === "success" && result.url) {
+        // Parse the URL to extract the authorization code
+        const { queryParams } = Linking.parse(result.url);
+        const code = queryParams["code"]; // Adjust based on your Spotify response
+        if (code) {
+          console.log("Authorization Code:", code);
+          // Exchange the code for an access token
+        } else {
+          console.error("Authorization code missing in response", queryParams);
+        }
       } else {
-        console.error("Authentication failed", result);
+        console.error("Authentication failed or dismissed", result);
       }
     } catch (error) {
       console.error("Login failed", error);
@@ -31,7 +37,6 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Button title="Login with Spotify" onPress={handleLogin} />
-      <Text>TEST1</Text>
     </View>
   );
 }
