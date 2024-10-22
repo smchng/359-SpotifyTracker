@@ -10,3 +10,29 @@ export const getSpotifyAuthUrl = () => {
     REDIRECT_URI
   )}&scope=${encodeURIComponent(SCOPES)}`;
 };
+
+export const exchangeCodeForToken = async (authorizationCode) => {
+  const response = await fetch("https://accounts.spotify.com/api/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      grant_type: "authorization_code",
+      code: authorizationCode,
+      redirect_uri: REDIRECT_URI,
+      client_id: CLIENT_ID,
+      client_secret: "YOUR_CLIENT_SECRET", // Replace with your client secret
+    }),
+  });
+
+  const data = await response.json();
+  if (response.ok) {
+    // Use the access token (data.access_token)
+    console.log("Access Token:", data.access_token);
+    return data.access_token; // Return the access token
+  } else {
+    console.error("Failed to exchange code for token:", data);
+    throw new Error(data.error_description || "Token exchange failed");
+  }
+};
