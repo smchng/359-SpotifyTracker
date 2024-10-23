@@ -34,10 +34,7 @@ const LoginButton = () => {
           if (accessToken) {
             setAccessToken(accessToken);
             // Fetch user profile after getting access token
-            const userProfile = await fetchUserProfile(accessToken);
-            console.log("Fetched User Profile:", userProfile);
-            // const currListen = await fetchCurrentlyPlayingTrack(accessToken);
-            // console.log("Currently Listening:", currListen);
+            userProfile = await fetchUserProfile(accessToken);
           }
         } else {
           console.error("Authorization code missing in response", queryParams);
