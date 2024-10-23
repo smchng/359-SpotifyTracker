@@ -4,9 +4,8 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import LoginButton from "./components/loginButton";
 import LogoutButton from "./components/logoutButton";
-import { startPollingForTrackChanges } from "./UserData";
-import { setAccessToken, getAccessToken } from "./TokenStorage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CurrentlyPlayingTrack } from "./components/showTrack";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,7 +24,11 @@ export default function App() {
   return (
     <View style={styles.container}>
       {isLoggedIn ? (
-        <LogoutButton onLogout={handleLogout} />
+        <>
+          <Text>Welcome, {userProfile?.display_name}!</Text>
+          <CurrentlyPlayingTrack></CurrentlyPlayingTrack>
+          <LogoutButton onLogout={handleLogout} />
+        </>
       ) : (
         <LoginButton onLogin={handleLogin} />
       )}

@@ -7,7 +7,7 @@ import * as AuthSession from "expo-auth-session";
 import * as Linking from "expo-linking";
 import { getSpotifyAuthUrl, REDIRECT_URI } from "../SpotifyAuth";
 import { exchangeAuthorizationCode } from "../UserAuth";
-import { fetchCurrentlyPlayingTrack, fetchUserProfile } from "../UserData";
+import { fetchUserProfile } from "./UserProfile";
 import { setAccessToken, getAccessToken } from "../TokenStorage";
 
 const LoginButton = ({ onLogin }) => {
