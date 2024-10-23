@@ -6,8 +6,9 @@ import * as WebBrowser from "expo-web-browser";
 import * as AuthSession from "expo-auth-session";
 import * as Linking from "expo-linking";
 import { getSpotifyAuthUrl, REDIRECT_URI } from "../SpotifyAuth";
-import { exchangeAuthorizationCode, fetchUserProfile } from "../UserAuth";
-import { fetchCurrentlyPlayingTrack } from "../UserData";
+import { exchangeAuthorizationCode } from "../UserAuth";
+import { fetchCurrentlyPlayingTrack, fetchUserProfile } from "../UserData";
+import { setAccessToken, getAccessToken } from "../TokenStorage";
 
 const LoginButton = () => {
   const handleLogin = async () => {
@@ -31,11 +32,12 @@ const LoginButton = () => {
           // Exchange the code for an access token
           const accessToken = await exchangeAuthorizationCode(code);
           if (accessToken) {
+            setAccessToken(accessToken);
             // Fetch user profile after getting access token
             const userProfile = await fetchUserProfile(accessToken);
             console.log("Fetched User Profile:", userProfile);
-            const currListen = await fetchCurrentlyPlayingTrack(accessToken);
-            console.log("Currently Listening:", currListen);
+            // const currListen = await fetchCurrentlyPlayingTrack(accessToken);
+            // console.log("Currently Listening:", currListen);
           }
         } else {
           console.error("Authorization code missing in response", queryParams);

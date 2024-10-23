@@ -9,7 +9,7 @@ export const REDIRECT_URI = AuthSession.makeRedirectUri({ useProxy });
 
 // Spotify authorization scopes
 const SCOPES =
-  "user-read-private user-read-email user-read-recently-played user-read-currently-playing"; // Adjust scopes as necessary
+  "user-read-private user-read-email user-read-playback-state user-read-recently-played user-read-currently-playing"; // Adjust scopes as necessary
 
 // Function to get Spotify auth URL
 export const getSpotifyAuthUrl = () => {
