@@ -10,7 +10,7 @@ import { exchangeAuthorizationCode } from "../UserAuth";
 import { fetchCurrentlyPlayingTrack, fetchUserProfile } from "../UserData";
 import { setAccessToken, getAccessToken } from "../TokenStorage";
 
-const LoginButton = () => {
+const LoginButton = ({ onLogin }) => {
   const handleLogin = async () => {
     console.log("Login button pressed");
 
@@ -35,6 +35,7 @@ const LoginButton = () => {
             setAccessToken(accessToken);
             // Fetch user profile after getting access token
             userProfile = await fetchUserProfile(accessToken);
+            onLogin(true, userProfile);
           }
         } else {
           console.error("Authorization code missing in response", queryParams);
