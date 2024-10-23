@@ -2,18 +2,25 @@ import { useState, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { setAccessToken, getAccessToken } from "../TokenStorage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+const showTrack = async () => {
+  const storedTrack = await AsyncStorage.getItem("currentTrack");
+  if (storedTrack) {
+    const trackInfo = JSON.parse(storedTrack);
+    return trackInfo; // Return the parsed track info
+  }
+  return null; // Return null if no track info found
+};
+const displayStoredTrack = async () => {
+  const storedTrack = await showTrack();
+  if (storedTrack) {
+    setTrack(storedTrack); // Set the track state to the stored track info
+  }
+};
 
 export const CurrentlyPlayingTrack = () => {
   const [track, setTrack] = useState(null);
 
   startPollingForTrackChanges();
-
-  const displayStoredTrack = async () => {
-    const storedTrack = await showTrack();
-    if (storedTrack) {
-      setTrack(storedTrack); // Set the track state to the stored track info
-    }
-  };
 
   useEffect(() => {
     startPollingForTrackChanges();
@@ -41,15 +48,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-
-const showTrack = async () => {
-  const storedTrack = await AsyncStorage.getItem("currentTrack");
-  if (storedTrack) {
-    const trackInfo = JSON.parse(storedTrack);
-    return trackInfo; // Return the parsed track info
-  }
-  return null; // Return null if no track info found
-};
 
 const fetchCurrentlyPlayingTrack = async () => {
   let accessToken = getAccessToken(); // Retrieve the stored access token
@@ -98,7 +96,6 @@ const fetchCurrentlyPlayingTrack = async () => {
 
         // Store the track info in AsyncStorage
         await AsyncStorage.setItem("currentTrack", JSON.stringify(trackInfo));
-
         console.log("Currently Playing Track:", trackInfo); // Log the track information
         return trackInfo; // Return the track item if needed
       } else {
@@ -125,5 +122,5 @@ const startPollingForTrackChanges = (accessToken) => {
 
       // Perform any action you want when a new song starts
     }
-  }, 50000); // Poll every 5 seconds (adjust the interval as needed)
+  }, 600); // Poll every 5 seconds (adjust the interval as needed)
 };

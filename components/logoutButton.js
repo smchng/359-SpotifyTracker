@@ -8,8 +8,10 @@ const LogoutButton = ({ onLogout }) => {
       // Clear the access token and user profile from AsyncStorage
       await AsyncStorage.removeItem("accessToken");
       await AsyncStorage.removeItem("userProfile");
+      await AsyncStorage.removeItem("currentTrack");
       const profileData = await AsyncStorage.getItem("userProfile");
-      if (!profileData) {
+      const currentTrack = await AsyncStorage.getItem("currentTrack");
+      if (!profileData && !currentTrack) {
         console.log("User Logged out");
       }
       // Call the onLogout function to update the login state
