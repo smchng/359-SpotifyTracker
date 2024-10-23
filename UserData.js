@@ -1,4 +1,5 @@
 import { setAccessToken, getAccessToken } from "./TokenStorage";
+import * as FileSystem from "expo-file-system";
 
 export const fetchUserProfile = async () => {
   let accessToken = getAccessToken();
@@ -13,9 +14,40 @@ export const fetchUserProfile = async () => {
     });
     const data = await response.json();
     console.log("User Profile:", data); // Log the user profile data
+    const profile = await saveUserProfileToFile(data);
     return data; // Return user profile data
   } catch (error) {
     console.error("Error fetching user profile:", error);
+  }
+};
+
+const saveUserProfileToFile = async (profile) => {
+  const filePath = FileSystem.documentDirectory + "./userData/userProfile.txt";
+
+  // Create the directory if it doesn't exist
+  await FileSystem.makeDirectoryAsync(
+    FileSystem.documentDirectory + "userData",
+    { intermediates: true }
+  );
+
+  // Convert profile object to string format (you can format it as needed)
+  const profileData = JSON.stringify(profile, null, 2); // Stringify with indentation for readability
+
+  // Log profileData to debug
+  console.log("Profile Data to Save:", profileData);
+
+  if (!profileData) {
+    console.error("Profile data is null or undefined");
+    return;
+  }
+
+  try {
+    await FileSystem.writeAsStringAsync(filePath, profileData, {
+      encoding: FileSystem.EncodingType.UTF8,
+    }); // Write to file
+    console.log("User profile saved to:", filePath); // Log success message
+  } catch (error) {
+    console.error("Error saving user profile to file:", error); // Handle errors
   }
 };
 

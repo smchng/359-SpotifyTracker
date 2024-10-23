@@ -13,9 +13,11 @@
     "dotenv": "^16.4.5",
     "expo": "~51.0.28",
     "expo-auth-session": "^5.5.2",
+    "expo-file-system": "^17.0.1",
     "expo-status-bar": "~1.12.1",
     "react": "18.2.0",
     "react-native": "0.74.5",
+    "react-native-fs": "^2.20.0",
     "react-native-web": "~0.19.10"
   },
   "devDependencies": {
