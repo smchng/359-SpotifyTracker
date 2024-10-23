@@ -1,31 +1,28 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { setAccessToken, getAccessToken } from "../TokenStorage";
+import { setAccessToken, getAccessToken } from "../TokenStorage"; // Ensure these functions are correctly implemented
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const showTrack = async () => {
-  const storedTrack = await AsyncStorage.getItem("currentTrack");
-  if (storedTrack) {
-    const trackInfo = JSON.parse(storedTrack);
-    return trackInfo; // Return the parsed track info
-  }
-  return null; // Return null if no track info found
-};
-const displayStoredTrack = async () => {
-  const storedTrack = await showTrack();
-  if (storedTrack) {
-    setTrack(storedTrack); // Set the track state to the stored track info
-  }
-};
 
 export const CurrentlyPlayingTrack = () => {
   const [track, setTrack] = useState(null);
-
-  startPollingForTrackChanges();
+  const accessToken = getAccessToken(); // Retrieve the stored access token
 
   useEffect(() => {
-    startPollingForTrackChanges();
-    displayStoredTrack(); // Display stored track info on component mount
-  }, []); // Start polling on component mount
+    // Start polling for track changes when the component mounts
+    const intervalId = startPollingForTrackChanges(accessToken, setTrack);
+
+    // Initial fetch to set the current track
+    const initialFetch = async () => {
+      const storedTrack = await showTrack();
+      if (storedTrack) {
+        setTrack(storedTrack);
+      }
+    };
+    initialFetch();
+
+    // Cleanup on component unmount
+    return () => clearInterval(intervalId); // Clear the interval on unmount
+  }, [accessToken]);
 
   return (
     <View style={styles.container}>
@@ -41,6 +38,7 @@ export const CurrentlyPlayingTrack = () => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -49,9 +47,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const fetchCurrentlyPlayingTrack = async () => {
-  let accessToken = getAccessToken(); // Retrieve the stored access token
+const showTrack = async () => {
+  const storedTrack = await AsyncStorage.getItem("currentTrack");
+  if (storedTrack) {
+    return JSON.parse(storedTrack); // Return the parsed track info
+  }
+  return null; // Return null if no track info found
+};
 
+const fetchCurrentlyPlayingTrack = async (accessToken) => {
   if (accessToken) {
     try {
       const response = await fetch(
@@ -64,42 +68,32 @@ const fetchCurrentlyPlayingTrack = async () => {
       );
 
       if (!response.ok) {
-        throw new Error(
-          `Error fetching currently playing track: ${response.status}`
-        );
-      }
-
-      // Check if the response is OK
-      if (!response.ok) {
-        // Log the status and status text for debugging
         console.error(
           `Error fetching currently playing track: ${response.status} ${response.statusText}`
         );
-        return; // Exit if there was an error
+        return null; // Exit if there was an error
       }
 
-      // Check if the response has content
       if (response.status === 204) {
         console.log("No track is currently playing.");
-        return; // No track is playing
+        return null; // No track is playing
       }
 
       const data = await response.json();
-
-      // Check if there is a currently playing track
       if (data && data.is_playing) {
         const trackInfo = {
+          id: data.item.id, // Ensure you have a unique ID for the track
           title: data.item.name,
           artist: data.item.artists.map((artist) => artist.name).join(", "),
           //   album: data.item.album.name,
         };
 
-        // Store the track info in AsyncStorage
         await AsyncStorage.setItem("currentTrack", JSON.stringify(trackInfo));
         console.log("Currently Playing Track:", trackInfo); // Log the track information
         return trackInfo; // Return the track item if needed
       } else {
         console.log("No track is currently playing.");
+        return null; // Return null if no track is playing
       }
     } catch (error) {
       console.error("Error fetching currently playing track:", error);
@@ -109,18 +103,24 @@ const fetchCurrentlyPlayingTrack = async () => {
   }
 };
 
-const startPollingForTrackChanges = (accessToken) => {
+const startPollingForTrackChanges = (accessToken, setTrack) => {
   let lastTrackId = null;
 
-  setInterval(async () => {
+  const intervalId = setInterval(async () => {
     const track = await fetchCurrentlyPlayingTrack(accessToken);
 
+    // Check if track is not null and has an ID
     if (track && track.id !== lastTrackId) {
-      // A new track is playing
-      console.log("New song detected");
+      console.log("New song detected:", track);
       lastTrackId = track.id;
 
-      // Perform any action you want when a new song starts
+      // Update AsyncStorage
+      await AsyncStorage.setItem("currentTrack", JSON.stringify(track));
+
+      // Set the new track state to trigger a re-render
+      setTrack(track);
     }
-  }, 600); // Poll every 5 seconds (adjust the interval as needed)
+  }, 10000); // Poll every 10 seconds (adjust as needed)
+
+  return intervalId; // Return the interval ID for cleanup
 };
