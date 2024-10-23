@@ -1,5 +1,6 @@
 import { setAccessToken, getAccessToken } from "./TokenStorage";
 import * as FileSystem from "expo-file-system";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const fetchUserProfile = async () => {
   let accessToken = getAccessToken();
@@ -22,14 +23,6 @@ export const fetchUserProfile = async () => {
 };
 
 const saveUserProfileToFile = async (profile) => {
-  const filePath = FileSystem.documentDirectory + "./userData/userProfile.txt";
-
-  // Create the directory if it doesn't exist
-  await FileSystem.makeDirectoryAsync(
-    FileSystem.documentDirectory + "userData",
-    { intermediates: true }
-  );
-
   // Convert profile object to string format (you can format it as needed)
   const profileData = JSON.stringify(profile, null, 2); // Stringify with indentation for readability
 
@@ -40,14 +33,28 @@ const saveUserProfileToFile = async (profile) => {
     console.error("Profile data is null or undefined");
     return;
   }
-
   try {
-    await FileSystem.writeAsStringAsync(filePath, profileData, {
-      encoding: FileSystem.EncodingType.UTF8,
-    }); // Write to file
-    console.log("User profile saved to:", filePath); // Log success message
+    const profileData = JSON.stringify(profile); // Convert the profile object to a string
+    await AsyncStorage.setItem("userProfile", profileData); // Save the string to AsyncStorage
+    console.log("User profile saved to AsyncStorage");
   } catch (error) {
-    console.error("Error saving user profile to file:", error); // Handle errors
+    console.error("Error saving user profile to AsyncStorage:", error);
+  }
+};
+
+const readUserProfileFromAsyncStorage = async () => {
+  try {
+    const profileData = await AsyncStorage.getItem("userProfile");
+    if (profileData !== null) {
+      const profile = JSON.parse(profileData);
+      console.log("Retrieved User Profile:", profile);
+      return profile;
+    } else {
+      console.log("No user profile found in AsyncStorage");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error reading user profile:", error);
   }
 };
 
