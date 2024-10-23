@@ -2,7 +2,7 @@ import { setAccessToken, getAccessToken } from "./TokenStorage";
 
 export const fetchUserProfile = async () => {
   let accessToken = getAccessToken();
-  if (!accessToken || isTokenExpired(accessToken)) {
+  if (!accessToken) {
     accessToken = await refreshAccessToken(); // Refresh token if expired
   }
   try {

@@ -1,5 +1,10 @@
 // src/services/spotifyService.js
 import * as AuthSession from "expo-auth-session";
+import {
+  setAccessToken,
+  getAccessToken,
+  setRefreshToken,
+} from "./TokenStorage";
 
 export const exchangeAuthorizationCode = async (authorizationCode) => {
   const CLIENT_ID = "d19dd1312bee45a68e607c8ffa5a97ec"; // Replace with your actual Client ID
@@ -27,7 +32,7 @@ export const exchangeAuthorizationCode = async (authorizationCode) => {
     if (data.access_token) {
       setAccessToken(data.access_token);
       if (data.refresh_token) {
-        setRefreshToken(data.refresh_token); // Store refresh token if available
+        setAccessToken(data.refresh_token); // Store refresh token if available
       }
       console.log("Access Token:", data.access_token);
       return data.access_token; // Return the access token
