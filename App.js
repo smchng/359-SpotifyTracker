@@ -1,45 +1,27 @@
 // src/App.js
 
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
-import LoginButton from "./components/loginButton";
-import LogoutButton from "./components/logoutButton";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { CurrentlyPlayingTrack } from "./components/showTrack";
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+
+//Import the Screens
+import Enter from "./screens/enter";
+import Login from "./screens/login";
+import SignUp from "./screens/signUp";
+import SpotifyLogin from "./screens/spotifyLogin";
+import { Map } from "./screens/map";
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userProfile, setUserProfile] = useState(null);
-
-  const handleLogin = (status, profile) => {
-    setIsLoggedIn(status);
-    setUserProfile(profile);
-    AsyncStorage.setItem("accessToken", profile.accessToken); // Assuming you have accessToken in profile
-    AsyncStorage.setItem("userProfile", JSON.stringify(profile));
-  };
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUserProfile(null);
-  };
+  const Stack = createStackNavigator();
   return (
-    <View style={styles.container}>
-      {isLoggedIn ? (
-        <>
-          <Text>Welcome, {userProfile?.display_name}!</Text>
-          <CurrentlyPlayingTrack></CurrentlyPlayingTrack>
-          <LogoutButton onLogout={handleLogout} />
-        </>
-      ) : (
-        <LoginButton onLogin={handleLogin} />
-      )}
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Enter">
+        <Stack.Screen name="Enter" component={Enter} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Screen name="SpotifyLogin" component={SpotifyLogin} />
+        <Stack.Screen name="Map" component={Map} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
