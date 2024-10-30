@@ -1,15 +1,12 @@
+import React, { useState } from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
-import LogoutButton from "./components/logoutButton";
+import Logout from "../components/logout";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 //Login Button
-export function ProfileStorage() {
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUserProfile(null);
-  };
+export function ProfileStorage({ navigation }) {
   return (
     <View>
-      <LogoutButton onLogout={handleLogout} />;
+      <Logout navigation={navigation} />
     </View>
   );
 }

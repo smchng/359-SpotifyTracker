@@ -1,7 +1,8 @@
 // Connect and login with spotify
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
-import LoginButton from "../components/SpotifyLoginButton";
+import SpotifyLoginButton from "../components/SpotifyLoginButton";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Buttons } from "../components/buttons";
 
@@ -24,7 +25,7 @@ export default function SpotifyLogin({ navigation }) {
           <Buttons text="Next" page="Map" navigation={navigation} />
         </>
       ) : (
-        <LoginButton onLogin={handleLogin} />
+        <SpotifyLoginButton onLogin={handleLogin} />
       )}
     </View>
   );

@@ -5,7 +5,7 @@ import { Buttons } from "../components/buttons";
 export default function SignUp({ navigation }) {
   return (
     <View>
-      <Buttons text="Login" page="spotifyLogin" navigation={navigation} />
+      <Buttons text="Login" page="SpotifyLogin" navigation={navigation} />
     </View>
   );
 }

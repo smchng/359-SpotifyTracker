@@ -10,7 +10,7 @@ import { exchangeAuthorizationCode } from "../ApiAccess/UserAuth";
 import { fetchUserProfile } from "./UserProfile";
 import { setAccessToken, getAccessToken } from "../ApiAccess/TokenStorage";
 
-const LoginButton = ({ onLogin }) => {
+const SpotifyLoginButton = ({ onLogin }) => {
   const handleLogin = async () => {
     console.log("Login button pressed");
 
@@ -51,4 +51,4 @@ const LoginButton = ({ onLogin }) => {
   return <Button title="Login with Spotify" onPress={handleLogin} />;
 };
 
-export default LoginButton;
+export default SpotifyLoginButton;

@@ -1,8 +1,8 @@
 import React from "react";
-import { Button } from "react-native";
+import { LogoutButton } from "../components/buttons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const LogoutButton = ({ onLogout }) => {
+const Logout = ({ navigation }) => {
   const handleLogout = async () => {
     try {
       // Clear the access token and user profile from AsyncStorage
@@ -14,14 +14,19 @@ const LogoutButton = ({ onLogout }) => {
       if (!profileData && !currentTrack) {
         console.log("User Logged out");
       }
-      // Call the onLogout function to update the login state
-      onLogout();
     } catch (error) {
       console.error("Logout failed", error);
     }
   };
 
-  return <Button title="Logout" onPress={handleLogout} />;
+  return (
+    <LogoutButton
+      text="Logout"
+      page="Enter"
+      navigation={navigation}
+      onPress={handleLogout}
+    />
+  );
 };
 
-export default LogoutButton;
+export default Logout;
