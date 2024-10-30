@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { setAccessToken, getAccessToken } from "../TokenStorage"; // Ensure these functions are correctly implemented
+import { setAccessToken, getAccessToken } from "../ApiAccess/TokenStorage"; // Ensure these functions are correctly implemented
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const CurrentlyPlayingTrack = () => {

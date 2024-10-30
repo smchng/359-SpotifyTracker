@@ -1,4 +1,4 @@
-import { setAccessToken, getAccessToken } from "../TokenStorage";
+import { setAccessToken, getAccessToken } from "../ApiAccess/TokenStorage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const fetchUserProfile = async () => {

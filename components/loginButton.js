@@ -5,10 +5,10 @@ import { Button } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import * as AuthSession from "expo-auth-session";
 import * as Linking from "expo-linking";
-import { getSpotifyAuthUrl, REDIRECT_URI } from "../SpotifyAuth";
-import { exchangeAuthorizationCode } from "../UserAuth";
+import { getSpotifyAuthUrl, REDIRECT_URI } from "../ApiAccess/SpotifyAuth";
+import { exchangeAuthorizationCode } from "../ApiAccess/UserAuth";
 import { fetchUserProfile } from "./UserProfile";
-import { setAccessToken, getAccessToken } from "../TokenStorage";
+import { setAccessToken, getAccessToken } from "../ApiAccess/TokenStorage";
 
 const LoginButton = ({ onLogin }) => {
   const handleLogin = async () => {
