@@ -88,8 +88,6 @@ const fetchCurrentlyPlayingTrack = async (accessToken) => {
           //   album: data.item.album.name,
         };
 
-        await AsyncStorage.setItem("currentTrack", JSON.stringify(trackInfo));
-        console.log("Currently Playing Track:", trackInfo); // Log the track information
         return trackInfo; // Return the track item if needed
       } else {
         console.log("No track is currently playing.");
@@ -120,7 +118,7 @@ const startPollingForTrackChanges = (accessToken, setTrack) => {
       // Set the new track state to trigger a re-render
       setTrack(track);
     }
-  }, 10000); // Poll every 10 seconds (adjust as needed)
+  }, 5000); // Poll every 10 seconds (adjust as needed)
 
   return intervalId; // Return the interval ID for cleanup
 };
