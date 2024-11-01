@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, Button } from "react-native";
-import { CurrentlyPlayingTrack } from "../components/showTrack";
+import { CurrentlyPlayingTrack } from "../components/CurrentTrack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { CircleButton } from "../components/buttons";

@@ -1,8 +1,10 @@
+//Fetches previously listened to 50 songs
+//But not usable because of difficulty parsing
+
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, FlatList } from "react-native";
 import { getAccessToken } from "../ApiAccess/TokenStorage";
 
-// Recently Played Component
 export function RecentlyPlayed({ navigation }) {
   const accessToken = getAccessToken();
   const [tracks, setTracks] = useState([]); // Store all recently played tracks

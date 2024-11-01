@@ -14,7 +14,7 @@ export default function SpotifyLogin({ navigation }) {
   const handleLogin = (status, profile) => {
     setIsLoggedIn(status);
     setUserProfile(profile);
-    AsyncStorage.setItem("accessToken", profile.accessToken); // Assuming you have accessToken in profile
+    AsyncStorage.setItem("accessToken", profile.accessToken);
     AsyncStorage.setItem("userProfile", JSON.stringify(profile));
   };
   return (
