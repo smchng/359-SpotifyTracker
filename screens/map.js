@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text, Button } from "react-native";
 import { CurrentlyPlayingTrack } from "../components/CurrentTrack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MusicTimer } from "../components/MusicTimer";
 
 import { CircleButton } from "../components/buttons";
 //Login Button
@@ -15,13 +16,14 @@ export function Map({ navigation }) {
         page="ProfileStorage"
         navigation={navigation}
       />
+      <MusicTimer />
       <CurrentlyPlayingTrack />
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 2,
     alignItems: "center",
     justifyContent: "center",
   },

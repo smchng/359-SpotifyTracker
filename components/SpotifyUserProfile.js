@@ -4,6 +4,7 @@ import { getAccessToken } from "../ApiAccess/TokenStorage.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { doc, setDoc, collection } from "firebase/firestore";
 import { db } from "../data/firebaseConfig.js";
+import { useUser } from "../components/UserAuth";
 
 export const fetchUserProfile = async () => {
   let accessToken = getAccessToken();
@@ -41,41 +42,34 @@ const saveUserProfileToFile = async (profile) => {
     await AsyncStorage.setItem("userProfile", profileData); // Save the string to AsyncStorage
     console.log("User profile saved to AsyncStorage");
     const { display_name: name, email: email, id: id } = profile; // Example mapping, adjust to match actual profile structure
-    await storeFirebase(email, id, name);
+    await storeSpotifyProfileFirebase(email, id, name);
   } catch (error) {
     console.error("Error saving user profile to AsyncStorage:", error);
   }
 };
 
-const readUserProfileFromAsyncStorage = async () => {
-  try {
-    const profileData = await AsyncStorage.getItem("userProfile");
-    if (profileData !== null) {
-      const profile = JSON.parse(profileData);
-      console.log("Retrieved User Profile:", profile);
-      return profile;
-    } else {
-      console.log("No user profile found in AsyncStorage");
-      return null;
-    }
-  } catch (error) {
-    console.error("Error reading user profile:", error);
+const storeSpotifyProfileFirebase = async (email, id, name) => {
+  const { userId } = useUser(); // Access userId from context
+  if (!userId) {
+    return console.log("No User ID");
   }
-};
-
-const storeFirebase = async (email, id, name) => {
   try {
-    const docRef = doc(collection(db, "spotify-user"));
+    // Reference to the user's document in the "users" collection
+    const userDocRef = doc(db, "users", userId);
+    // Create or access the "spotify-user" subcollection within the user document
+    const spotifyUserCollectionRef = collection(userDocRef, "spotify-user");
+    // Reference for the document in the "spotify-user" subcollection
+    const spotifyProfileDocRef = doc(spotifyUserCollectionRef, id); // Use Spotify ID as document ID
 
     // Add user information to Firestore
-    await setDoc(docRef, {
+    await setDoc(spotifyProfileDocRef, {
       email: email,
       id: id,
       name: name,
       timestamp: new Date(),
     });
 
-    console.log("User stored with ID: ", docRef.id);
+    console.log("User stored with ID: ", spotifyProfileDocRef.id); // Fixed to use spotifyProfileDocRef.id
   } catch (error) {
     console.error("Error saving to Firebase:", error);
   }

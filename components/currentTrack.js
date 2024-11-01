@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { setAccessToken, getAccessToken } from "../ApiAccess/TokenStorage"; // Ensure these functions are correctly implemented
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { doc, setDoc, collection } from "firebase/firestore";
+import { db } from "../data/firebaseConfig.js";
 
 export const CurrentlyPlayingTrack = () => {
   const [track, setTrack] = useState(null);

@@ -3,6 +3,7 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { UserProvider } from "./components/UserAuth";
 
 //Import the Screens
 import Enter from "./screens/enter";
@@ -15,15 +16,18 @@ import { ProfileStorage } from "./screens/profileStorage";
 export default function App() {
   const Stack = createStackNavigator();
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Enter">
-        <Stack.Screen name="Enter" component={Enter} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="SpotifyLogin" component={SpotifyLogin} />
-        <Stack.Screen name="Map" component={Map} />
-        <Stack.Screen name="ProfileStorage" component={ProfileStorage} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <UserProvider>
+      {" "}
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Enter">
+          <Stack.Screen name="Enter" component={Enter} />
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen name="SpotifyLogin" component={SpotifyLogin} />
+          <Stack.Screen name="Map" component={Map} />
+          <Stack.Screen name="ProfileStorage" component={ProfileStorage} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserProvider>
   );
 }
