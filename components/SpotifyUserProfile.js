@@ -30,8 +30,7 @@ export const fetchUserProfile = async () => {
 
 const saveUserProfileToFile = async (profile, userId) => {
   // Convert profile object to string format (you can format it as needed)
-  const profileData = JSON.stringify(profile, null, 2); // Stringify with indentation for readability
-
+  const profileData = JSON.stringify(profile);
   // Log profileData to debug
   console.log("Profile Data to Save:", profileData);
 
@@ -39,14 +38,13 @@ const saveUserProfileToFile = async (profile, userId) => {
     console.error("Profile data is null or undefined");
     return;
   }
-  try {
-    // const profileData = JSON.stringify(profile);
-    await AsyncStorage.setItem("userProfile", profileData);
-    console.log("User profile saved to AsyncStorage");
-    console.log("Display Name:", profile.display_name);
-  } catch (error) {
-    console.error("Error saving user profile to AsyncStorage:", error);
-  }
+  // try {
+  //   await AsyncStorage.setItem("userProfile", profileData);
+  //   console.log("User profile saved to AsyncStorage");
+  //   console.log("Display Name:", profile.display_name);
+  // } catch (error) {
+  //   console.error("Error saving user profile to AsyncStorage:", error);
+  // }
   if (userId) {
     try {
       await storeSpotifyProfileFirebase(
