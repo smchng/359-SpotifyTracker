@@ -3,7 +3,7 @@ import { CurrentlyPlayingTrack } from "../components/CurrentTrack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MusicTimer } from "../components/MusicTimer";
 
-import { CircleButton } from "../components/buttons";
+import { CircleButton } from "../components/UI/buttons";
 //Login Button
 export function Map({ navigation }) {
   const handlePage = () => {

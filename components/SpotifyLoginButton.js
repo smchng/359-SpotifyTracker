@@ -5,12 +5,15 @@ import { Button } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import * as AuthSession from "expo-auth-session";
 import * as Linking from "expo-linking";
-import { getSpotifyAuthUrl, REDIRECT_URI } from "../ApiAccess/SpotifyAuth";
-import { exchangeAuthorizationCode } from "../ApiAccess/UserAuth";
-import { fetchUserProfile } from "./SpotifyUserProfile";
+import {
+  getSpotifyAuthUrl,
+  REDIRECT_URI,
+} from "../ApiAccess/SpotifyPermission";
+import { exchangeAuthorizationCode } from "../ApiAccess/SpotifyAuth";
+import { handleFetchAndSaveUserProfile } from "./SpotifyUserProfile";
 import { setAccessToken, getAccessToken } from "../ApiAccess/TokenStorage";
 
-const SpotifyLoginButton = ({ onLogin }) => {
+const SpotifyLoginButton = ({ onLogin, userId }) => {
   const handleLogin = async () => {
     console.log("Login button pressed");
 
@@ -33,9 +36,10 @@ const SpotifyLoginButton = ({ onLogin }) => {
           const accessToken = await exchangeAuthorizationCode(code);
           if (accessToken) {
             setAccessToken(accessToken);
+
             // Fetch user profile after getting access token
-            userProfile = await fetchUserProfile(accessToken);
-            onLogin(true, userProfile);
+            await handleFetchAndSaveUserProfile(userId);
+            onLogin(true, { accessToken });
           }
         } else {
           console.error("Authorization code missing in response", queryParams);
@@ -44,7 +48,7 @@ const SpotifyLoginButton = ({ onLogin }) => {
         console.error("Authentication failed or dismissed", result);
       }
     } catch (error) {
-      console.error("Login failed", error);
+      console.error("Spotify login failed", error);
     }
   };
 

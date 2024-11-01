@@ -3,11 +3,12 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
 import SpotifyLoginButton from "../components/SpotifyLoginButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import { Buttons } from "../components/buttons";
+import { useUser } from "../components/UserAuth";
+import { Buttons } from "../components/UI/buttons";
 
 // Login with existing account
 export default function SpotifyLogin({ navigation }) {
+  const { userId } = useUser();
   const [userProfile, setUserProfile] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -16,7 +17,11 @@ export default function SpotifyLogin({ navigation }) {
     setUserProfile(profile);
     AsyncStorage.setItem("accessToken", profile.accessToken);
     AsyncStorage.setItem("userProfile", JSON.stringify(profile));
+
+    // Here you can also handle saving the userId if needed
+    console.log("User ID during Spotify login:", userId);
   };
+
   return (
     <View>
       {isLoggedIn ? (
@@ -25,7 +30,7 @@ export default function SpotifyLogin({ navigation }) {
           <Buttons text="Next" page="Map" navigation={navigation} />
         </>
       ) : (
-        <SpotifyLoginButton onLogin={handleLogin} />
+        <SpotifyLoginButton onLogin={handleLogin} userId={userId} />
       )}
     </View>
   );

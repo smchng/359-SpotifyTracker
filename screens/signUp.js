@@ -1,6 +1,10 @@
 // Sign up
-import { StyleSheet, View, Text, Button } from "react-native";
-import { Buttons } from "../components/buttons";
+import { StyleSheet, View, Text, Button, TextInput, Alert } from "react-native";
+import { Buttons } from "../components/UI/buttons";
+import React, { useState } from "react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../data/firebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
 
 export default function SignUp({ navigation }) {
   const [email, setEmail] = useState("");
@@ -12,8 +16,8 @@ export default function SignUp({ navigation }) {
       Alert.alert("All fields are required.");
       return;
     }
+    console.log("Auth object:", auth);
 
-    const auth = getAuth();
     try {
       // Create user with Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(
@@ -37,14 +41,33 @@ export default function SignUp({ navigation }) {
       navigation.navigate("Login");
     } catch (error) {
       console.error("Error signing up:", error);
-      Alert.alert("Sign-up failed:", error.message);
+
+      if (error.code === "auth/email-already-in-use") {
+        Alert.alert(
+          "Email already in use",
+          "This email is already registered. Would you like to log in instead?",
+          [
+            {
+              text: "Cancel",
+              style: "cancel",
+            },
+            {
+              text: "Log In",
+              onPress: () => navigation.navigate("Login"),
+            },
+          ]
+        );
+      } else {
+        Alert.alert("Sign-up failed", error.message);
+      }
     }
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text>Welcome to, NAME</Text>
       <TextInput
+        style={styles.input}
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
@@ -52,12 +75,14 @@ export default function SignUp({ navigation }) {
         autoCapitalize="none"
       />
       <TextInput
+        style={styles.input}
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
       <TextInput
+        style={styles.input}
         placeholder="Display Name"
         value={displayName}
         onChangeText={setDisplayName}
@@ -66,3 +91,17 @@ export default function SignUp({ navigation }) {
     </View>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: "#fff",
+  },
+  input: {
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+  },
+});

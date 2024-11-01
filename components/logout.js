@@ -1,7 +1,7 @@
 // Renders logout button and clears Async
 
 import React from "react";
-import { LogoutButton } from "../components/buttons";
+import { LogoutButton } from "../components/UI/buttons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Logout = ({ navigation }) => {

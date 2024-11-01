@@ -17,7 +17,6 @@ export default function App() {
   const Stack = createStackNavigator();
   return (
     <UserProvider>
-      {" "}
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Enter">
           <Stack.Screen name="Enter" component={Enter} />

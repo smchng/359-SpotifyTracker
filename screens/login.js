@@ -15,10 +15,18 @@ export default function Login({ navigation }) {
       return;
     }
 
-    const userId = await loginUser(email, password); // Await the loginUser function
-    if (userId) {
-      setUserId(userId); // Store the user ID in context
-      navigation.navigate("SpotifyLogin"); // Navigate to the next page
+    try {
+      const userId = await loginUser(email, password); // Call your login function
+      if (userId) {
+        setUserId(userId); // Set user ID in context
+        console.log("Logged in user ID: ", userId);
+        navigation.navigate("SpotifyLogin"); // Navigate to the Spotify login screen
+      } else {
+        Alert.alert("Login failed. Please check your credentials.");
+      }
+    } catch (error) {
+      console.error("Login error: ", error);
+      Alert.alert("An error occurred. Please try again.");
     }
   };
 

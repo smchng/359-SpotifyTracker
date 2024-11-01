@@ -1,6 +1,6 @@
 // First landing page
 import { StyleSheet, View, Text, Button } from "react-native";
-import { Buttons } from "../components/buttons";
+import { Buttons } from "../components/UI/buttons";
 
 // Login with existing account
 export default function Enter({ navigation }) {
