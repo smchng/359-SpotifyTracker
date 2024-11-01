@@ -1,29 +1,62 @@
-import { StyleSheet, View, Text, Button } from "react-native";
-//Login Button
-export function Buttons({ text, page, navigation }) {
+import { StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
+
+
+const CustomButton = ({ text, onPress, style, textColor }) => (
+  <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
+    <Text style={[styles.buttonText, { color: textColor }]}>{text}</Text>
+  </TouchableOpacity>
+);
+
+export const Buttons = ({ text, page, navigation, buttonStyle, textColor }) => {
   const handlePage = () => {
-    navigation.navigate(page); // Navigate to the page passed in as a prop
+    navigation.navigate(page);
   };
-  return <Button title={text} onPress={handlePage}></Button>;
-}
+  return <CustomButton text={text} onPress={handlePage} style={buttonStyle} textColor={textColor} />;
+};
 
-export function LogoutButton({ text, page, navigation, onPress }) {
+//Welcome Pages Image Component
+
+
+// Logout Button Component
+export const LogoutButton = ({ text, page, navigation, onPress }) => {
   const handlePage = () => {
-    if (onPress) onPress(); // Call onPress if provided
-    navigation.navigate(page); // Navigate if navigation and page are provided
+    if (onPress) onPress();
+    navigation.navigate(page);
   };
+  return <CustomButton text={text} onPress={handlePage} />;
+};
 
-  return <Button title={text} onPress={handlePage} />;
-}
-
-//Timer Button
-
-//Each Profile logs date button
-
-//Ciruclar button for Home, Map, x
-export function CircleButton({ text, page, navigation }) {
+// Circular Button Component (if needed in the future)
+export const CircleButton = ({ text, page, navigation }) => {
   const handlePage = () => {
-    navigation.navigate(page); // Navigate to the page passed in as a prop
+    navigation.navigate(page);
   };
-  return <Button title={text} onPress={handlePage}></Button>;
-}
+  return <CustomButton text={text} onPress={handlePage} />;
+};
+
+const styles = StyleSheet.create({
+  button: {
+    marginVertical: 15,
+    borderRadius: 13,
+    paddingVertical: 20,
+    paddingHorizontal: 120,
+    alignItems: 'center',
+    justifyContent: 'center',
+     
+    //shadow
+     shadowColor: '#000000',
+     shadowOffset: {
+       width: 4,
+       height: 4,
+     },
+     shadowOpacity: 0.4,
+     shadowRadius: 7,
+  },
+    
+  buttonText: {
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  
+  
+});

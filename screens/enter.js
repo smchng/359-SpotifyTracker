@@ -1,31 +1,68 @@
-// First landing page
-import { StyleSheet, View, Text, Button } from "react-native";
+// enter.js
+import { StyleSheet, View, Text, Image } from "react-native";
 import { Buttons } from "../components/buttons";
 
-// Login with existing account
+// First landing page
 export default function Enter({ navigation }) {
   return (
     <View style={styles.container}>
+    <View style={styles.welcomeContainer}>
+      {/* image should go on this line */}
+      {/* <WelcomeIcon width="100%" height="100%" /> */}
+      <Image
+        source={require('../assets/icon.png')}
+        style={styles.image}
+        resizeMode="contain"
+      />
       <Text style={styles.greetingText}>Hello there!</Text>
-      <Buttons text="Login" page="Login" navigation={navigation} />
-      <Buttons text="Sign Up" page="SignUp" navigation={navigation} />
     </View>
+    <View style={styles.buttonContainer}>
+        <Buttons
+          text="Login"
+          page="Login"
+          navigation={navigation}
+          buttonStyle={styles.loginButton}
+          textColor="#FFFFFF"
+        />
+        <Buttons
+          text="Sign Up"
+          page="SignUp"
+          navigation={navigation}
+          buttonStyle={styles.signUpButton}
+          textColor = "#303030"
+        />
+      </View>
+  </View>
   );
 }
 
-//home screen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F3F5', // Set background color
-    justifyContent: 'flex-start', // Align items to the top
-    alignItems: 'flex-start', // Align items to the left
+    backgroundColor: '#F2F3F5',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  welcomeContainer: {
+    marginTop: 125,
+    alignItems: 'center',
+  },
+  image: {
+    width: 200,
+    height: 200,
   },
   greetingText: {
-    position: 'absolute', // Position the text absolutely
-    left: 50, // x position
-    top: 50, // y position
-    fontSize: 20, // Adjust font size as needed
-    color: '#000', // Text color (black)
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#303030',
   },
+  buttonContainer: {
+    marginBottom: 100,
+  },
+  loginButton: {
+    backgroundColor: '#303030',
+  },
+  signUpButton: {
+    backgroundColor: '#EBEFF2',
+  }
 });
