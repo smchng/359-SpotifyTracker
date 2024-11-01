@@ -1,3 +1,5 @@
+// Fetches Spotify Profile data
+
 import { getAccessToken } from "../ApiAccess/TokenStorage.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { doc, setDoc, collection } from "firebase/firestore";

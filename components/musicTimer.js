@@ -1,3 +1,5 @@
+// 30 min timer that starts profile and pin collection
+
 import React from "react";
 import { Button } from "react-native";
 import { doc, setDoc, collection } from "firebase/firestore";

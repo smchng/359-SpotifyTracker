@@ -1,3 +1,5 @@
+// Stores and Authenticates App User Profile
+
 const storeFirebase = async (username, password) => {
   try {
     const docRef = doc(collection(db, "spotify-user"));

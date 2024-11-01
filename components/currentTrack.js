@@ -1,3 +1,5 @@
+// Polls and renders the currently playing track
+
 import { useState, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { setAccessToken, getAccessToken } from "../ApiAccess/TokenStorage"; // Ensure these functions are correctly implemented

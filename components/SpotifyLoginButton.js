@@ -1,4 +1,4 @@
-// src/components/LoginButton.js
+// Renders the log in button and checks authentication
 
 import React from "react";
 import { Button } from "react-native";
