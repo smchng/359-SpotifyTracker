@@ -1,5 +1,7 @@
-import { setAccessToken, getAccessToken } from "../ApiAccess/TokenStorage";
+import { getAccessToken } from "../ApiAccess/TokenStorage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { doc, setDoc, collection } from "firebase/firestore";
+import { db } from "../data/firebaseConfig.js";
 
 export const fetchUserProfile = async () => {
   let accessToken = getAccessToken();
@@ -36,6 +38,8 @@ const saveUserProfileToFile = async (profile) => {
     const profileData = JSON.stringify(profile); // Convert the profile object to a string
     await AsyncStorage.setItem("userProfile", profileData); // Save the string to AsyncStorage
     console.log("User profile saved to AsyncStorage");
+    const { display_name: username, email: password } = profile; // Example mapping, adjust to match actual profile structure
+    await storeFirebase(username, password);
   } catch (error) {
     console.error("Error saving user profile to AsyncStorage:", error);
   }
@@ -54,5 +58,22 @@ const readUserProfileFromAsyncStorage = async () => {
     }
   } catch (error) {
     console.error("Error reading user profile:", error);
+  }
+};
+
+const storeFirebase = async (username, password) => {
+  try {
+    const docRef = doc(collection(db, "users"));
+
+    // Add user information to Firestore
+    await setDoc(docRef, {
+      username: username,
+      password: password,
+      timestamp: new Date(),
+    });
+
+    console.log("User stored with ID: ", docRef.id);
+  } catch (error) {
+    console.error("Error saving to Firebase:", error);
   }
 };
