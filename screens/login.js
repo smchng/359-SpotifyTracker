@@ -1,48 +1,81 @@
-import { StyleSheet, View, Text, Button } from "react-native";
-import { Buttons } from "../components/buttons";
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, Image, KeyboardAvoidingView } from 'react-native';
+import { NavigationButton } from "../components/buttons";
+import TextInput from "../components/input";
 
 // Login with existing account
 export default function Login({ navigation }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
   return (
-    <View style={styles.container}>
-    <View style={styles.welcomeContainer}>
-      {/* image should go on this line */}
-      <Text style={styles.greetingText}>Welcome Back!</Text>
-    </View>
-    <View style={styles.buttonContainer}>
-    <Buttons 
-      text="Login" 
-      page="SpotifyLogin" 
-      navigation={navigation}
-      buttonStyle={styles.loginButton}
-      textColor="#FFFFFF" 
-      />
+    <KeyboardAvoidingView style={styles.container} behavior="padding" keyboardVerticalOffset={100}>
+      <View style={styles.welcomeContainer}>
+        <Image
+          source={require('../assets/welcomeIcon1.png')}
+          style={styles.image}
+          resizeMode="contain"
+        />
+        <Text style={styles.greetingText}>Welcome Back!</Text>
       </View>
-  </View>
+
+      <View style={styles.inputContainer}>
+        <TextInput
+          value={username}
+          onChangeText={setUsername}
+          placeholder="Username"
+          textColor="black"
+        />
+        <TextInput
+          value={password}
+          onChangeText={setPassword}
+          placeholder="Password"
+          textColor="black"
+          secureTextEntry={true} // This will hide the password input
+        />
+        <NavigationButton 
+          text="Login" 
+          page="SpotifyLogin" 
+          navigation={navigation}
+          buttonStyle={styles.loginButton}
+          textColor="#FFFFFF" 
+        />
+      </View>
+
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#868686',
+    backgroundColor: '#F2F3F5',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginVertical: 100,
   },
+
   welcomeContainer: {
-    marginTop: 250,
+    alignItems: 'center',
   },
+
+  image: {
+    width: 180,
+    height: 180,
+  },
+
   greetingText: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    textAlign: 'center',
+    color: '#000000',
   },
-  buttonContainer: {
-    marginBottom: 100,
+
+  inputContainer: {
+    marginTop: 60,
   },
+
   loginButton: {
     backgroundColor: '#303030',
   },
- 
 });
-

@@ -1,13 +1,17 @@
 import { StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 
-
-const CustomButton = ({ text, onPress, style, textColor }) => (
+export const CustomButton = ({ text, onPress, style, textColor }) => (
   <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
-    <Text style={[styles.buttonText, { color: textColor }]}>{text}</Text>
+    <Text 
+      style={[styles.buttonText, { color: textColor }]}
+      numberOfLines={1}
+    >
+      {text}
+    </Text>
   </TouchableOpacity>
 );
 
-export const Buttons = ({ text, page, navigation, buttonStyle, textColor }) => {
+export const NavigationButton = ({ text, page, navigation, buttonStyle, textColor }) => {
   const handlePage = () => {
     navigation.navigate(page);
   };
@@ -36,12 +40,10 @@ export const CircleButton = ({ text, page, navigation }) => {
 
 const styles = StyleSheet.create({
   button: {
+    width: 300,
     marginVertical: 15,
     borderRadius: 13,
     paddingVertical: 20,
-    paddingHorizontal: 120,
-    alignItems: 'center',
-    justifyContent: 'center',
      
     //shadow
      shadowColor: '#000000',
@@ -56,7 +58,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 12,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
-  
-  
 });

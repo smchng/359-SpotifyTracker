@@ -1,10 +1,11 @@
 // Connect and login with spotify
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, Button } from "react-native";
+import { StyleSheet, View, Text, Button, Image } from "react-native";
 import SpotifyLoginButton from "../components/SpotifyLoginButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { Buttons } from "../components/buttons";
+import { NavigationButton } from "../components/buttons";
+import { Container } from "../components/Container";
 
 // Login with existing account
 export default function SpotifyLogin({ navigation }) {
@@ -17,16 +18,37 @@ export default function SpotifyLogin({ navigation }) {
     AsyncStorage.setItem("accessToken", profile.accessToken); // Assuming you have accessToken in profile
     AsyncStorage.setItem("userProfile", JSON.stringify(profile));
   };
+
   return (
-    <View>
+    <Container>
+      <View style={styles.welcomeContainer}>
+      {/* image should go on this line */}
+      {/* <WelcomeIcon width="100%" height="100%" /> */}
+        <Image
+          source={require('../assets/spotifyIcon.png')}
+          style={styles.image}
+          resizeMode="contain"
+        />
+      </View>
       {isLoggedIn ? (
         <>
           <Text>Welcome, {userProfile?.display_name}!</Text>
-          <Buttons text="Next" page="Map" navigation={navigation} />
+          <NavigationButton text="Next" page="Map" navigation={navigation} />
         </>
       ) : (
-        <SpotifyLoginButton onLogin={handleLogin} />
+        <SpotifyLoginButton 
+          onLogin={handleLogin}
+          navigation={navigation} 
+        />
       )}
-    </View>
+    </Container>
   );
 }
+
+const styles = StyleSheet.create({
+  image: {
+    alignSelf: 'center',
+    width: 180,
+    height: 180,
+  },
+});
