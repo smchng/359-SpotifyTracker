@@ -36,7 +36,7 @@ export function CircleButton({ SVGIcon, page, navigation }) {
   return (
     <TouchableOpacity style={styles.container} onPress={handlePage}>
       {/* Render the SVG component passed in as a prop */}
-      {SVGIcon && <SVGIcon width={25} height={25} />}
+      {SVGIcon && <SVGIcon width={20} height={20} />}
     </TouchableOpacity>
   );
 }
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     left: 20, // Adjust left position as necessary
     zIndex: 1,
     backgroundColor: "#EBEFF2",
-    padding: 20,
+    padding: 15,
     borderRadius: 100,
     shadowColor: "#000", // Color of the shadow
     shadowOffset: { width: 5, height: 2 }, // Offset shadow to the right by 5px (horizontal)

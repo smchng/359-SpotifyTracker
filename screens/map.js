@@ -5,7 +5,7 @@ import * as Location from "expo-location"; // Importing expo-location to get the
 
 import { CurrentlyPlayingTrack } from "../components/CurrentTrack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { MusicTimer } from "../components/MusicTimer";
+import MusicTimer from "../components/MusicTimer";
 import { CircleButton } from "../components/UI/buttons";
 import UserIcon from "../assets/svg/user.svg";
 
@@ -59,10 +59,6 @@ export function Map({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* CircleButton component */}
-      {/* MusicTimer and CurrentlyPlayingTrack components */}
-      {/* <MusicTimer /> */}
-
       {/* Render the MapView if location is available */}
       {initialRegion && ( // Render map only when initial region is set
         <MapView
@@ -90,11 +86,15 @@ export function Map({ navigation }) {
           )}
         </MapView>
       )}
-      <CircleButton
-        SVGIcon={UserIcon}
-        page="ProfileStorage"
-        navigation={navigation}
-      />
+      <View style={styles.topNav}>
+        <CircleButton
+          SVGIcon={UserIcon}
+          page="ProfileStorage"
+          navigation={navigation}
+        />
+
+        <MusicTimer />
+      </View>
       <CurrentlyPlayingTrack />
     </View>
   );
@@ -107,5 +107,8 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject, // Fills the entire parent container
+  },
+  topNav: {
+    flexDirection: "row",
   },
 });
