@@ -51,7 +51,6 @@ export function Map({ navigation }) {
       />
       {/* MusicTimer and CurrentlyPlayingTrack components */}
       {/* <MusicTimer /> */}
-      <CurrentlyPlayingTrack />
 
       {/* Render the MapView if location is available */}
       {location && (
@@ -73,6 +72,7 @@ export function Map({ navigation }) {
           />
         </MapView>
       )}
+      <CurrentlyPlayingTrack />
     </View>
   );
 }
@@ -80,12 +80,9 @@ export function Map({ navigation }) {
 // Styling for the container and map
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    flex: 1, // Allows the container to take up the full screen
   },
   map: {
-    width: "100%", // Map will take up 100% of the width
-    height: "100%", // Map will take up 100% of the height
+    ...StyleSheet.absoluteFillObject, // Fills the entire parent container
   },
 });
