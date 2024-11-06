@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps"; // Importing the MapView and Marker components from react-native-maps
 import * as Location from "expo-location"; // Importing expo-location to get the user's location
-
+import { useUser } from "../components/UserAuth";
 import { CurrentlyPlayingTrack } from "../components/CurrentTrack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MusicTimer from "../components/MusicTimer";
@@ -10,6 +10,7 @@ import { CircleButton } from "../components/UI/buttons";
 import UserIcon from "../assets/svg/user.svg";
 
 export function Map({ navigation }) {
+  const { userId } = useUser();
   const [location, setLocation] = useState(null); // State to store the user's location
   const [errorMsg, setErrorMsg] = useState(null); // State to store any potential error message
   const [initialRegion, setInitialRegion] = useState(null); // State to store the initial region for the map
@@ -93,7 +94,7 @@ export function Map({ navigation }) {
           navigation={navigation}
         />
 
-        <MusicTimer />
+        <MusicTimer userId={userId} />
       </View>
       <CurrentlyPlayingTrack />
     </View>
