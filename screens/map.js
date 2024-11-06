@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps"; // Importing the MapView and Marker components from react-native-maps
 import * as Location from "expo-location"; // Importing expo-location to get the user's location
@@ -7,10 +7,13 @@ import { CurrentlyPlayingTrack } from "../components/CurrentTrack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MusicTimer } from "../components/MusicTimer";
 import { CircleButton } from "../components/UI/buttons";
+import UserIcon from "../assets/svg/user.svg";
 
 export function Map({ navigation }) {
   const [location, setLocation] = useState(null); // State to store the user's location
   const [errorMsg, setErrorMsg] = useState(null); // State to store any potential error message
+  const [initialRegion, setInitialRegion] = useState(null); // State to store the initial region for the map
+  const mapRef = useRef(null); // Ref for the MapView to persist without re-rendering
 
   // This useEffect hook is used to request location permissions and fetch the user's location
   useEffect(() => {
@@ -22,11 +25,29 @@ export function Map({ navigation }) {
         return;
       }
 
-      // Get the user's current location
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location.coords); // Store the coordinates in state
+      // Watch for location changes
+      const locationSubscription = await Location.watchPositionAsync(
+        { accuracy: Location.Accuracy.High, distanceInterval: 10 }, // Specify accuracy and interval
+        (location) => {
+          setLocation(location.coords); // Update state with new location
+          if (!initialRegion) {
+            // Set the initial region only once when the first location is received
+            setInitialRegion({
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            });
+          }
+        }
+      );
+
+      // Cleanup the location subscription when the component unmounts
+      return () => {
+        locationSubscription.remove(); // Stop watching for location when component unmounts
+      };
     })();
-  }, []);
+  }, []); // Empty dependency array to run only once
 
   // If there's an error, display it, otherwise display the location
   let text = "Waiting..";
@@ -36,42 +57,44 @@ export function Map({ navigation }) {
     text = JSON.stringify(location, null, 2); // Display location coordinates
   }
 
-  // Handle navigation to the specified page
-  const handlePage = (page) => {
-    navigation.navigate(page); // Navigate to the page passed in as a prop
-  };
-
   return (
     <View style={styles.container}>
       {/* CircleButton component */}
-      <CircleButton
-        text="Profile"
-        page="ProfileStorage"
-        navigation={navigation}
-      />
       {/* MusicTimer and CurrentlyPlayingTrack components */}
       {/* <MusicTimer /> */}
 
       {/* Render the MapView if location is available */}
-      {location && (
+      {initialRegion && ( // Render map only when initial region is set
         <MapView
           style={styles.map} // Apply styling to the map
-          region={{
-            latitude: location.latitude, // Set map's latitude based on user's location
-            longitude: location.longitude, // Set map's longitude based on user's location
-            latitudeDelta: 0.0922, // Define zoom level for latitude
-            longitudeDelta: 0.0421, // Define zoom level for longitude
-          }}
+          ref={mapRef} // Assign the map ref
+          initialRegion={initialRegion} // Set the initial region to the first polled location
         >
           {/* Place a Marker at the user's location */}
-          <Marker
-            coordinate={{
-              latitude: location.latitude,
-              longitude: location.longitude,
-            }}
-          />
+          {location && (
+            <Marker
+              coordinate={{
+                latitude: location.latitude,
+                longitude: location.longitude,
+              }}
+            >
+              <View
+                style={{
+                  width: 20, // Size of the blue dot
+                  height: 20, // Size of the blue dot
+                  borderRadius: 10, // Circular shape
+                  backgroundColor: "#8BA2C8", // Blue color for the dot
+                }}
+              />
+            </Marker>
+          )}
         </MapView>
       )}
+      <CircleButton
+        SVGIcon={UserIcon}
+        page="ProfileStorage"
+        navigation={navigation}
+      />
       <CurrentlyPlayingTrack />
     </View>
   );
