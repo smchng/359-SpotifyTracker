@@ -1,25 +1,27 @@
 import { useEffect, useState } from "react"; // Import useState and useEffect
-import { collection, getDocs } from "firebase/firestore";
+import { getDocs, collection, getDoc, doc } from "firebase/firestore";
 import { db } from "../data/firebaseConfig";
 import { useUser } from "./UserAuth";
 import { StyleSheet, View, Text } from "react-native";
 
-// Fetch entries from Firestore based on the userId
 const fetchEntriesFromFirestore = async (userId) => {
   try {
-    // Get all documents in the "Entries" collection
-    const entriesSnapshot = await getDocs(
-      collection(db, "users", userId, "Entries")
-    );
+    // Reference to the "Entries" collection under the user's document
+    const entriesCollectionRef = collection(db, "users", userId, "Entries");
 
-    // Map through the documents and return only the document IDs (titles)
-    const entries = entriesSnapshot.docs.map((doc) => {
-      id: doc.id;
-    });
-    console.log("Entries:", entries);
-    return entries;
+    // Get all the documents in the "Entries" collection
+    const entriesSnapshot = await getDocs(entriesCollectionRef);
+
+    // Map through the documents and return only the document IDs
+    const entryIds = entriesSnapshot.docs.map((doc) => doc.id);
+
+    console.log("Entry IDs under 'Entries':", entryIds);
+    return entryIds; // Return the document IDs (like "06-11-2024")
   } catch (error) {
-    console.error("Error fetching entries from Firestore:", error);
+    console.error(
+      "Error fetching entries collection IDs from Firestore:",
+      error
+    );
     return []; // Return an empty array in case of error
   }
 };
@@ -45,8 +47,8 @@ export default function EntriesList() {
     <View style={styles.container}>
       {entries && entries.length > 0 ? (
         entries.map((entry) => (
-          <View key={entry.id} style={styles.entry}>
-            <Text style={styles.entryTitle}>{`Entry ID: ${entry.id}`}</Text>
+          <View key={entry} style={styles.entry}>
+            <Text style={styles.entryTitle}>{entry}</Text>
             {/* Check the fields that are part of your entry */}
           </View>
         ))
