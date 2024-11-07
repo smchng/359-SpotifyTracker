@@ -1,20 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { db } from "../data/firebaseConfig.js"; // Update with your Firebase config path
-import {
-  doc,
-  setDoc,
-  addDoc,
-  collection,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore"; // Firebase Firestore functions
+import { doc, setDoc, collection } from "firebase/firestore"; // Firebase Firestore functions
 import { showTrack } from "./CurrentTrack.js";
 
 const MusicTimer = ({ userId }) => {
-  const [isTimerActive, setIsTimerActive] = useState(false); // State to track if timer is active
-  const [timeLeft, setTimeLeft] = useState(30 * 60); // 30 minutes countdown
+  const [isTimerActive, setIsTimerActive] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(30 * 60); // 30-minute countdown
+  const [lastTrackId, setLastTrackId] = useState(null);
+  const [formattedDate, setFormattedDate] = useState("");
+  const [formattedTime, setFormattedTime] = useState("");
+  let pollingInterval;
+
+  useEffect(() => {
+    if (isTimerActive) {
+      // Start polling for new tracks when the timer starts
+      pollingInterval = setInterval(async () => {
+        const currentTrack = await showTrack();
+        if (currentTrack && currentTrack.id !== lastTrackId) {
+          setLastTrackId(currentTrack.id);
+          console.log("New track detected:", currentTrack);
+
+          // Store the new track in Firestore
+          await storeTrack(userId, formattedDate, formattedTime, currentTrack);
+        }
+      }, 5000); // Poll every 5 seconds
+
+      // Clear polling interval when time reaches zero or component unmounts
+      return () => clearInterval(pollingInterval);
+    }
+  }, [isTimerActive, lastTrackId, formattedDate, formattedTime]);
 
   useEffect(() => {
     let timer;
@@ -24,33 +39,25 @@ const MusicTimer = ({ userId }) => {
         setTimeLeft((prevTime) => prevTime - 1); // Decrement time left
       }, 1000);
     } else if (timeLeft === 0) {
-      // Timer finished
       setIsTimerActive(false);
       clearInterval(timer);
-      // Handle collection creation here if needed
+      clearInterval(pollingInterval); // Stop polling when the timer ends
+      console.log("Timer finished. Stopping track storage.");
     }
 
-    return () => clearInterval(timer); // Clear interval on component unmount
+    return () => clearInterval(timer); // Clear timer on component unmount
   }, [isTimerActive, timeLeft]);
 
-  const handlePress = async () => {
+  const handlePress = () => {
     console.log("Pressed");
     if (!isTimerActive) {
       console.log("Timer active");
       setIsTimerActive(true); // Start the timer
 
-      // Get current date and time
+      // Set the date and time when the timer is started
       const now = new Date();
-      const formattedDate = now.toLocaleDateString("en-GB").replace(/\//g, "-"); // Format as dd-mm-yyyy
-      const formattedTime = now
-        .toLocaleTimeString("en-GB", { hour12: false })
-        .replace(/:/g, ":"); // Format time as HH-mm-ss
-      console.log("User ID:", userId);
-
-      console.log(formattedDate, formattedTime);
-      // Reference to the Entries collection under the user's ID
-
-      await storeTrack(userId, formattedDate, formattedTime);
+      setFormattedDate(now.toLocaleDateString("en-GB").replace(/\//g, "-"));
+      setFormattedTime(now.toLocaleTimeString("en-GB", { hour12: false }));
     }
   };
 
@@ -69,39 +76,30 @@ const MusicTimer = ({ userId }) => {
   );
 };
 
-const storeTrack = async (userId, formattedDate, formattedTime) => {
+const storeTrack = async (userId, formattedDate, formattedTime, track) => {
   try {
-    const currentTrack = await showTrack(); // Directly call showTrack to get the current track
-
-    if (!currentTrack) {
-      console.log("No track found");
-      return;
-    }
-
-    // Firestore references
     const entriesDocRef = doc(db, "users", userId);
-    console.log("Entries Doc Ref Created");
     const entriesCollectionRef = collection(entriesDocRef, "Entries");
     const entriesDateDocRef = doc(entriesCollectionRef, formattedDate);
     const entriesTimeRef = collection(entriesDateDocRef, "Time");
     const entriesTimeDocRef = doc(entriesTimeRef, formattedTime);
     const entriesPlaylistRef = collection(entriesTimeDocRef, "Playlist");
-    const entriesPlaylistDocRef = doc(entriesPlaylistRef, currentTrack.title);
+    const entriesPlaylistDocRef = doc(entriesPlaylistRef, track.title);
 
-    // Step 1: Create the outermost document (Playlist document)
+    // Create the document for the new track
     await setDoc(entriesPlaylistDocRef, {
       createdAt: new Date(),
-      artist: currentTrack.artist,
-      title: currentTrack.title,
+      artist: track.artist,
+      title: track.title,
     });
 
-    console.log("Playlist document created");
+    console.log("New track stored successfully");
   } catch (error) {
-    console.error("Error creating document:", error);
+    console.error("Error storing new track:", error);
   }
 };
 
-// Styling for the container and map
+// Styling for the timer container
 const styles = StyleSheet.create({
   timer: {
     fontWeight: "bold",
@@ -111,19 +109,17 @@ const styles = StyleSheet.create({
     left: 85,
     justifyContent: "center",
     flex: 1,
-    width: "70%", // Ensure the container takes up full width
-    position: "absolute", // Position the track display absolutely
-    alignItems: "center", // Horizontally center the timer
-    justifyContent: "center", // Vertically center the timer
-    zIndex: 1,
+    width: "70%",
+    position: "absolute",
+    alignItems: "center",
     backgroundColor: "#EBEFF2",
     padding: 15,
     borderRadius: 20,
-    shadowColor: "#000", // Color of the shadow
-    shadowOffset: { width: 5, height: 2 }, // Offset shadow to the right by 5px (horizontal)
-    shadowOpacity: 0.25, // Shadow opacity (simulating rgba(0, 0, 0, 0.25))
-    shadowRadius: 7, // Shadow blur radius (simulating 7px)
-    elevation: 2, // For Android shadow effect
+    shadowColor: "#000",
+    shadowOffset: { width: 5, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 7,
+    elevation: 2,
   },
 });
 
