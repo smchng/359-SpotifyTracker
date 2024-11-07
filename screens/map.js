@@ -96,6 +96,7 @@ export function Map({ navigation }) {
 
         <MusicTimer userId={userId} />
       </View>
+
       <CurrentlyPlayingTrack />
     </View>
   );

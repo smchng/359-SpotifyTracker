@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { db } from "../data/firebaseConfig.js"; // Update with your Firebase config path
 import { doc, setDoc, collection } from "firebase/firestore"; // Firebase Firestore functions
 import { showTrack } from "./CurrentTrack.js";
+import { StorePin } from "./DropPins.js";
 
 const MusicTimer = ({ userId }) => {
   const [isTimerActive, setIsTimerActive] = useState(false);
@@ -10,6 +11,7 @@ const MusicTimer = ({ userId }) => {
   const [lastTrackId, setLastTrackId] = useState(null);
   const [formattedDate, setFormattedDate] = useState("");
   const [formattedTime, setFormattedTime] = useState("");
+
   let pollingInterval;
 
   useEffect(() => {
@@ -23,6 +25,7 @@ const MusicTimer = ({ userId }) => {
 
           // Store the new track in Firestore
           await storeTrack(userId, formattedDate, formattedTime, currentTrack);
+          await StorePin(userId, formattedDate, formattedTime);
         }
       }, 5000); // Poll every 5 seconds
 
