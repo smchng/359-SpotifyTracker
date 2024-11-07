@@ -34,7 +34,6 @@ export const exchangeAuthorizationCode = async (authorizationCode) => {
       if (data.refresh_token) {
         setAccessToken(data.refresh_token); // Store refresh token if available
       }
-      console.log("Access Token:", data.access_token);
       return data.access_token; // Return the access token
     } else {
       console.error("Failed to get access token", data);
