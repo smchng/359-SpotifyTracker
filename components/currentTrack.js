@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const showTrack = async () => {
+export const showTrack = async () => {
   const storedTrack = await AsyncStorage.getItem("currentTrack");
   if (storedTrack) {
     return JSON.parse(storedTrack); // Return the parsed track info

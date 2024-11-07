@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { db } from "../data/firebaseConfig.js"; // Update with your Firebase config path
-import { addDoc, collection, query, where, getDocs } from "firebase/firestore"; // Firebase Firestore functions
+import {
+  doc,
+  setDoc,
+  addDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore"; // Firebase Firestore functions
+import { showTrack } from "./CurrentTrack.js";
 
 const MusicTimer = ({ userId }) => {
   const [isTimerActive, setIsTimerActive] = useState(false); // State to track if timer is active
@@ -40,29 +49,8 @@ const MusicTimer = ({ userId }) => {
 
       console.log(formattedDate, formattedTime);
       // Reference to the Entries collection under the user's ID
-      const entriesDocRef = doc(db, "users", userId);
-      console.log("Entries Doc Ref Created");
-      const entriesCollectionRef = collection(entriesDocRef, "Entries");
-      const entriesDateDocRef = doc(entriesCollectionRef, formattedDate);
-      const entriesTimeRef = collection(entriesDateDocRef, "Time");
-      const entriesTimeDocRef = doc(entriesTimeRef, formattedTime);
-      const entriesPlaylistRef = collection(entriesTimeDocRef, "Playlist");
-      const entriesPlaylistDocRef = doc(entriesPlaylistRef, formattedTime);
 
-      try {
-        // Step 1: Create the outermost document (Playlist document)
-        await setDoc(entriesPlaylistDocRef, {
-          createdAt: now,
-        });
-
-        console.log("Playlist document created");
-
-        // Step 2: Create intermediate subcollections (optional) if needed
-        // Firestore will automatically create subcollections when you add documents in them
-        console.log("Document and subcollection created successfully");
-      } catch (error) {
-        console.error("Error creating document:", error);
-      }
+      await storeTrack(userId, formattedDate, formattedTime);
     }
   };
 
@@ -79,6 +67,38 @@ const MusicTimer = ({ userId }) => {
       </TouchableOpacity>
     </View>
   );
+};
+
+const storeTrack = async (userId, formattedDate, formattedTime) => {
+  try {
+    const currentTrack = await showTrack(); // Directly call showTrack to get the current track
+
+    if (!currentTrack) {
+      console.log("No track found");
+      return;
+    }
+
+    // Firestore references
+    const entriesDocRef = doc(db, "users", userId);
+    console.log("Entries Doc Ref Created");
+    const entriesCollectionRef = collection(entriesDocRef, "Entries");
+    const entriesDateDocRef = doc(entriesCollectionRef, formattedDate);
+    const entriesTimeRef = collection(entriesDateDocRef, "Time");
+    const entriesTimeDocRef = doc(entriesTimeRef, formattedTime);
+    const entriesPlaylistRef = collection(entriesTimeDocRef, "Playlist");
+    const entriesPlaylistDocRef = doc(entriesPlaylistRef, currentTrack.title);
+
+    // Step 1: Create the outermost document (Playlist document)
+    await setDoc(entriesPlaylistDocRef, {
+      createdAt: new Date(),
+      artist: currentTrack.artist,
+      title: currentTrack.title,
+    });
+
+    console.log("Playlist document created");
+  } catch (error) {
+    console.error("Error creating document:", error);
+  }
 };
 
 // Styling for the container and map
