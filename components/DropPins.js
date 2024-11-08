@@ -72,7 +72,7 @@ export const StorePin = async (userId, formattedDate, formattedTime) => {
 };
 
 // Function to render the map and pin
-export const Pin = ({ location, trackLocations }) => {
+export const RenderPin = ({ location, trackLocations }) => {
   if (!location) {
     return <Text>Loading location pin</Text>; // Display loading message if location is not yet available
   }
