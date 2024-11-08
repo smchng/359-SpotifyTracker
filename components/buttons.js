@@ -40,6 +40,7 @@ export const CircleButton = ({ text, page, navigation }) => {
 
 const styles = StyleSheet.create({
   button: {
+    //alignItems: 'center',
     width: 300,
     marginVertical: 15,
     borderRadius: 13,

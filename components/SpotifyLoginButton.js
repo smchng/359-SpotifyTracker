@@ -53,7 +53,7 @@ const SpotifyLoginButton = ({ onLogin }) => {
     text="Login with Spotify" 
     onPress={handleLogin}
     style={styles.button}
-    textColor="#0000FF"
+    textColor="#FFFFFF"
   />;
 };
 
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     borderRadius: 13,
     paddingVertical: 20,
-    backgroundColor: '#FF0000',
+    backgroundColor: '#529068',
      
     //shadow
      shadowColor: '#000000',
