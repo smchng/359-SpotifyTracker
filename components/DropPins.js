@@ -183,5 +183,6 @@ const styles = StyleSheet.create({
     height: 10,
     backgroundColor: "red", // Color of the dot
     borderRadius: 5, // Half of the width/height to make it a circle
+    zIndex: 15,
   },
 });

@@ -9,6 +9,7 @@ import MusicTimer from "../components/MusicTimer";
 import { CircleButton } from "../components/UI/buttons";
 import UserIcon from "../assets/svg/user.svg";
 import { RenderPin } from "../components/DropPins";
+import { EntryListWithPins } from "../components/PinFilter";
 
 export function Map({ navigation }) {
   const { userId } = useUser();
@@ -61,13 +62,17 @@ export function Map({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.topNav}>
-        <CircleButton
-          SVGIcon={UserIcon}
-          page="ProfileStorage"
-          navigation={navigation}
-        />
-        <MusicTimer userId={userId} />
+      <View>
+        <View style={styles.topNav}>
+          <CircleButton
+            SVGIcon={UserIcon}
+            page="ProfileStorage"
+            navigation={navigation}
+          />
+          <MusicTimer userId={userId} />
+        </View>
+
+        <EntryListWithPins userId={userId} />
       </View>
       {/* Render the MapView if location is available */}
       {initialRegion && ( // Render map only when initial region is set
