@@ -12,6 +12,7 @@ import SignUp from "./screens/signUp";
 import SpotifyLogin from "./screens/spotifyLogin";
 import { Map } from "./screens/map";
 import { ProfileStorage } from "./screens/profileStorage";
+import PlaylistProfile from "./screens/playlistProfile";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -25,6 +26,7 @@ export default function App() {
           <Stack.Screen name="SpotifyLogin" component={SpotifyLogin} />
           <Stack.Screen name="Map" component={Map} />
           <Stack.Screen name="ProfileStorage" component={ProfileStorage} />
+          <Stack.Screen name="PlaylistProfile" component={PlaylistProfile} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

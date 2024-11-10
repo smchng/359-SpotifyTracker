@@ -55,7 +55,7 @@ const parseDateFromId = (id) => {
   return new Date(`${month}-${day}-${year}`); // Create a Date object
 };
 
-export default function EntriesList() {
+export default function EntriesList({ navigation }) {
   const [entries, setEntries] = useState([]); // Initialize state for entries
   const { userId } = useUser(); // Get the userId from the context
   const [expandedEntry, setExpandedEntry] = useState(null); // Track which entry is expanded
@@ -91,6 +91,14 @@ export default function EntriesList() {
     }
   };
 
+  const handlePage = (timeId, entryId) => {
+    navigation.navigate("PlaylistProfile", {
+      timeId: timeId,
+      entryId: entryId,
+      userId: userId,
+    }); // Navigate to the page passed in as a prop
+  };
+
   return (
     <View style={styles.container}>
       {entries && entries.length > 0 ? (
@@ -104,13 +112,17 @@ export default function EntriesList() {
             {expandedEntry === entry && timeDocs.length > 0 && (
               <View style={styles.timeDocsContainer}>
                 {timeDocs.map((timeDoc) => (
-                  <View key={timeDoc.id} style={styles.timeDoc}>
+                  <TouchableOpacity
+                    key={timeDoc.id}
+                    style={styles.timeDoc}
+                    onPress={() => handlePage(timeDoc.id, entry)} // Wrap the function in an arrow function
+                  >
                     <Text style={styles.timeDocTitle}>{timeDoc.id}</Text>
                     {/* You can render more details from the timeDoc here */}
                     <Text style={styles.timeDocDescription}>
                       {JSON.stringify(timeDoc)}
                     </Text>
-                  </View>
+                  </TouchableOpacity>
                 ))}
               </View>
             )}
