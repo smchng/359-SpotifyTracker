@@ -161,34 +161,19 @@ export const RenderPin = ({ userId }) => {
   }, [userId]); // Dependency on userId
 
   return (
-    <View style={{ flex: 1 }}>
-      <MapView
-        style={{ flex: 1 }}
-        region={
-          pins.length > 0
-            ? {
-                latitude: pins[0].latitude, // Center on the first pin or calculated average
-                longitude: pins[0].longitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }
-            : undefined // No default, so it will display a broad map
-        }
-        showsUserLocation={true}
-      >
-        {pins.map((pin) => (
-          <Marker
-            key={pin.id}
-            coordinate={{
-              latitude: pin.latitude,
-              longitude: pin.longitude,
-            }}
-          >
-            <View style={styles.circle} />
-          </Marker>
-        ))}
-      </MapView>
-    </View>
+    <>
+      {pins.map((pin) => (
+        <Marker
+          key={pin.id}
+          coordinate={{
+            latitude: pin.latitude,
+            longitude: pin.longitude,
+          }}
+        >
+          <View style={styles.circle} />
+        </Marker>
+      ))}
+    </>
   );
 };
 

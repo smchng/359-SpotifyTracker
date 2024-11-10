@@ -61,33 +61,6 @@ export function Map({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* Render the MapView if location is available */}
-      {initialRegion && ( // Render map only when initial region is set
-        <MapView
-          style={styles.map} // Apply styling to the map
-          ref={mapRef} // Assign the map ref
-          initialRegion={initialRegion} // Set the initial region to the first polled location
-        >
-          {/* Place a Marker at the user's location */}
-          {location && (
-            <Marker
-              coordinate={{
-                latitude: location.latitude,
-                longitude: location.longitude,
-              }}
-            >
-              <View
-                style={{
-                  width: 20, // Size of the blue dot
-                  height: 20, // Size of the blue dot
-                  borderRadius: 10, // Circular shape
-                  backgroundColor: "#8BA2C8", // Blue color for the dot
-                }}
-              />
-            </Marker>
-          )}
-        </MapView>
-      )}
       <View style={styles.topNav}>
         <CircleButton
           SVGIcon={UserIcon}
@@ -96,7 +69,19 @@ export function Map({ navigation }) {
         />
         <MusicTimer userId={userId} />
       </View>
-      <RenderPin userId={userId} />
+      {/* Render the MapView if location is available */}
+      {initialRegion && ( // Render map only when initial region is set
+        <MapView
+          style={{ flex: 1 }}
+          ref={mapRef} // Assign the map ref
+          initialRegion={initialRegion}
+          showsUserLocation={true}
+        >
+          {/* Place a Marker at the user's location */}
+
+          <RenderPin userId={userId} />
+        </MapView>
+      )}
       <CurrentlyPlayingTrack />
     </View>
   );
