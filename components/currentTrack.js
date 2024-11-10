@@ -104,6 +104,10 @@ const styles = StyleSheet.create({
     width: "100%", // Set the width of the album cover to fill the container
     height: "100%", // Set the height of the album cover to fill the container
   },
+  trackDetails: {
+    flex: 1, // Ensures it takes available space and wraps text properly
+    paddingLeft: 10, // Optional for spacing
+  },
 });
 
 export const showTrack = async () => {
