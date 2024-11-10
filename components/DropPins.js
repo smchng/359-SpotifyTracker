@@ -175,31 +175,30 @@ export const RenderPin = ({ userId, entryId }) => {
           }}
           onPress={() => handlePinPress(pin)} // Handle pin press
         >
+          {/* Modal to display pin details */}
+          {selectedPin && (
+            <Modal
+              visible={!!selectedPin} // Ensure modal visibility based on selectedPin
+              transparent={true}
+              onRequestClose={() => setSelectedPin(null)} // Close modal on back press
+            >
+              <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                  <Text style={styles.modalTitle}>Pin Details</Text>
+
+                  <Text
+                    style={styles.closeButton}
+                    onPress={() => setSelectedPin(null)} // Close the modal
+                  >
+                    close
+                  </Text>
+                </View>
+              </View>
+            </Modal>
+          )}
           <View style={styles.circle} />
         </Marker>
       ))}
-
-      {/* Modal to display pin details */}
-      {selectedPin && (
-        <Modal
-          visible={!!selectedPin} // Ensure modal visibility based on selectedPin
-          transparent={true}
-          onRequestClose={() => setSelectedPin(null)} // Close modal on back press
-        >
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>Pin Details</Text>
-
-              <Text
-                style={styles.closeButton}
-                onPress={() => setSelectedPin(null)} // Close the modal
-              >
-                X
-              </Text>
-            </View>
-          </View>
-        </Modal>
-      )}
     </View>
   );
 };
@@ -215,9 +214,8 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-end",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
   },
   modalContent: {
     width: 300,
@@ -226,8 +224,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   modalTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: 12,
+
     marginBottom: 10,
   },
   closeButton: {
