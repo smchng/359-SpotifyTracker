@@ -126,7 +126,7 @@ export const EntryListWithPins = ({ userId }) => {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isExpanded && styles.expandedContainer]}>
       {/* Button to expand/collapse */}
       <TouchableOpacity onPress={toggleExpand} style={styles.button}>
         <Text style={styles.buttonText}>
