@@ -8,6 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import MusicTimer from "../components/MusicTimer";
 import { CircleButton } from "../components/UI/buttons";
 import UserIcon from "../assets/svg/user.svg";
+import { RenderPin } from "../components/DropPins";
 
 export function Map({ navigation }) {
   const { userId } = useUser();
@@ -96,7 +97,7 @@ export function Map({ navigation }) {
 
         <MusicTimer userId={userId} />
       </View>
-
+      <RenderPin userId={userId} />
       <CurrentlyPlayingTrack />
     </View>
   );
