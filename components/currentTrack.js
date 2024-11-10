@@ -115,22 +115,38 @@ const fetchCurrentlyPlayingTrack = async (accessToken) => {
 
 const startPollingForTrackChanges = (accessToken, setTrack) => {
   let lastTrackId = null;
+  let trackStartTime = null; // Variable to store when the current track started playing
 
   const intervalId = setInterval(async () => {
     const track = await fetchCurrentlyPlayingTrack(accessToken);
 
-    // Check if track is not null and has an ID
+    // Check if a new track is detected
     if (track && track.id !== lastTrackId) {
       console.log("New song detected:", track);
       lastTrackId = track.id;
 
-      // Update AsyncStorage
-      await AsyncStorage.setItem("currentTrack", JSON.stringify(track));
+      // Record the start time of the new track
+      trackStartTime = new Date();
 
       // Set the new track state to trigger a re-render
       setTrack(track);
+    } else if (track && track.id === lastTrackId && trackStartTime) {
+      // Calculate how long the current track has been playing
+      const currentTime = new Date();
+      const elapsedTime = (currentTime - trackStartTime) / 1000; // Convert milliseconds to seconds
+
+      // Only store the track if it has been playing for more than 10 seconds
+      if (elapsedTime > 10) {
+        console.log("Track played for over 10 seconds:", track);
+
+        // Update AsyncStorage
+        await AsyncStorage.setItem("currentTrack", JSON.stringify(track));
+
+        // Reset `trackStartTime` to avoid repeated storage of the same track
+        trackStartTime = null;
+      }
     }
-  }, 5000); // Poll every 10 seconds (adjust as needed)
+  }, 5000); // Poll every 5 seconds (adjust as needed)
 
   return intervalId; // Return the interval ID for cleanup
 };
