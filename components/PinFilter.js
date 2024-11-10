@@ -8,80 +8,54 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// Function to fetch Pins for a specific Time document
-const fetchPinsForTime = async (userId, entryId, timeId) => {
+// Combined function to fetch all entries for a user and check for Pins within Time documents
+export const fetchEntriesWithPinsForUser = async (userId) => {
   try {
-    // Reference to the "Pins" collection inside the "Time" document
-    const pinsCollectionRef = collection(
-      db,
-      "users",
-      userId,
-      "Entries",
-      entryId,
-      "Time",
-      timeId,
-      "Pins"
-    );
-    const pinsSnapshot = await getDocs(pinsCollectionRef);
-
-    if (!pinsSnapshot.empty) {
-      // Return true if there are Pins
-      return true;
-    }
-    return false; // Return false if no Pins exist
-  } catch (error) {
-    console.error("Error fetching pins for time:", error);
-    return false;
-  }
-};
-
-// Function to check if any Time documents within an Entry have Pins
-const fetchEntriesWithPins = async (userId, entryId) => {
-  try {
-    // Reference to the "Time" collection within the given entry
-    const timeCollectionRef = collection(
-      db,
-      "users",
-      userId,
-      "Entries",
-      entryId,
-      "Time"
-    );
-    const timeSnapshot = await getDocs(timeCollectionRef);
-
-    for (const timeDoc of timeSnapshot.docs) {
-      const timeId = timeDoc.id;
-      const hasPins = await fetchPinsForTime(userId, entryId, timeId);
-
-      // If any Time document has Pins, return the Entry ID
-      if (hasPins) {
-        return entryId; // Found Pins, return the Entry ID
-      }
-    }
-    return null; // No Pins found in any Time document
-  } catch (error) {
-    console.error("Error fetching Time documents for entry:", error);
-    return null;
-  }
-};
-
-// Function to fetch all entries for a user, and return only those with Pins
-const fetchEntriesWithPinsForUser = async (userId) => {
-  try {
-    // Reference to the "Entries" collection
+    // Reference to the "Entries" collection for the given user
     const entriesCollectionRef = collection(db, "users", userId, "Entries");
     const entriesSnapshot = await getDocs(entriesCollectionRef);
 
     const entriesWithPins = [];
 
+    // Loop through each entry document
     for (const entryDoc of entriesSnapshot.docs) {
       const entryId = entryDoc.id;
-      const entryWithPins = await fetchEntriesWithPins(userId, entryId);
 
-      // If there are Pins, add the Entry ID to the list
-      if (entryWithPins) {
-        entriesWithPins.push(entryWithPins);
+      // Reference to the "Time" collection within the current entry
+      const timeCollectionRef = collection(
+        db,
+        "users",
+        userId,
+        "Entries",
+        entryId,
+        "Time"
+      );
+      const timeSnapshot = await getDocs(timeCollectionRef);
+
+      // Check each Time document for Pins
+      for (const timeDoc of timeSnapshot.docs) {
+        const timeId = timeDoc.id;
+
+        // Reference to the "Pins" collection within the current Time document
+        const pinsCollectionRef = collection(
+          db,
+          "users",
+          userId,
+          "Entries",
+          entryId,
+          "Time",
+          timeId,
+          "Pins"
+        );
+        const pinsSnapshot = await getDocs(pinsCollectionRef);
+
+        if (!pinsSnapshot.empty) {
+          // If any Time document has Pins, add the Entry ID to the result
+          entriesWithPins.push(entryId);
+          break; // No need to check further Time documents within this entry
+        }
       }
     }
 
@@ -92,9 +66,9 @@ const fetchEntriesWithPinsForUser = async (userId) => {
   }
 };
 
-export const EntryListWithPins = ({ userId }) => {
+export const EntryListWithPins = ({ userId, setSelectedEntry }) => {
   const [entriesWithPins, setEntriesWithPins] = useState([]);
-  const [selectedEntry, setSelectedEntry] = useState(null);
+  const [selectedEntry, setSelectedEntryState] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false); // State for toggling visibility
 
   useEffect(() => {
@@ -104,16 +78,26 @@ export const EntryListWithPins = ({ userId }) => {
     };
 
     loadEntriesWithPins();
-  }, [userId]);
+  }, [userId, isExpanded]);
 
   // Toggle the visibility of the list
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
   };
 
-  const handleEntryPress = (entryId) => {
-    setSelectedEntry(entryId); // Update selected entry
-    setIsExpanded(false); // Collapse the list when an entry is selected
+  const handleEntryPress = async (entryId) => {
+    setSelectedEntryState(entryId); // Update the local selected entry state
+    setSelectedEntry(entryId); // Pass the new selected entry to the parent component
+
+    setIsExpanded(false);
+
+    try {
+      // Store the selected entry in AsyncStorage
+      await AsyncStorage.setItem("PinEntry", entryId);
+      console.log("Entry stored successfully:", entryId);
+    } catch (error) {
+      console.error("Error storing entry in AsyncStorage:", error);
+    }
   };
 
   const renderItem = ({ item }) => (
