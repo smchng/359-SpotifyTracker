@@ -7,7 +7,7 @@ import { Buttons } from "../components/UI/buttons";
 import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../data/firebaseConfig"; // Adjust the path to your firebaseConfig file
 
-const fetchUserProfileFromFirestore = async (userId) => {
+export const fetchSpotifyProfileFromFirestore = async (userId) => {
   try {
     const userDocRef = doc(db, "users", userId); // Reference to the user document
     const userDocSnap = await getDoc(userDocRef);
@@ -35,7 +35,6 @@ const fetchUserProfileFromFirestore = async (userId) => {
   }
 };
 
-// Login with existing account
 export default function SpotifyLogin({ navigation }) {
   const { userId } = useUser();
   const [userProfile, setUserProfile] = useState(null);
@@ -46,7 +45,7 @@ export default function SpotifyLogin({ navigation }) {
     await AsyncStorage.setItem("accessToken", profile.accessToken);
 
     // Fetch user profile from Firestore after login
-    const fetchedProfile = await fetchUserProfileFromFirestore(userId);
+    const fetchedProfile = await fetchSpotifyProfileFromFirestore(userId);
     if (fetchedProfile) {
       setUserProfile(fetchedProfile); // Update state with Firestore profile
     } else {

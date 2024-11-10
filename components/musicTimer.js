@@ -89,6 +89,10 @@ const storeTrack = async (userId, formattedDate, formattedTime, track) => {
     const entriesPlaylistRef = collection(entriesTimeDocRef, "Playlist");
     const entriesPlaylistDocRef = doc(entriesPlaylistRef, track.title);
 
+    await setDoc(entriesDateDocRef, {
+      placeholder: formattedDate,
+    });
+
     // Create the document for the new track
     await setDoc(entriesPlaylistDocRef, {
       createdAt: new Date(),
