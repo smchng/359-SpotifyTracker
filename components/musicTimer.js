@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { db } from "../data/firebaseConfig.js"; // Update with your Firebase config path
 import { doc, setDoc, collection } from "firebase/firestore"; // Firebase Firestore functions
-import { showTrack } from "./CurrentTrack.js";
+import { showTrack, showTrackAF } from "./CurrentTrack.js";
 
 const MusicTimer = ({ userId }) => {
   const [isTimerActive, setIsTimerActive] = useState(false);
@@ -17,12 +17,19 @@ const MusicTimer = ({ userId }) => {
       // Start polling for new tracks when the timer starts
       pollingInterval = setInterval(async () => {
         const currentTrack = await showTrack();
+        const currectTrackAF = await showTrackAF();
         if (currentTrack && currentTrack.id !== lastTrackId) {
           setLastTrackId(currentTrack.id);
           console.log("New track detected:", currentTrack);
 
           // Store the new track in Firestore
-          await storeTrack(userId, formattedDate, formattedTime, currentTrack);
+          await storeTrack(
+            userId,
+            formattedDate,
+            formattedTime,
+            currentTrack,
+            currectTrackAF
+          );
         }
       }, 5000); // Poll every 5 seconds
 
@@ -76,7 +83,7 @@ const MusicTimer = ({ userId }) => {
   );
 };
 
-const storeTrack = async (userId, formattedDate, formattedTime, track) => {
+const storeTrack = async (userId, formattedDate, formattedTime, track, af) => {
   try {
     const entriesDocRef = doc(db, "users", userId);
     const entriesCollectionRef = collection(entriesDocRef, "Entries");
@@ -95,6 +102,14 @@ const storeTrack = async (userId, formattedDate, formattedTime, track) => {
       createdAt: new Date(),
       artist: track.artist,
       title: track.title,
+      danceability: af.danceability,
+      energy: af.energy,
+      loudness: af.loudness,
+      speechiness: af.speechiness,
+      acousticness: af.acousticness,
+      instrumentalness: af.instrumentalness,
+      liveness: af.liveness,
+      tempo: af.tempo,
     });
 
     console.log("New track stored successfully");

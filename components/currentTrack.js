@@ -63,6 +63,14 @@ export const showTrack = async () => {
   return null; // Return null if no track info found
 };
 
+export const showTrackAF = async () => {
+  const storedTrack = await AsyncStorage.getItem("trackAF");
+  if (storedTrack) {
+    return JSON.parse(storedTrack); // Return the parsed track info
+  }
+  return null; // Return null if no track info found
+};
+
 const fetchCurrentlyPlayingTrack = async (accessToken) => {
   if (accessToken) {
     try {
@@ -131,6 +139,23 @@ const startPollingForTrackChanges = (accessToken, setTrack) => {
       // Set the new track state to trigger a re-render
       setTrack(track);
     } else if (track && track.id === lastTrackId && trackStartTime) {
+      try {
+        // Fetch audio features for the track
+        const audioFeatures = await fetchAudioFeatures(track.id);
+        if (audioFeatures) {
+          // Store audio features in AsyncStorage
+          await AsyncStorage.setItem(`trackAF`, JSON.stringify(audioFeatures));
+
+          console.log("Audio features fetched and stored for track:", track.id);
+        } else {
+          console.log("No audio features available for this track.");
+        }
+
+        // If there's any additional logic after fetching the audio features, continue here
+        console.log("Audio features fetched for track:", track.id);
+      } catch (error) {
+        console.error("Error fetching audio features:", error);
+      }
       // Calculate how long the current track has been playing
       const currentTime = new Date();
       const elapsedTime = (currentTime - trackStartTime) / 1000; // Convert milliseconds to seconds
@@ -149,6 +174,37 @@ const startPollingForTrackChanges = (accessToken, setTrack) => {
   }, 5000); // Poll every 5 seconds (adjust as needed)
 
   return intervalId; // Return the interval ID for cleanup
+};
+
+const fetchAudioFeatures = async (songId) => {
+  const accessToken = getAccessToken(); // Retrieve the stored access token
+  try {
+    // Make a request to Spotify's Audio Features API endpoint
+    const response = await fetch(
+      `https://api.spotify.com/v1/audio-features/${songId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    // Check if the response is successful
+    if (!response.ok) {
+      throw new Error("Failed to fetch audio features");
+    }
+
+    // Parse the JSON response
+    const audioFeatures = await response.json();
+
+    // Log or return the audio features
+    console.log(audioFeatures);
+
+    return audioFeatures;
+  } catch (error) {
+    console.error("Error fetching audio features:", error);
+    return null; // Return null if there's an error
+  }
 };
 
 const styles = StyleSheet.create({
