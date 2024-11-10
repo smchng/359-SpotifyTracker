@@ -4,6 +4,7 @@ import { db } from "../data/firebaseConfig.js"; // Update with your Firebase con
 import { doc, setDoc, collection } from "firebase/firestore"; // Firebase Firestore functions
 import { StorePin } from "./DropPins.js";
 import { showTrack, showTrackAF } from "./CurrentTrack.js";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const MusicTimer = ({ userId }) => {
   const [isTimerActive, setIsTimerActive] = useState(false);
@@ -32,6 +33,16 @@ const MusicTimer = ({ userId }) => {
             currectTrackAF
           );
           await StorePin(userId, formattedDate, formattedTime);
+          AsyncStorage.setItem("PinEntry", formattedDate)
+            .then(() => {
+              console.log(
+                "Selected entry updated to current date:",
+                formattedDate
+              );
+            })
+            .catch((error) => {
+              console.error("Error updating selected entry:", error);
+            });
         }
       }, 5000); // Poll every 5 seconds
 
