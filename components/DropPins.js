@@ -4,6 +4,7 @@ import { Text, View, StyleSheet, Modal } from "react-native";
 import React, { useEffect, useState } from "react";
 import { db } from "../data/firebaseConfig.js"; // Update with your Firebase config path
 import { doc, setDoc, collection, getDocs } from "firebase/firestore"; // Firebase Firestore functions
+import { showTrack } from "./CurrentTrack.js";
 
 // Function to fetch location and update state
 export const fetchLocation = async () => {
@@ -46,6 +47,7 @@ export const StorePin = async (userId, formattedDate, formattedTime) => {
   // Get the current time in the desired format
   const now = new Date();
   const Time = now.toLocaleTimeString("en-GB", { hour12: false });
+  const currentTrack = await showTrack();
 
   console.log("Storing location:", latitude, longitude);
   try {
@@ -67,6 +69,8 @@ export const StorePin = async (userId, formattedDate, formattedTime) => {
       latitude: latitude,
       longitude: longitude,
       time: Time,
+      song: currentTrack.title,
+      artist: currentTrack.artist,
     });
 
     console.log("New track stored successfully");
@@ -185,6 +189,9 @@ export const RenderPin = ({ userId, entryId }) => {
               <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
                   <Text style={styles.modalTitle}>Pin Details</Text>
+                  <Text style={styles.modalTitle}>{selectedPin.time}</Text>
+                  <Text style={styles.modalItem}>{selectedPin.song}</Text>
+                  <Text style={styles.modalItem}>{selectedPin.artist}</Text>
 
                   <Text
                     style={styles.closeButton}
@@ -214,20 +221,21 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "center",
   },
   modalContent: {
-    width: 300,
+    width: 200,
     padding: 20,
     backgroundColor: "white",
     borderRadius: 10,
   },
   modalTitle: {
     fontSize: 12,
-
+    color: "grey",
     marginBottom: 10,
   },
+  modalItem: {},
   closeButton: {
     marginTop: 20,
     color: "blue",
