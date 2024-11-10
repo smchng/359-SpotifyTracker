@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
     backgroundColor: "#EBEFF2",
     padding: 15,
-    borderRadius: 20,
+    borderRadius: 10,
     shadowColor: "#000", // Color of the shadow
     shadowOffset: { width: 5, height: 2 }, // Offset shadow to the right by 5px (horizontal)
     shadowOpacity: 0.25, // Shadow opacity (simulating rgba(0, 0, 0, 0.25))
@@ -164,18 +164,17 @@ const styles = StyleSheet.create({
     elevation: 2, // For Android shadow effect
   },
   expandedContainer: {
-    paddingVertical: 20, // Increase padding when expanded
+    paddingVertical: 10, // Increase padding when expanded
     paddingHorizontal: 20,
   },
   buttonText: {
     textAlign: "right",
-    marginBottom: 5,
   },
   entryItem: {},
   entryId: {
     fontSize: 13,
     textAlign: "right",
-    paddingBottom: 10,
+    paddingTop: 10,
   },
 });
 
