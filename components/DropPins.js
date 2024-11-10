@@ -1,6 +1,6 @@
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Modal } from "react-native";
 import React, { useEffect, useState } from "react";
 import { db } from "../data/firebaseConfig.js"; // Update with your Firebase config path
 import { doc, setDoc, collection, getDocs } from "firebase/firestore"; // Firebase Firestore functions
@@ -144,9 +144,9 @@ const fetchPinsFromFirestore = async (userId) => {
   }
 };
 
-// Function to render the map and pins
 export const RenderPin = ({ userId }) => {
   const [pins, setPins] = useState([]); // State to store pins data
+  const [selectedPin, setSelectedPin] = useState(null); // State for the selected pin
 
   // Fetch the pins when userId changes
   useEffect(() => {
@@ -160,8 +160,13 @@ export const RenderPin = ({ userId }) => {
     loadPins(); // Call the function to load pins
   }, [userId]); // Dependency on userId
 
+  // Handle marker press
+  const handlePinPress = (pin) => {
+    setSelectedPin(pin); // Set the selected pin
+  };
+
   return (
-    <>
+    <View style={{ flex: 1 }}>
       {pins.map((pin) => (
         <Marker
           key={pin.id}
@@ -169,19 +174,64 @@ export const RenderPin = ({ userId }) => {
             latitude: pin.latitude,
             longitude: pin.longitude,
           }}
+          onPress={() => handlePinPress(pin)} // Handle pin press
         >
           <View style={styles.circle} />
         </Marker>
       ))}
-    </>
+
+      {/* Modal to display pin details */}
+      {selectedPin && (
+        <Modal
+          visible={!!selectedPin} // Ensure modal visibility based on selectedPin
+          transparent={true}
+          onRequestClose={() => setSelectedPin(null)} // Close modal on back press
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Pin Details</Text>
+
+              <Text
+                style={styles.closeButton}
+                onPress={() => setSelectedPin(null)} // Close the modal
+              >
+                X
+              </Text>
+            </View>
+          </View>
+        </Modal>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   circle: {
-    width: 10, // Adjust the diameter for the dot size
+    width: 10,
     height: 10,
-    backgroundColor: "red", // Color of the dot
-    borderRadius: 5, // Half of the width/height to make it a circle
+    borderRadius: 10,
+    backgroundColor: "red", // Customize the pin appearance
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
+  },
+  modalContent: {
+    width: 300,
+    padding: 20,
+    backgroundColor: "white",
+    borderRadius: 10,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  closeButton: {
+    marginTop: 20,
+    color: "blue",
+    textAlign: "center",
   },
 });
