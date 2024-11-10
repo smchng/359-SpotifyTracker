@@ -94,6 +94,7 @@ const fetchEntriesWithPinsForUser = async (userId) => {
 
 export const EntryListWithPins = ({ userId }) => {
   const [entriesWithPins, setEntriesWithPins] = useState([]);
+  const [selectedEntry, setSelectedEntry] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false); // State for toggling visibility
 
   useEffect(() => {
@@ -110,17 +111,27 @@ export const EntryListWithPins = ({ userId }) => {
     setIsExpanded(!isExpanded);
   };
 
+  const handleEntryPress = (entryId) => {
+    setSelectedEntry(entryId); // Update selected entry
+    setIsExpanded(false); // Collapse the list when an entry is selected
+  };
+
   const renderItem = ({ item }) => (
-    <View style={styles.entryItem}>
+    <TouchableOpacity
+      onPress={() => handleEntryPress(item)}
+      style={styles.entryItem}
+    >
       <Text style={styles.entryId}>{item}</Text>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
-    <View style={[styles.container, isExpanded && styles.expandedContainer]}>
+    <View style={styles.container}>
       {/* Button to expand/collapse */}
       <TouchableOpacity onPress={toggleExpand} style={styles.button}>
-        <Text style={styles.buttonText}>{isExpanded ? "Hide" : "Pins"}</Text>
+        <Text style={styles.buttonText}>
+          {isExpanded ? "Hide" : selectedEntry ? `${selectedEntry}` : "Pins"}
+        </Text>
       </TouchableOpacity>
 
       {/* Conditionally render the FlatList based on isExpanded state */}

@@ -84,7 +84,7 @@ export function Map({ navigation }) {
         >
           {/* Place a Marker at the user's location */}
 
-          <RenderPin userId={userId} />
+          {/* <RenderPin userId={userId} /> */}
         </MapView>
       )}
       <CurrentlyPlayingTrack />

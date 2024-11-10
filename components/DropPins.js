@@ -76,19 +76,15 @@ export const StorePin = async (userId, formattedDate, formattedTime) => {
 };
 
 // Function to fetch pins from Firestore
-const fetchPinsFromFirestore = async (userId) => {
+const fetchPinsFromFirestore = async (userId, entryid) => {
   try {
-    // Get the current date formatted as "DD-MM-YYYY"
-    const now = new Date();
-    const formattedDate = now.toLocaleDateString("en-GB").replace(/\//g, "-");
-
     // Reference to the "Time" collection under the specific "Entries" document
     const timeCollectionRef = collection(
       db,
       "users",
       userId,
       "Entries",
-      formattedDate,
+      entryid,
       "Time"
     );
 
@@ -106,7 +102,7 @@ const fetchPinsFromFirestore = async (userId) => {
         "users",
         userId,
         "Entries",
-        formattedDate,
+        entryid,
         "Time",
         timeDocId,
         "Pins"
@@ -145,20 +141,20 @@ const fetchPinsFromFirestore = async (userId) => {
 };
 
 // Function to render the map and pins
-export const RenderPin = ({ userId }) => {
+export const RenderPin = ({ userId, selectedEntry }) => {
   const [pins, setPins] = useState([]); // State to store pins data
 
   // Fetch the pins when userId changes
   useEffect(() => {
     const loadPins = async () => {
-      if (userId) {
-        const fetchedPins = await fetchPinsFromFirestore(userId);
+      if (selectedEntry) {
+        const fetchedPins = await fetchPinsFromFirestore(userId, selectedEntry);
         setPins(fetchedPins); // Set the state with fetched pins
       }
     };
 
-    loadPins(); // Call the function to load pins
-  }, [userId]); // Dependency on userId
+    loadPins(); // Call the function to load pins when entry is selected
+  }, [selectedEntry, userId]); // Dependency on selectedEntry and userId
 
   return (
     <>
