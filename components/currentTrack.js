@@ -55,63 +55,16 @@ export const CurrentlyPlayingTrack = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-
-    position: "absolute", // Position the track display absolutely
-    bottom: 20, // Adjust bottom position as necessary
-    left: 20, // Adjust left position as necessary
-    zIndex: 1,
-    backgroundColor: "#EBEFF2",
-    width: "90%",
-    padding: 20,
-    borderRadius: 20,
-    shadowColor: "#000", // Color of the shadow
-    shadowOffset: { width: 5, height: 2 }, // Offset shadow to the right by 5px (horizontal)
-    shadowOpacity: 0.25, // Shadow opacity (simulating rgba(0, 0, 0, 0.25))
-    shadowRadius: 7, // Shadow blur radius (simulating 7px)
-    elevation: 2, // For Android shadow effect
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  artist: {
-    fontSize: 15,
-  },
-  trackInfoContainer: {
-    flexDirection: "row", // Arrange children in a row
-    alignItems: "center", // Center vertically
-  },
-  albumCoverContainer: {
-    width: 50, // Set the width of the album cover container
-    height: 50, // Set the height of the album cover container
-    borderRadius: 10, // Round the corners of the container
-    borderWidth: 2, // Width of the stroke
-    borderColor: "#D9D9D9", // Color of the stroke (change as needed)
-    backgroundColor: "#D9D9D9", // Fill color
-    shadowColor: "#000", // Color of the shadow
-    shadowOffset: { width: 5, height: 2 }, // Offset shadow to the right by 5px (horizontal)
-    shadowOpacity: 0.25, // Shadow opacity (simulating rgba(0, 0, 0, 0.25))
-    shadowRadius: 7, // Shadow blur radius (simulating 7px)
-    elevation: 2, // For Android shadow effect
-    marginRight: 10, // Space between the album cover and text
-    overflow: "hidden", // Ensures that the image doesn't overflow the border
-  },
-
-  albumCover: {
-    width: "100%", // Set the width of the album cover to fill the container
-    height: "100%", // Set the height of the album cover to fill the container
-  },
-  trackDetails: {
-    flex: 1, // Ensures it takes available space and wraps text properly
-    paddingLeft: 10, // Optional for spacing
-  },
-});
-
 export const showTrack = async () => {
   const storedTrack = await AsyncStorage.getItem("currentTrack");
+  if (storedTrack) {
+    return JSON.parse(storedTrack); // Return the parsed track info
+  }
+  return null; // Return null if no track info found
+};
+
+export const showTrackAF = async () => {
+  const storedTrack = await AsyncStorage.getItem("trackAF");
   if (storedTrack) {
     return JSON.parse(storedTrack); // Return the parsed track info
   }
@@ -186,6 +139,23 @@ const startPollingForTrackChanges = (accessToken, setTrack) => {
       // Set the new track state to trigger a re-render
       setTrack(track);
     } else if (track && track.id === lastTrackId && trackStartTime) {
+      try {
+        // Fetch audio features for the track
+        const audioFeatures = await fetchAudioFeatures(track.id);
+        if (audioFeatures) {
+          // Store audio features in AsyncStorage
+          await AsyncStorage.setItem(`trackAF`, JSON.stringify(audioFeatures));
+
+          console.log("Audio features fetched and stored for track:", track.id);
+        } else {
+          console.log("No audio features available for this track.");
+        }
+
+        // If there's any additional logic after fetching the audio features, continue here
+        console.log("Audio features fetched for track:", track.id);
+      } catch (error) {
+        console.error("Error fetching audio features:", error);
+      }
       // Calculate how long the current track has been playing
       const currentTime = new Date();
       const elapsedTime = (currentTime - trackStartTime) / 1000; // Convert milliseconds to seconds
@@ -205,3 +175,85 @@ const startPollingForTrackChanges = (accessToken, setTrack) => {
 
   return intervalId; // Return the interval ID for cleanup
 };
+
+const fetchAudioFeatures = async (songId) => {
+  const accessToken = getAccessToken(); // Retrieve the stored access token
+  try {
+    // Make a request to Spotify's Audio Features API endpoint
+    const response = await fetch(
+      `https://api.spotify.com/v1/audio-features/${songId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    // Check if the response is successful
+    if (!response.ok) {
+      throw new Error("Failed to fetch audio features");
+    }
+
+    // Parse the JSON response
+    const audioFeatures = await response.json();
+
+    // Log or return the audio features
+    console.log(audioFeatures);
+
+    return audioFeatures;
+  } catch (error) {
+    console.error("Error fetching audio features:", error);
+    return null; // Return null if there's an error
+  }
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+
+    position: "absolute", // Position the track display absolutely
+    bottom: 20, // Adjust bottom position as necessary
+    left: 20, // Adjust left position as necessary
+    zIndex: 1,
+    backgroundColor: "#EBEFF2",
+    width: "90%",
+    padding: 20,
+    borderRadius: 20,
+    shadowColor: "#000", // Color of the shadow
+    shadowOffset: { width: 5, height: 2 }, // Offset shadow to the right by 5px (horizontal)
+    shadowOpacity: 0.25, // Shadow opacity (simulating rgba(0, 0, 0, 0.25))
+    shadowRadius: 7, // Shadow blur radius (simulating 7px)
+    elevation: 2, // For Android shadow effect
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  artist: {
+    fontSize: 15,
+  },
+  trackInfoContainer: {
+    flexDirection: "row", // Arrange children in a row
+    alignItems: "center", // Center vertically
+  },
+  albumCoverContainer: {
+    width: 50, // Set the width of the album cover container
+    height: 50, // Set the height of the album cover container
+    borderRadius: 10, // Round the corners of the container
+    borderWidth: 2, // Width of the stroke
+    borderColor: "#D9D9D9", // Color of the stroke (change as needed)
+    backgroundColor: "#D9D9D9", // Fill color
+    shadowColor: "#000", // Color of the shadow
+    shadowOffset: { width: 5, height: 2 }, // Offset shadow to the right by 5px (horizontal)
+    shadowOpacity: 0.25, // Shadow opacity (simulating rgba(0, 0, 0, 0.25))
+    shadowRadius: 7, // Shadow blur radius (simulating 7px)
+    elevation: 2, // For Android shadow effect
+    marginRight: 10, // Space between the album cover and text
+    overflow: "hidden", // Ensures that the image doesn't overflow the border
+  },
+
+  albumCover: {
+    width: "100%", // Set the width of the album cover to fill the container
+    height: "100%", // Set the height of the album cover to fill the container
+  },
+});
