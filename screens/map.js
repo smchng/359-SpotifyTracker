@@ -94,7 +94,6 @@ export function Map({ navigation }) {
           page="ProfileStorage"
           navigation={navigation}
         />
-
         <MusicTimer userId={userId} />
       </View>
       <RenderPin userId={userId} />

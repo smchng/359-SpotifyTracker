@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     left: 85,
     justifyContent: "center",
     flex: 1,
+    zIndex: 1,
     width: "70%",
     position: "absolute",
     alignItems: "center",
