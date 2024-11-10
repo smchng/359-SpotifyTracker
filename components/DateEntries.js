@@ -65,6 +65,14 @@ const styles = StyleSheet.create({
   },
   entry: {
     marginBottom: 10,
+    backgroundColor: "#EBEFF2",
+    padding: 15,
+    borderRadius: 15,
+    shadowColor: "#000", // Color of the shadow
+    shadowOffset: { width: 5, height: 2 }, // Offset shadow to the right by 5px (horizontal)
+    shadowOpacity: 0.25, // Shadow opacity (simulating rgba(0, 0, 0, 0.25))
+    shadowRadius: 7, // Shadow blur radius (simulating 7px)
+    elevation: 2, // For Android shadow effect
   },
   entryTitle: {
     fontWeight: "bold",
