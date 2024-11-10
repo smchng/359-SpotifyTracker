@@ -76,19 +76,16 @@ export const StorePin = async (userId, formattedDate, formattedTime) => {
 };
 
 // Function to fetch pins from Firestore
-const fetchPinsFromFirestore = async (userId) => {
+// Function to fetch pins from Firestore
+const fetchPinsFromFirestore = async (userId, entryId) => {
   try {
-    // Get the current date formatted as "DD-MM-YYYY"
-    const now = new Date();
-    const formattedDate = now.toLocaleDateString("en-GB").replace(/\//g, "-");
-
     // Reference to the "Time" collection under the specific "Entries" document
     const timeCollectionRef = collection(
       db,
       "users",
       userId,
       "Entries",
-      formattedDate,
+      entryId, // Use the entryId passed to the function
       "Time"
     );
 
@@ -106,7 +103,7 @@ const fetchPinsFromFirestore = async (userId) => {
         "users",
         userId,
         "Entries",
-        formattedDate,
+        entryId, // Use the entryId here as well
         "Time",
         timeDocId,
         "Pins"
@@ -144,21 +141,23 @@ const fetchPinsFromFirestore = async (userId) => {
   }
 };
 
-export const RenderPin = ({ userId }) => {
+// Function to render the map and pins
+export const RenderPin = ({ userId, entryId }) => {
   const [pins, setPins] = useState([]); // State to store pins data
   const [selectedPin, setSelectedPin] = useState(null); // State for the selected pin
 
-  // Fetch the pins when userId changes
+  // Fetch the pins when userId or entryId changes
   useEffect(() => {
     const loadPins = async () => {
-      if (userId) {
-        const fetchedPins = await fetchPinsFromFirestore(userId);
+      if (userId && entryId) {
+        const fetchedPins = await fetchPinsFromFirestore(userId, entryId);
         setPins(fetchedPins); // Set the state with fetched pins
       }
     };
 
     loadPins(); // Call the function to load pins
-  }, [userId]); // Dependency on userId
+  }, [userId, entryId]); // Dependency on userId and entryId
+  // Dependency on userId
 
   // Handle marker press
   const handlePinPress = (pin) => {
@@ -209,8 +208,10 @@ const styles = StyleSheet.create({
   circle: {
     width: 10,
     height: 10,
-    borderRadius: 10,
-    backgroundColor: "red", // Customize the pin appearance
+    backgroundColor: "red", // Color of the dot
+    borderRadius: 5, // Half of the width/height to make it a circle
+    zIndex: 15,
+    // Customize the pin appearance
   },
   modalContainer: {
     flex: 1,

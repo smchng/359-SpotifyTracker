@@ -12,7 +12,7 @@ export function ProfileStorage({ navigation }) {
     <View>
       <CircleButton SVGIcon={LocIcon} page="Map" navigation={navigation} />
       <Profile />
-      <EntriesList />
+      <EntriesList navigation={navigation} />
       {/* <RecentlyPlayed navigation={navigation} /> */}
       <Logout navigation={navigation} />
     </View>

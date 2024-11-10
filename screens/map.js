@@ -9,6 +9,7 @@ import MusicTimer from "../components/MusicTimer";
 import { CircleButton } from "../components/UI/buttons";
 import UserIcon from "../assets/svg/user.svg";
 import { RenderPin } from "../components/DropPins";
+import { EntryListWithPins } from "../components/PinFilter";
 
 export function Map({ navigation }) {
   const { userId } = useUser();
@@ -16,6 +17,7 @@ export function Map({ navigation }) {
   const [errorMsg, setErrorMsg] = useState(null); // State to store any potential error message
   const [initialRegion, setInitialRegion] = useState(null); // State to store the initial region for the map
   const mapRef = useRef(null); // Ref for the MapView to persist without re-rendering
+  const [selectedEntry, setSelectedEntry] = useState(null);
 
   // This useEffect hook is used to request location permissions and fetch the user's location
   useEffect(() => {
@@ -51,6 +53,17 @@ export function Map({ navigation }) {
     })();
   }, []); // Empty dependency array to run only once
 
+  const handleEntryUpdate = async (entryId) => {
+    setSelectedEntry(entryId); // Update the selected entry state
+    try {
+      // Store the selected entry in AsyncStorage
+      await AsyncStorage.setItem("PinEntry", entryId);
+      console.log("Entry stored successfully:", entryId);
+    } catch (error) {
+      console.error("Error storing entry in AsyncStorage:", error);
+    }
+  };
+
   // If there's an error, display it, otherwise display the location
   let text = "Waiting..";
   if (errorMsg) {
@@ -61,13 +74,20 @@ export function Map({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.topNav}>
-        <CircleButton
-          SVGIcon={UserIcon}
-          page="ProfileStorage"
-          navigation={navigation}
+      <View>
+        <View style={styles.topNav}>
+          <CircleButton
+            SVGIcon={UserIcon}
+            page="ProfileStorage"
+            navigation={navigation}
+          />
+          <MusicTimer userId={userId} />
+        </View>
+
+        <EntryListWithPins
+          userId={userId}
+          setSelectedEntry={handleEntryUpdate}
         />
-        <MusicTimer userId={userId} />
       </View>
       {/* Render the MapView if location is available */}
       {initialRegion && ( // Render map only when initial region is set
@@ -79,7 +99,9 @@ export function Map({ navigation }) {
         >
           {/* Place a Marker at the user's location */}
 
-          <RenderPin userId={userId} />
+          {selectedEntry && (
+            <RenderPin userId={userId} entryId={selectedEntry} />
+          )}
         </MapView>
       )}
       <CurrentlyPlayingTrack />
