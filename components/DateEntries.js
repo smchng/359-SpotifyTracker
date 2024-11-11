@@ -119,9 +119,6 @@ export default function EntriesList({ navigation }) {
                   >
                     <Text style={styles.timeDocTitle}>{timeDoc.id}</Text>
                     {/* You can render more details from the timeDoc here */}
-                    <Text style={styles.timeDocDescription}>
-                      {JSON.stringify(timeDoc)}
-                    </Text>
                   </TouchableOpacity>
                 ))}
               </View>
@@ -165,8 +162,13 @@ const styles = StyleSheet.create({
   timeDoc: {
     marginBottom: 10,
     backgroundColor: "#F0F4F8",
-    padding: 10,
+    padding: 20,
     borderRadius: 10,
+    shadowColor: "#000", // Color of the shadow
+    shadowOffset: { width: 5, height: 2 }, // Offset shadow to the right by 5px (horizontal)
+    shadowOpacity: 0.25, // Shadow opacity (simulating rgba(0, 0, 0, 0.25))
+    shadowRadius: 7, // Shadow blur radius (simulating 7px)
+    elevation: 2,
   },
   timeDocTitle: {
     fontWeight: "bold",
