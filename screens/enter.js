@@ -2,7 +2,7 @@
 import { StyleSheet, View, Text, Button, Image } from "react-native";
 import { NavigationButton } from "../components/UI/buttons";
 import { Container } from "../components/Container";
-import WelcomeIcon from "../assets/WelcomeIcon.svg";
+import WelcomeIcon from "../assets/svg/WelcomeIcon.svg";
 
 // Login with existing account
 export default function Enter({ navigation }) {
