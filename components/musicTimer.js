@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { db } from "../data/firebaseConfig.js"; // Update with your Firebase config path
 import { doc, setDoc, collection } from "firebase/firestore"; // Firebase Firestore functions
+import { StorePin } from "./DropPins.js";
 import { showTrack, showTrackAF } from "./CurrentTrack.js";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const MusicTimer = ({ userId }) => {
   const [isTimerActive, setIsTimerActive] = useState(false);
@@ -10,6 +12,7 @@ const MusicTimer = ({ userId }) => {
   const [lastTrackId, setLastTrackId] = useState(null);
   const [formattedDate, setFormattedDate] = useState("");
   const [formattedTime, setFormattedTime] = useState("");
+
   let pollingInterval;
 
   useEffect(() => {
@@ -22,7 +25,6 @@ const MusicTimer = ({ userId }) => {
           setLastTrackId(currentTrack.id);
           console.log("New track detected:", currentTrack);
 
-          // Store the new track in Firestore
           await storeTrack(
             userId,
             formattedDate,
@@ -30,6 +32,17 @@ const MusicTimer = ({ userId }) => {
             currentTrack,
             currectTrackAF
           );
+          await StorePin(userId, formattedDate, formattedTime);
+          AsyncStorage.setItem("PinEntry", formattedDate)
+            .then(() => {
+              console.log(
+                "Selected entry updated to current date:",
+                formattedDate
+              );
+            })
+            .catch((error) => {
+              console.error("Error updating selected entry:", error);
+            });
         }
       }, 5000); // Poll every 5 seconds
 
@@ -128,6 +141,7 @@ const styles = StyleSheet.create({
     left: 85,
     justifyContent: "center",
     flex: 1,
+    zIndex: 1,
     width: "70%",
     position: "absolute",
     alignItems: "center",
