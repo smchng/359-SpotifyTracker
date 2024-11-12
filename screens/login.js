@@ -63,19 +63,25 @@ export default function Login({ navigation }) {
           </View>
 
           <View style={styles.inputContainer}>
-            <TextInput
+            <CustomTextInput
               style={styles.input}
               placeholder="Enter your email"
               value={email}
               onChangeText={setEmail}
+              textColor="white"
+              autoComplete="email"
+              secureEntry={false}
             />
-            <Text>Password:</Text>
-            <TextInput
+
+            <CustomTextInput
               style={styles.input}
               placeholder="Enter your password"
               secureTextEntry
               value={password}
               onChangeText={setPassword}
+              textColor="white"
+              autoComplete="password"
+              secureEntry={true}
             />
           </View>
 

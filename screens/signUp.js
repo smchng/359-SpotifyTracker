@@ -11,12 +11,13 @@ import {
   Platform,
   ScrollView,
 } from "react-native";
-import { NavigationButton } from "../components/UI/buttons";
+import { SignUpButton } from "../components/buttons";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../data/firebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
 // import TextInput from "../components/UI/input";
 import { Container } from "../components/Container";
+import CustomTextInput from "../components/UI/input";
 
 export default function SignUp({ navigation }) {
   const [email, setEmail] = useState("");
@@ -95,8 +96,8 @@ export default function SignUp({ navigation }) {
 
           <View style={styles.inputContainer}>
             <TextInput
-              value={username}
-              onChangeText={setUsername}
+              value={displayName}
+              onChangeText={setDisplayName}
               placeholder="Username"
               textColor="black"
             />
@@ -117,12 +118,13 @@ export default function SignUp({ navigation }) {
           </View>
 
           <View style={styles.buttonContainer}>
-            <NavigationButton
+            <SignUpButton
               text="Sign Up"
               page="SpotifyLogin"
               navigation={navigation}
               buttonStyle={styles.signUpButton}
               textColor="#FFFFFF"
+              onPress={handleSignUp}
             />
           </View>
         </Container>

@@ -28,6 +28,29 @@ export const NavigationButton = ({
   );
 };
 
+export const SignUpButton = ({
+  text,
+  page,
+  navigation,
+  buttonStyle,
+  textColor,
+  onPress,
+}) => {
+  const handlePage = () => {
+    if (onPress) onPress(); // Call the custom function if it exists
+    navigation.navigate(page); // Navigate to the specified page
+  };
+
+  return (
+    <CustomButton
+      text={text}
+      onPress={handlePage} // Corrected to pass only `handlePage` to the `CustomButton`
+      style={buttonStyle}
+      textColor={textColor}
+    />
+  );
+};
+
 export const LoginButton = ({
   text,
   navigation,

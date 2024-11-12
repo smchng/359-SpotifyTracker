@@ -1,14 +1,24 @@
-import { StyleSheet, View, TextInput as RNTextInput } from 'react-native';
+import { StyleSheet, View, TextInput as RNTextInput } from "react-native";
 
 // Custom TextInput component
-const CustomTextInput = ({ value, onChangeText, placeholder, style, textColor }) => (
+const CustomTextInput = ({
+  value,
+  onChangeText,
+  placeholder,
+  style,
+  textColor,
+  autoComplete,
+  secureEntry,
+}) => (
   <View style={[styles.inputContainer, style]}>
     <RNTextInput
       style={[styles.input, { color: textColor }]}
       value={value}
       onChangeText={onChangeText}
       placeholder={placeholder}
-      placeholderTextColor="#888" 
+      placeholderTextColor="#888"
+      autoComplete={autoComplete}
+      secureTextEntry={secureEntry}
     />
   </View>
 );
@@ -19,11 +29,11 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderRadius: 13,
     paddingVertical: 20,
-    backgroundColor: '#303030',
-    alignSelf: 'center',
-    
+    backgroundColor: "#303030",
+    alignSelf: "center",
+
     //shadow
-    shadowColor: '#000000',
+    shadowColor: "#000000",
     shadowOffset: {
       width: 4,
       height: 4,
@@ -35,7 +45,7 @@ const styles = StyleSheet.create({
   input: {
     paddingLeft: 20,
     fontSize: 12,
-    textAlign: 'left',
+    textAlign: "left",
   },
 });
 
