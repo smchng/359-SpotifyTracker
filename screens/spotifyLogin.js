@@ -1,9 +1,9 @@
 // Connect and login with spotify
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Button, Image } from "react-native";
+import { StyleSheet, View, Text, Image } from "react-native";
 import SpotifyLoginButton from "../components/SpotifyLoginButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { NavigationButton } from "../components/buttons";
+import { NavigationButton } from "../components/UI/buttons";
 import { Container } from "../components/Container";
 
 // Login with existing account
@@ -70,7 +70,13 @@ export default function SpotifyLogin({ navigation }) {
       {isLoggedIn ? (
         <>
           <Text>Welcome, {userProfile?.name}!</Text>
-          <NavigationButton text="Next" page="Map" navigation={navigation} />
+          <NavigationButton
+            text="Next"
+            page="Map"
+            navigation={navigation}
+            buttonStyle={styles.button} // Styling for the button
+            textColor="#FFFFFF"
+          />
         </>
       ) : (
         <SpotifyLoginButton onLogin={handleLogin} userId={userId} />
@@ -84,5 +90,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: 180,
     height: 180,
+  },
+  button: {
+    backgroundColor: "#303030",
   },
 });

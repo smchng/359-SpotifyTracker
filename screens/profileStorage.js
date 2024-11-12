@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Button } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { CircleButton } from "../components/UI/buttons";
 import Logout from "../components/logout";
 import LocIcon from "../assets/svg/location.svg";

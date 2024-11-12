@@ -6,13 +6,49 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-//Login Button
-export function Buttons({ text, page, navigation }) {
+
+export const CustomButton = ({ text, onPress, style, textColor }) => (
+  <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
+    <Text style={[styles.buttonText, { color: textColor }]} numberOfLines={1}>
+      {text}
+    </Text>
+  </TouchableOpacity>
+);
+
+export const NavigationButton = ({
+  text,
+  page,
+  navigation,
+  buttonStyle,
+  textColor,
+}) => {
   const handlePage = () => {
-    navigation.navigate(page); // Navigate to the page passed in as a prop
+    navigation.navigate(page);
   };
-  return <Button title={text} onPress={handlePage}></Button>;
-}
+  return (
+    <CustomButton
+      text={text}
+      onPress={handlePage}
+      style={buttonStyle}
+      textColor={textColor}
+    />
+  );
+};
+
+export const ActionButton = ({ text, buttonStyle, textColor, onPress }) => {
+  const handlePage = () => {
+    if (onPress) onPress(); // Call the custom function if it exists
+  };
+
+  return (
+    <CustomButton
+      text={text}
+      onPress={handlePage} // Corrected to pass only `handlePage` to the `CustomButton`
+      style={buttonStyle}
+      textColor={textColor}
+    />
+  );
+};
 
 export function LogoutButton({ text, page, navigation, onPress }) {
   const handlePage = () => {
@@ -22,10 +58,6 @@ export function LogoutButton({ text, page, navigation, onPress }) {
 
   return <Button title={text} onPress={handlePage} />;
 }
-
-//Timer Button
-
-//Each Profile logs date button
 
 //Ciruclar button for Home, Map, x
 export function CircleButton({ SVGIcon, page, navigation }) {
@@ -57,5 +89,27 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25, // Shadow opacity (simulating rgba(0, 0, 0, 0.25))
     shadowRadius: 7, // Shadow blur radius (simulating 7px)
     elevation: 2, // For Android shadow effect
+  },
+  button: {
+    //alignItems: 'center',
+    width: 300,
+    marginVertical: 15,
+    borderRadius: 13,
+    paddingVertical: 20,
+
+    //shadow
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 4,
+      height: 4,
+    },
+    shadowOpacity: 0.4,
+    shadowRadius: 7,
+  },
+
+  buttonText: {
+    fontSize: 12,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

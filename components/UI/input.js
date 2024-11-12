@@ -46,6 +46,8 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     fontSize: 12,
     textAlign: "left",
+    fontStyle: "none",
+    backgroundColor: "#303030",
   },
 });
 

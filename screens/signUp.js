@@ -3,15 +3,13 @@ import {
   StyleSheet,
   View,
   Text,
-  Button,
-  TextInput,
   Alert,
   Image,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
 } from "react-native";
-import { SignUpButton } from "../components/buttons";
+import { ActionButton } from "../components/UI/buttons";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../data/firebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
@@ -95,33 +93,30 @@ export default function SignUp({ navigation }) {
           </View>
 
           <View style={styles.inputContainer}>
-            <TextInput
+            <CustomTextInput
+              placeholder="Username"
               value={displayName}
               onChangeText={setDisplayName}
-              placeholder="Username"
-              textColor="black"
+              textColor="white"
             />
-            <TextInput
+            <CustomTextInput
               value={password}
               onChangeText={setPassword}
               placeholder="Password"
-              textColor="black"
-              secureTextEntry={true} // This will hide the password input
+              textColor="white"
             />
-            <TextInput
+            <CustomTextInput
               value={email}
               onChangeText={setEmail}
               placeholder="Email"
-              textColor="black"
-              secureTextEntry={true} // This will hide the password input
+              textColor="white"
             />
           </View>
 
           <View style={styles.buttonContainer}>
-            <SignUpButton
+            <ActionButton
               text="Sign Up"
               page="SpotifyLogin"
-              navigation={navigation}
               buttonStyle={styles.signUpButton}
               textColor="#FFFFFF"
               onPress={handleSignUp}

@@ -1,6 +1,6 @@
 // First landing page
 import { StyleSheet, View, Text, Button, Image } from "react-native";
-import { NavigationButton } from "../components/buttons";
+import { NavigationButton } from "../components/UI/buttons";
 import { Container } from "../components/Container";
 
 // Login with existing account

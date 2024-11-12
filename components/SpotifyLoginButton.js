@@ -12,7 +12,7 @@ import {
 import { exchangeAuthorizationCode } from "../ApiAccess/SpotifyAuth";
 import { handleFetchAndSaveUserProfile } from "./SpotifyUserProfile";
 import { setAccessToken, getAccessToken } from "../ApiAccess/TokenStorage";
-import { CustomButton } from "./buttons.js";
+import { CustomButton } from "./UI/buttons.js";
 
 const SpotifyLoginButton = ({ onLogin, userId }) => {
   const handleLogin = async () => {

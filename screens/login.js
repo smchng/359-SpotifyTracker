@@ -10,7 +10,7 @@ import {
   Alert,
   TextInput,
 } from "react-native";
-import { LoginButton } from "../components/buttons";
+import { ActionButton } from "../components/UI/buttons";
 import CustomTextInput from "../components/UI/input";
 import { Container } from "../components/Container"; // Assuming this is a custom container component
 
@@ -64,7 +64,6 @@ export default function Login({ navigation }) {
 
           <View style={styles.inputContainer}>
             <CustomTextInput
-              style={styles.input}
               placeholder="Enter your email"
               value={email}
               onChangeText={setEmail}
@@ -74,7 +73,6 @@ export default function Login({ navigation }) {
             />
 
             <CustomTextInput
-              style={styles.input}
               placeholder="Enter your password"
               secureTextEntry
               value={password}
@@ -87,9 +85,8 @@ export default function Login({ navigation }) {
 
           <View style={styles.buttonContainer}>
             <View style={styles.buttonContainer}>
-              <LoginButton
+              <ActionButton
                 text="Login"
-                navigation={navigation}
                 buttonStyle={styles.loginButton} // Styling for the button
                 textColor="#FFFFFF"
                 onPress={handleLogin} // Pass the function directly
@@ -149,5 +146,4 @@ const styles = StyleSheet.create({
   loginButton: {
     backgroundColor: "#303030",
   },
-  buttonContainer: {},
 });
