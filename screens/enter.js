@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // First landing page
 import { StyleSheet, View, Text, Button } from "react-native";
 import { Buttons } from "../components/UI/buttons";
@@ -5,9 +6,56 @@ import { Buttons } from "../components/UI/buttons";
 // Login with existing account
 export default function Enter({ navigation }) {
   return (
-    <View>
-      <Buttons text="Login" page="Login" navigation={navigation} />
-      <Buttons text="Sign Up" page="SignUp" navigation={navigation} />
-    </View>
+    <Container>
+      <View style={styles.welcomeContainer}>
+        {/* image should go on this line */}
+        {/* <WelcomeIcon width="100%" height="100%" /> */}
+        <Image
+          source={require('../assets/welcomeIcon1.png')}
+          style={styles.image}
+          resizeMode="contain"
+        />
+        <Text style={styles.greetingText}>Hello there!</Text>
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <NavigationButton
+          text="Login"
+          page="Login"
+          navigation={navigation}
+          buttonStyle={styles.loginButton}
+          textColor="#FFFFFF"
+        />
+        <NavigationButton
+          text="Sign Up"
+          page="SignUp"
+          navigation={navigation}
+          buttonStyle={styles.signUpButton}
+          textColor="#303030"
+        />
+      </View>
+    </Container>
   );
 }
+
+const styles = StyleSheet.create({
+  welcomeContainer: {
+    alignItems: 'center',
+  },
+  image: {
+    width: 180,
+    height: 180,
+  },
+  greetingText: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#303030',
+    marginTop: 10,
+  },
+  loginButton: {
+    backgroundColor: '#303030',
+  },
+  signUpButton: {
+    backgroundColor: '#EBEFF2',
+  }
+});

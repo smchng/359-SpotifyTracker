@@ -1,7 +1,7 @@
 // Renders the log in button and checks authentication
 
 import React from "react";
-import { Button } from "react-native";
+import { Button, StyleSheet } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import * as AuthSession from "expo-auth-session";
 import * as Linking from "expo-linking";
@@ -12,6 +12,7 @@ import {
 import { exchangeAuthorizationCode } from "../ApiAccess/SpotifyAuth";
 import { handleFetchAndSaveUserProfile } from "./SpotifyUserProfile";
 import { setAccessToken, getAccessToken } from "../ApiAccess/TokenStorage";
+import { CustomButton } from "./buttons.js";
 
 const SpotifyLoginButton = ({ onLogin, userId }) => {
   const handleLogin = async () => {
@@ -52,7 +53,31 @@ const SpotifyLoginButton = ({ onLogin, userId }) => {
     }
   };
 
-  return <Button title="Login with Spotify" onPress={handleLogin} />;
+  return <CustomButton 
+    text="Login with Spotify" 
+    onPress={handleLogin}
+    style={styles.button}
+    textColor="#FFFFFF"
+  />;
 };
+
+const styles = StyleSheet.create({
+  button: {
+    width: 300,
+    marginVertical: 15,
+    borderRadius: 13,
+    paddingVertical: 20,
+    backgroundColor: '#529068',
+     
+    //shadow
+     shadowColor: '#000000',
+     shadowOffset: {
+       width: 4,
+       height: 4,
+     },
+     shadowOpacity: 0.4,
+     shadowRadius: 7,
+  },
+});
 
 export default SpotifyLoginButton;
