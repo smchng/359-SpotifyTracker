@@ -2,19 +2,14 @@
 import { StyleSheet, View, Text, Button, Image } from "react-native";
 import { NavigationButton } from "../components/UI/buttons";
 import { Container } from "../components/Container";
+import WelcomeIcon from "../assets/WelcomeIcon.svg";
 
 // Login with existing account
 export default function Enter({ navigation }) {
   return (
     <Container>
       <View style={styles.welcomeContainer}>
-        {/* image should go on this line */}
-        {/* <WelcomeIcon width="100%" height="100%" /> */}
-        <Image
-          source={require("../assets/welcomeIcon1.png")}
-          style={styles.image}
-          resizeMode="contain"
-        />
+        {WelcomeIcon && <WelcomeIcon width={220} height={220} />}
         <Text style={styles.greetingText}>Hello there!</Text>
       </View>
 
