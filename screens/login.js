@@ -20,7 +20,9 @@ export default function Login({ navigation }) {
       if (userId) {
         setUserId(userId); // Set user ID in context
         console.log("Logged in user ID: ", userId);
-        navigation.navigate("SpotifyLogin"); // Navigate to the Spotify login screen
+
+        //change to go to profile screen
+        navigation.navigate("ProfileStorage"); // Navigate to the Spotify login screen
       } else {
         Alert.alert("Login failed. Please check your credentials.");
       }

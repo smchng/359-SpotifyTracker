@@ -1,5 +1,12 @@
 // Renders logout button and clears Async
-
+import {
+  StyleSheet,
+  View,
+  Text,
+  Button,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import React from "react";
 import { LogoutButton } from "../components/UI/buttons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -27,8 +34,25 @@ const Logout = ({ navigation }) => {
       page="Enter"
       navigation={navigation}
       onPress={handleLogout}
+      style={styles.buttonText}
     />
   );
 };
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: "#ff5c5c", // Default color for logout button
+    borderRadius: 5, // Rounded corners
+    padding: 10,
+    marginTop: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 20,
+  },
+});
+
 
 export default Logout;

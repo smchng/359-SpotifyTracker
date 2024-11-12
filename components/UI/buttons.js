@@ -6,6 +6,26 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
+
+export const CustomButton = ({ text, onPress, style, textColor }) => (
+  <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
+    <Text 
+      style={[styles.buttonText, { color: textColor }]}
+      numberOfLines={1}
+    >
+      {text}
+    </Text>
+  </TouchableOpacity>
+);
+
+export const NavigationButton = ({ text, page, navigation, buttonStyle, textColor }) => {
+  const handlePage = () => {
+    navigation.navigate(page);
+  };
+  return <CustomButton text={text} onPress={handlePage} style={buttonStyle} textColor={textColor} />;
+};
+
+
 //Login Button
 export function Buttons({ text, page, navigation }) {
   const handlePage = () => {
@@ -14,13 +34,13 @@ export function Buttons({ text, page, navigation }) {
   return <Button title={text} onPress={handlePage}></Button>;
 }
 
-export function LogoutButton({ text, page, navigation, onPress }) {
+export function LogoutButton({ text, page, navigation, onPress, style }) {
   const handlePage = () => {
     if (onPress) onPress(); // Call onPress if provided
     navigation.navigate(page); // Navigate if navigation and page are provided
   };
 
-  return <Button title={text} onPress={handlePage} />;
+  return <CustomButton text={text} onPress={handlePage} />;
 }
 
 //Timer Button
@@ -57,5 +77,28 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25, // Shadow opacity (simulating rgba(0, 0, 0, 0.25))
     shadowRadius: 7, // Shadow blur radius (simulating 7px)
     elevation: 2, // For Android shadow effect
+  },
+  
+  button: {
+    //alignItems:'center',
+    width: 300,
+    marginVertical: 15,
+    borderRadius: 13,
+    paddingVertical: 20,
+
+    //shadow
+     shadowColor: '#000000',
+     shadowOffset: {
+       width: 4,
+       height: 4,
+     },
+     shadowOpacity: 0.4,
+     shadowRadius: 7,
+  },
+    
+  buttonText: {
+    fontSize: 12,
+    textAlign: 'center',
+    fontWeight:'bold',
   },
 });
