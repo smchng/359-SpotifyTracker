@@ -235,6 +235,9 @@ const styles = StyleSheet.create({
     flexDirection: "row", // Arrange children in a row
     alignItems: "center", // Center vertically
   },
+  trackDetails: {
+    flex: 1,
+  },
   albumCoverContainer: {
     width: 50, // Set the width of the album cover container
     height: 50, // Set the height of the album cover container
