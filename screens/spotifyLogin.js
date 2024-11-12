@@ -76,11 +76,7 @@ export default function SpotifyLogin({ navigation }) {
           <NavigationButton text="Next" page="Map" navigation={navigation} />
         </>
       ) : (
-        <SpotifyLoginButton
-          onLogin={handleLogin}
-          navigation={navigation}
-          userId={userId}
-        />
+        <SpotifyLoginButton onLogin={handleLogin} userId={userId} />
       )}
     </Container>
   );

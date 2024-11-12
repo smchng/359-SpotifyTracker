@@ -7,17 +7,19 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
+  Alert,
+  TextInput,
 } from "react-native";
 import { NavigationButton } from "../components/buttons";
 import TextInput from "../components/input";
 import { Container } from "../components/Container"; // Assuming this is a custom container component
 
-import { StyleSheet, View, Text, Button, Alert, TextInput } from "react-native";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useUser } from "../components/UserAuth"; // Adjust the path as necessary
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState(""); // Controlled input for email
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState(""); // Controlled input for password
   const { setUserId } = useUser(); // Get the setUserId function from context
 
@@ -43,9 +45,6 @@ export default function Login({ navigation }) {
     }
   };
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -65,17 +64,18 @@ export default function Login({ navigation }) {
 
           <View style={styles.inputContainer}>
             <TextInput
-              value={username}
-              onChangeText={setUsername}
-              placeholder="Username"
-              textColor="black"
+              style={styles.input}
+              placeholder="Enter your email"
+              value={email}
+              onChangeText={setEmail}
             />
+            <Text>Password:</Text>
             <TextInput
+              style={styles.input}
+              placeholder="Enter your password"
+              secureTextEntry
               value={password}
               onChangeText={setPassword}
-              placeholder="Password"
-              textColor="black"
-              secureTextEntry={true} // This will hide the password input
             />
           </View>
 
@@ -86,6 +86,7 @@ export default function Login({ navigation }) {
               navigation={navigation}
               buttonStyle={styles.loginButton}
               textColor="#FFFFFF"
+              onPress={handleLogin}
             />
           </View>
         </Container>

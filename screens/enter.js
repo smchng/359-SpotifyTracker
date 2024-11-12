@@ -1,6 +1,5 @@
-<<<<<<< HEAD
 // First landing page
-import { StyleSheet, View, Text, Button } from "react-native";
+import { StyleSheet, View, Text, Button, Image } from "react-native";
 import { Buttons } from "../components/UI/buttons";
 
 // Login with existing account
@@ -11,7 +10,7 @@ export default function Enter({ navigation }) {
         {/* image should go on this line */}
         {/* <WelcomeIcon width="100%" height="100%" /> */}
         <Image
-          source={require('../assets/welcomeIcon1.png')}
+          source={require("../assets/welcomeIcon1.png")}
           style={styles.image}
           resizeMode="contain"
         />
@@ -40,7 +39,7 @@ export default function Enter({ navigation }) {
 
 const styles = StyleSheet.create({
   welcomeContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   image: {
     width: 180,
@@ -48,14 +47,14 @@ const styles = StyleSheet.create({
   },
   greetingText: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: '#303030',
+    fontWeight: "bold",
+    color: "#303030",
     marginTop: 10,
   },
   loginButton: {
-    backgroundColor: '#303030',
+    backgroundColor: "#303030",
   },
   signUpButton: {
-    backgroundColor: '#EBEFF2',
-  }
+    backgroundColor: "#EBEFF2",
+  },
 });
