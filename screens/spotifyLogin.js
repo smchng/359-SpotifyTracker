@@ -1,15 +1,13 @@
 // Connect and login with spotify
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Text, Button, Image } from "react-native";
 import SpotifyLoginButton from "../components/SpotifyLoginButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import { NavigationButton } from "../components/buttons";
 import { Container } from "../components/Container";
 
 // Login with existing account
 import { useUser } from "../components/UserAuth";
-import { Buttons } from "../components/UI/buttons";
 import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../data/firebaseConfig"; // Adjust the path to your firebaseConfig file
 
@@ -45,7 +43,6 @@ export default function SpotifyLogin({ navigation }) {
   const { userId } = useUser();
   const [userProfile, setUserProfile] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const handleLogin = async (status, profile) => {
     setIsLoggedIn(status);
     await AsyncStorage.setItem("accessToken", profile.accessToken);
@@ -72,7 +69,7 @@ export default function SpotifyLogin({ navigation }) {
       </View>
       {isLoggedIn ? (
         <>
-          <Text>Welcome, {userProfile?.display_name}!</Text>
+          <Text>Welcome, {userProfile?.name}!</Text>
           <NavigationButton text="Next" page="Map" navigation={navigation} />
         </>
       ) : (

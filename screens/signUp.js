@@ -15,7 +15,7 @@ import { NavigationButton } from "../components/UI/buttons";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../data/firebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
-import TextInput from "../components/input";
+// import TextInput from "../components/UI/input";
 import { Container } from "../components/Container";
 
 export default function SignUp({ navigation }) {

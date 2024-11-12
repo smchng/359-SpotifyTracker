@@ -10,8 +10,8 @@ import {
   Alert,
   TextInput,
 } from "react-native";
-import { NavigationButton } from "../components/buttons";
-import TextInput from "../components/input";
+import { LoginButton } from "../components/buttons";
+import CustomTextInput from "../components/UI/input";
 import { Container } from "../components/Container"; // Assuming this is a custom container component
 
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -80,14 +80,15 @@ export default function Login({ navigation }) {
           </View>
 
           <View style={styles.buttonContainer}>
-            <NavigationButton
-              text="Login"
-              page="SpotifyLogin"
-              navigation={navigation}
-              buttonStyle={styles.loginButton}
-              textColor="#FFFFFF"
-              onPress={handleLogin}
-            />
+            <View style={styles.buttonContainer}>
+              <LoginButton
+                text="Login"
+                navigation={navigation}
+                buttonStyle={styles.loginButton} // Styling for the button
+                textColor="#FFFFFF"
+                onPress={handleLogin} // Pass the function directly
+              />
+            </View>
           </View>
         </Container>
       </ScrollView>

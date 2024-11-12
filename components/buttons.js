@@ -1,25 +1,51 @@
-import { StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, Image } from "react-native";
 
 export const CustomButton = ({ text, onPress, style, textColor }) => (
   <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
-    <Text 
-      style={[styles.buttonText, { color: textColor }]}
-      numberOfLines={1}
-    >
+    <Text style={[styles.buttonText, { color: textColor }]} numberOfLines={1}>
       {text}
     </Text>
   </TouchableOpacity>
 );
 
-export const NavigationButton = ({ text, page, navigation, buttonStyle, textColor }) => {
+export const NavigationButton = ({
+  text,
+  page,
+  navigation,
+  buttonStyle,
+  textColor,
+}) => {
   const handlePage = () => {
     navigation.navigate(page);
   };
-  return <CustomButton text={text} onPress={handlePage} style={buttonStyle} textColor={textColor} />;
+  return (
+    <CustomButton
+      text={text}
+      onPress={handlePage}
+      style={buttonStyle}
+      textColor={textColor}
+    />
+  );
+};
+
+export const LoginButton = ({
+  text,
+  navigation,
+  onPress, // Make sure this prop is used
+  buttonStyle,
+  textColor,
+}) => {
+  return (
+    <CustomButton
+      text={text}
+      onPress={onPress} // Pass it to the CustomButton
+      style={buttonStyle}
+      textColor={textColor}
+    />
+  );
 };
 
 //Welcome Pages Image Component
-
 
 // Logout Button Component
 export const LogoutButton = ({ text, page, navigation, onPress }) => {
@@ -45,20 +71,20 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     borderRadius: 13,
     paddingVertical: 20,
-     
+
     //shadow
-     shadowColor: '#000000',
-     shadowOffset: {
-       width: 4,
-       height: 4,
-     },
-     shadowOpacity: 0.4,
-     shadowRadius: 7,
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 4,
+      height: 4,
+    },
+    shadowOpacity: 0.4,
+    shadowRadius: 7,
   },
-    
+
   buttonText: {
     fontSize: 12,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

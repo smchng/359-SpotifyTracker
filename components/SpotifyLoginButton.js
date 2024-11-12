@@ -53,12 +53,14 @@ const SpotifyLoginButton = ({ onLogin, userId }) => {
     }
   };
 
-  return <CustomButton 
-    text="Login with Spotify" 
-    onPress={handleLogin}
-    style={styles.button}
-    textColor="#FFFFFF"
-  />;
+  return (
+    <CustomButton
+      text="Login with Spotify"
+      onPress={handleLogin}
+      style={styles.button}
+      textColor="#FFFFFF"
+    />
+  );
 };
 
 const styles = StyleSheet.create({
@@ -67,16 +69,16 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     borderRadius: 13,
     paddingVertical: 20,
-    backgroundColor: '#529068',
-     
+    backgroundColor: "#529068",
+
     //shadow
-     shadowColor: '#000000',
-     shadowOffset: {
-       width: 4,
-       height: 4,
-     },
-     shadowOpacity: 0.4,
-     shadowRadius: 7,
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 4,
+      height: 4,
+    },
+    shadowOpacity: 0.4,
+    shadowRadius: 7,
   },
 });
 
