@@ -46,7 +46,12 @@ export const StorePin = async (userId, formattedDate, formattedTime) => {
 
   // Get the current time in the desired format
   const now = new Date();
-  const Time = now.toLocaleTimeString("en-GB", { hour12: false });
+
+  const Time = now.toLocaleTimeString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
   const currentTrack = await showTrack();
 
   console.log("Storing location:", latitude, longitude);

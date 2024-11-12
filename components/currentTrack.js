@@ -210,7 +210,6 @@ const fetchAudioFeatures = async (songId) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     position: "absolute", // Position the track display absolutely
     bottom: 20, // Adjust bottom position as necessary
     left: 20, // Adjust left position as necessary

@@ -77,7 +77,13 @@ const MusicTimer = ({ userId }) => {
       // Set the date and time when the timer is started
       const now = new Date();
       setFormattedDate(now.toLocaleDateString("en-GB").replace(/\//g, "-"));
-      setFormattedTime(now.toLocaleTimeString("en-GB", { hour12: false }));
+      setFormattedTime(
+        now.toLocaleTimeString("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        })
+      );
     }
   };
 
