@@ -59,7 +59,7 @@ export default function SpotifyLogin({ navigation }) {
       {isLoggedIn ? (
         <>
           <Text>Welcome, {userProfile?.name}!</Text>
-          <Buttons text="Next" page="Map" navigation={navigation} />
+          <Buttons text="Next" page="ProfileStorage" navigation={navigation} />
         </>
       ) : (
         <SpotifyLoginButton onLogin={handleLogin} userId={userId} />

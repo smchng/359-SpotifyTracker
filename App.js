@@ -18,12 +18,8 @@ export default function App() {
   return (
     <UserProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Enter">
-          <Stack.Screen name="Enter" component={Enter} />
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="SignUp" component={SignUp} />
+        <Stack.Navigator initialRouteName="SpotifyLogin">
           <Stack.Screen name="SpotifyLogin" component={SpotifyLogin} />
-          <Stack.Screen name="Map" component={Map} />
           <Stack.Screen name="ProfileStorage" component={ProfileStorage} />
         </Stack.Navigator>
       </NavigationContainer>

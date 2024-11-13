@@ -10,9 +10,9 @@ import LocIcon from "../assets/svg/location.svg";
 export function ProfileStorage({ navigation }) {
   return (
     <View>
-      <CircleButton SVGIcon={LocIcon} page="Map" navigation={navigation} />
+      {/* <CircleButton SVGIcon={LocIcon} page="Map" navigation={navigation} /> */}
       <RecentlyPlayed navigation={navigation} />
-      <Logout navigation={navigation} />
+      {/* <Logout navigation={navigation} /> */}
     </View>
   );
 }
