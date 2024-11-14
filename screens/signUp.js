@@ -16,6 +16,7 @@ import { doc, setDoc } from "firebase/firestore";
 // import TextInput from "../components/UI/input";
 import { Container } from "../components/Container";
 import CustomTextInput from "../components/UI/input";
+import WelcomeIcon from "../assets/svg/WelcomeIcon.svg";
 
 export default function SignUp({ navigation }) {
   const [email, setEmail] = useState("");
@@ -85,11 +86,7 @@ export default function SignUp({ navigation }) {
           <View style={styles.welcomeContainer}>
             <Text style={styles.greetingText}>Welcome to</Text>
             <Text style={styles.nameAppText}>Melody Moods!</Text>
-            <Image
-              source={require("../assets/welcomeIcon1.png")}
-              style={styles.image}
-              resizeMode="contain"
-            />
+            {WelcomeIcon && <WelcomeIcon width={220} height={220} />}
           </View>
 
           <View style={styles.inputContainer}>

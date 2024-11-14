@@ -13,7 +13,7 @@ import {
 import { ActionButton } from "../components/UI/buttons";
 import CustomTextInput from "../components/UI/input";
 import { Container } from "../components/Container"; // Assuming this is a custom container component
-
+import WelcomeIcon from "../assets/svg/WelcomeIcon.svg";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useUser } from "../components/UserAuth"; // Adjust the path as necessary
 
@@ -55,11 +55,7 @@ export default function Login({ navigation }) {
           <View style={styles.welcomeContainer}>
             <Text style={styles.greetingText}>Welcome Back!</Text>
             <Text style={styles.nameAppText}>Melody Moods</Text>
-            <Image
-              source={require("../assets/welcomeIcon1.png")}
-              style={styles.image}
-              resizeMode="contain"
-            />
+            {WelcomeIcon && <WelcomeIcon width={220} height={220} />}
           </View>
 
           <View style={styles.inputContainer}>
