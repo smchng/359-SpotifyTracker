@@ -121,14 +121,13 @@ const storeTrack = async (userId, formattedDate, formattedTime, track, af) => {
       createdAt: new Date(),
       artist: track.artist,
       title: track.title,
+
       danceability: af.danceability,
       energy: af.energy,
       loudness: af.loudness,
-      speechiness: af.speechiness,
       acousticness: af.acousticness,
-      instrumentalness: af.instrumentalness,
-      liveness: af.liveness,
       tempo: af.tempo,
+      valence: af.valence,
     });
 
     console.log("New track stored successfully");

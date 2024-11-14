@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, FlatList } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { getDocs, collection } from "firebase/firestore";
+import { getDocs, collection, setDoc, doc } from "firebase/firestore";
 import { db } from "../data/firebaseConfig";
+import { profileHandler } from "../components/CreateProfile";
 
 export default function PlaylistProfile({ navigation }) {
   const route = useRoute();
   const { userId, timeId, entryId } = route.params; // Access the userId, timeId, and entryId passed via navigation
 
   const [tracks, setTracks] = useState([]);
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
 
   // Fetch the playlist data from Firestore
   const fetchPlaylistFromFirestore = async () => {
@@ -37,17 +38,42 @@ export default function PlaylistProfile({ navigation }) {
 
       console.log("Fetched Playlists:", playlistDocs);
       setTracks(playlistDocs); // Set the tracks data to state
+      setLoading(false); // Stop loading once data is fetched
     } catch (error) {
       console.error("Error fetching Playlist from Firestore:", error);
-    } finally {
-      setLoading(false); // Stop loading when the data is fetched or if there’s an error
+      setLoading(false);
+    }
+  };
+
+  const createProfile = async () => {
+    try {
+      const entriesDocRef = doc(db, "users", userId);
+      const entriesCollectionRef = collection(entriesDocRef, "Entries");
+      const entriesDateDocRef = doc(entriesCollectionRef, entryId);
+      const entriesTimeRef = collection(entriesDateDocRef, "Time");
+      const entriesProfileRef = doc(entriesTimeRef, timeId);
+
+      const profile = profileHandler(tracks);
+
+      // Create or update a specific document in "Profile"
+
+      await setDoc(entriesProfileRef, {
+        mood: profile,
+      });
+
+      console.log("Profile created:", profile);
+    } catch (error) {
+      console.error("Error creating profile in Firestore:", error);
     }
   };
 
   // Use the userId, entryId, and timeId to fetch the playlist data when they change
   useEffect(() => {
+    console.log("Id Changed");
     if (userId && entryId && timeId) {
-      fetchPlaylistFromFirestore(); // Call the function to fetch the playlist
+      fetchPlaylistFromFirestore().then(() => {
+        createProfile(); // Call createProfile after fetching tracks
+      });
     }
   }, [userId, entryId, timeId]); // Dependencies: re-run when any of these change
 
@@ -61,12 +87,18 @@ export default function PlaylistProfile({ navigation }) {
 
   return (
     <View style={{ padding: 10 }}>
-      <Text>You listened to:</Text>
-      <FlatList
-        data={tracks} // Set the data to the tracks fetched from Firestore
-        renderItem={renderTrack} // Use renderTrack to display each track
-        keyExtractor={(item) => item.id} // Use track id as the key
-      />
+      {loading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <>
+          <Text>You listened to:</Text>
+          <FlatList
+            data={tracks} // Set the data to the tracks fetched from Firestore
+            renderItem={renderTrack} // Use renderTrack to display each track
+            keyExtractor={(item) => item.id} // Use track id as the key
+          />
+        </>
+      )}
     </View>
   );
 }
