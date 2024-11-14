@@ -38,7 +38,7 @@ const SpotifyLoginButton = ({ onLogin, userId }) => {
             setAccessToken(accessToken);
 
             // Fetch user profile after getting access token
-            await handleFetchAndSaveUserProfile(userId);
+
             onLogin(true, { accessToken });
           }
         } else {

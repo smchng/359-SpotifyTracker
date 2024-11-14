@@ -44,26 +44,12 @@ export default function SpotifyLogin({ navigation }) {
   const handleLogin = async (status, profile) => {
     setIsLoggedIn(status);
     await AsyncStorage.setItem("accessToken", profile.accessToken);
-
-    // Fetch user profile from Firestore after login
-    const fetchedProfile = await fetchUserProfileFromFirestore(userId);
-    if (fetchedProfile) {
-      setUserProfile(fetchedProfile); // Update state with Firestore profile
-    } else {
-      console.error("Failed to fetch profile from Firestore.");
-    }
   };
 
   return (
     <View>
-      {isLoggedIn ? (
-        <>
-          <Text>Welcome, {userProfile?.name}!</Text>
-          <Buttons text="Next" page="ProfileStorage" navigation={navigation} />
-        </>
-      ) : (
-        <SpotifyLoginButton onLogin={handleLogin} userId={userId} />
-      )}
+      <SpotifyLoginButton onLogin={handleLogin} userId={userId} />
+      <Buttons text="Next" page="ProfileStorage" navigation={navigation} />
     </View>
   );
 }
