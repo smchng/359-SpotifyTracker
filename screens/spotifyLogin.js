@@ -62,7 +62,7 @@ export default function SpotifyLogin({ navigation }) {
         {/* image should go on this line */}
         {/* <WelcomeIcon width="100%" height="100%" /> */}
         <Image
-          source={require("../assets/emojis/spotifyIcon.png")}
+          source={require("../assets/imgs/spotify.png")}
           style={styles.image}
           resizeMode="contain"
         />
