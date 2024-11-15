@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { Text, View, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { db } from "../data/firebaseConfig.js"; // Update with your Firebase config path
 import { doc, setDoc, collection } from "firebase/firestore"; // Firebase Firestore functions
 import { StorePin } from "./DropPins.js";
@@ -12,6 +12,9 @@ const MusicTimer = ({ userId }) => {
   const [lastTrackId, setLastTrackId] = useState(null);
   const [formattedDate, setFormattedDate] = useState("");
   const [formattedTime, setFormattedTime] = useState("");
+  const pollingIntervalRef = useRef(null);
+  const timerRef = useRef(null);
+  const [timeOver, setTimeOver] = useState(false);
 
   let pollingInterval;
 
@@ -52,28 +55,54 @@ const MusicTimer = ({ userId }) => {
   }, [isTimerActive, lastTrackId, formattedDate, formattedTime]);
 
   useEffect(() => {
-    let timer;
-
     if (isTimerActive && timeLeft > 0) {
-      timer = setInterval(() => {
-        setTimeLeft((prevTime) => prevTime - 1); // Decrement time left
+      timerRef.current = setInterval(() => {
+        setTimeLeft((prevTime) => prevTime - 1);
       }, 1000);
+      setTimeOver(false);
     } else if (timeLeft === 0) {
       setIsTimerActive(false);
-      clearInterval(timer);
-      clearInterval(pollingInterval); // Stop polling when the timer ends
+      clearInterval(timerRef.current);
+      clearInterval(pollingIntervalRef.current); // Stop polling when the timer ends
+      setTimeOver(true);
+
       console.log("Timer finished. Stopping track storage.");
     }
 
-    return () => clearInterval(timer); // Clear timer on component unmount
+    return () => clearInterval(timerRef.current);
   }, [isTimerActive, timeLeft]);
 
   const handlePress = () => {
     console.log("Pressed");
-    if (!isTimerActive) {
+    if (isTimerActive) {
+      // Ask if the user wants to end the session
+      Alert.alert(
+        "End Session?",
+        "Do you want to end the current session?",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "Yes",
+            onPress: () => {
+              // Stop the timer and polling
+              setIsTimerActive(false);
+              clearInterval(timerRef.current);
+              clearInterval(pollingIntervalRef.current);
+              setTimeLeft(30 * 60); // Reset timer to 30 minutes
+              setTimeOver(true);
+              console.log("Session ended and timer reset");
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+    } else {
       console.log("Timer active");
-      setIsTimerActive(true); // Start the timer
-
+      setIsTimerActive(true);
+      setTimeOver(false);
       // Set the date and time when the timer is started
       const now = new Date();
       setFormattedDate(now.toLocaleDateString("en-GB").replace(/\//g, "-"));
@@ -95,7 +124,7 @@ const MusicTimer = ({ userId }) => {
 
   return (
     <View style={styles.timerContainer}>
-      <TouchableOpacity onPress={handlePress} disabled={isTimerActive}>
+      <TouchableOpacity onPress={handlePress}>
         <Text style={styles.timer}>{formatTimeLeft(timeLeft)}</Text>
       </TouchableOpacity>
     </View>
