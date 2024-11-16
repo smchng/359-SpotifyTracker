@@ -117,7 +117,14 @@ export default function EntriesList({ navigation }) {
                     style={styles.timeDoc}
                     onPress={() => handlePage(timeDoc.id, entry)} // Wrap the function in an arrow function
                   >
-                    <Text style={styles.profile}>{timeDoc.mood}</Text>
+                    <Text
+                      style={[
+                        styles.profile,
+                        !timeDoc.mood && { fontWeight: "bold" }, // Apply bold style if mood is null
+                      ]}
+                    >
+                      {timeDoc.mood ? timeDoc.mood : "New!"}
+                    </Text>
                     <Text style={styles.timeDocTitle}>{timeDoc.id}</Text>
                     {/* You can render more details from the timeDoc here */}
                   </TouchableOpacity>
