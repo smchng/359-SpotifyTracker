@@ -65,7 +65,7 @@ const emojiComponents = {
 export default function PlaylistProfile({ navigation }) {
   const route = useRoute();
   const { userId, timeId, entryId } = route.params; // Access the userId, timeId, and entryId passed via navigation
-  const [emoji, setEmoji] = useState(null);
+
   const [tracks, setTracks] = useState([]);
   const [mood, setMood] = useState(null);
 
@@ -119,6 +119,7 @@ export default function PlaylistProfile({ navigation }) {
       if (moodSnapshot.exists()) {
         const moodData = moodSnapshot.data();
         console.log("Fetched Mood Document:", moodData);
+
         setMood(moodData);
         return moodData;
       } else {
@@ -187,10 +188,6 @@ export default function PlaylistProfile({ navigation }) {
       checkMoodExists(); // Call the function to check mood before creating the profile
 
       fetchMoodFromFirestore();
-
-      const EmojiComponent = emojiComponents[mood.emoji] || Everywhere1;
-
-      setEmoji(EmojiComponent);
     }
   }, [tracks, userId, entryId, timeId]); // Dependencies: call only when tracks, userId, entryId, or timeId change
 
@@ -201,12 +198,17 @@ export default function PlaylistProfile({ navigation }) {
       <Text>{item.artist}</Text>
     </View>
   );
+  console.log("test", emojiComponents);
+  const EmojiComponent =
+    mood && mood.emoji ? emojiComponents[mood.emoji] : Everywhere1;
 
   return (
     <View style={{ padding: 10 }}>
       {mood && (
         <View>
-          <View>{emoji && <emoji width={25} height={25} />}</View>
+          <View>
+            {EmojiComponent && <EmojiComponent width={25} height={25} />}
+          </View>
           <Text>Mood: {mood.mood}</Text>
           <Text>Message: {mood.tagline}</Text>
         </View>
