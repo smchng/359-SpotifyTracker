@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList } from "react-native";
+import { View, Text, FlatList, StyleSheet } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { getDocs, collection, setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../data/firebaseConfig";
@@ -29,18 +29,45 @@ import Late3 from "../assets/emojis/late3.svg";
 import Sad1 from "../assets/emojis/sad1.svg";
 import Sad2 from "../assets/emojis/sad2.svg";
 import Sad3 from "../assets/emojis/sad3.svg";
-import Sleep1 from "../assets/emojis/sleep1.svg";
+import Sleepy1 from "../assets/emojis/sleep1.svg";
 import Sleepy2 from "../assets/emojis/sleepy2.svg";
 import Sleepy3 from "../assets/emojis/sleepy3.svg";
+const emojiComponents = {
+  Happy1: Happy1,
+  Happy2: Happy2,
+  Happy3: Happy3,
+  Sad1: Sad1,
+  Sad2: Sad2,
+  Sad3: Sad3,
+  Freak1: Freak1,
+  Freak2: Freak2,
+  Freak3: Freak3,
+  Chilling1: Chilling1,
+  Chilling2: Chilling2,
+  Chilling3: Chilling3,
+  Angry1: Angry1,
+  Angry2: Angry2,
+  Angry3: Angry3,
+  Everywhere1: Everywhere1,
+  Everywhere2: Everywhere2,
+  Everywhere3: Everywhere3,
+  Sleepy1: Sleepy1,
+  Sleepy2: Sleepy2,
+  Sleepy3: Sleepy3,
+  LateNight1: Late1,
+  LateNight2: Late2,
+  LateNight3: Late3,
+  Classical1: Class1,
+  Classical2: Class2,
+  Classical3: Class3,
+};
 
 export default function PlaylistProfile({ navigation }) {
   const route = useRoute();
   const { userId, timeId, entryId } = route.params; // Access the userId, timeId, and entryId passed via navigation
-
+  const [emoji, setEmoji] = useState(null);
   const [tracks, setTracks] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [mood, setMood] = useState(null);
-  const [selectedProfile, setSelectedProfile] = useState(null);
 
   // Fetch the playlist data from Firestore
   const fetchPlaylistFromFirestore = async () => {
@@ -68,11 +95,10 @@ export default function PlaylistProfile({ navigation }) {
 
       console.log("Fetched Playlists:", playlistDocs);
       setTracks(playlistDocs); // Set the tracks data to state
-      setLoading(false); // Stop loading once data is fetched
+
       return playlistDocs;
     } catch (error) {
       console.error("Error fetching Playlist from Firestore:", error);
-      setLoading(false);
     }
   };
 
@@ -101,7 +127,6 @@ export default function PlaylistProfile({ navigation }) {
       }
     } catch (error) {
       console.error("Error fetching Mood document from Firestore:", error);
-      setLoading(false);
     }
   };
 
@@ -162,6 +187,10 @@ export default function PlaylistProfile({ navigation }) {
       checkMoodExists(); // Call the function to check mood before creating the profile
 
       fetchMoodFromFirestore();
+
+      const EmojiComponent = emojiComponents[mood.emoji] || Everywhere1;
+
+      setEmoji(EmojiComponent);
     }
   }, [tracks, userId, entryId, timeId]); // Dependencies: call only when tracks, userId, entryId, or timeId change
 
@@ -177,18 +206,34 @@ export default function PlaylistProfile({ navigation }) {
     <View style={{ padding: 10 }}>
       {mood && (
         <View>
+          <View>{emoji && <emoji width={25} height={25} />}</View>
           <Text>Mood: {mood.mood}</Text>
           <Text>Message: {mood.tagline}</Text>
-          <Text>Emoji: {mood.emoji}</Text>
         </View>
       )}
 
-      <Text>You listened to:</Text>
-      <FlatList
-        data={tracks} // Set the data to the tracks fetched from Firestore
-        renderItem={renderTrack} // Use renderTrack to display each track
-        keyExtractor={(item) => item.id} // Use track id as the key
-      />
+      <View style={styles.container}>
+        <Text>You listened to:</Text>
+        <FlatList
+          data={tracks} // Set the data to the tracks fetched from Firestore
+          renderItem={renderTrack} // Use renderTrack to display each track
+          keyExtractor={(item) => item.id} // Use track id as the key
+          style={styles.flatList}
+        />
+      </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 20,
+    height: " 60%", // Set height to 40vh for the container
+  },
+  flatList: {
+    height: "100%", // Make FlatList occupy full height of the container
+  },
+  flatListContent: {
+    paddingBottom: 10, // Optional: adds padding to the bottom of the FlatList
+  },
+});
