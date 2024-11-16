@@ -64,7 +64,7 @@ export default function Login({ navigation }) {
               placeholder="Enter your email"
               value={email}
               onChangeText={setEmail}
-              textColor="white"
+              textColor="black"
               autoComplete="email"
               secureEntry={false}
             />
@@ -74,7 +74,7 @@ export default function Login({ navigation }) {
               secureTextEntry
               value={password}
               onChangeText={setPassword}
-              textColor="white"
+              textColor="black"
               autoComplete="password"
               secureEntry={true}
             />

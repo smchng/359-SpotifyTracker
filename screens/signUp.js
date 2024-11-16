@@ -94,19 +94,19 @@ export default function SignUp({ navigation }) {
               placeholder="Username"
               value={displayName}
               onChangeText={setDisplayName}
-              textColor="white"
+              textColor="black"
             />
             <CustomTextInput
               value={password}
               onChangeText={setPassword}
               placeholder="Password"
-              textColor="white"
+              textColor="black"
             />
             <CustomTextInput
               value={email}
               onChangeText={setEmail}
               placeholder="Email"
-              textColor="white"
+              textColor="black"
             />
           </View>
 
