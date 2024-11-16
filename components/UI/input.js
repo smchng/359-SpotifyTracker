@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderRadius: 13,
     paddingVertical: 20,
-    backgroundColor: "#303030",
+    backgroundColor: "white",
     alignSelf: "center",
 
     //shadow
@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: "left",
     fontStyle: "none",
-    backgroundColor: "#303030",
   },
 });
 
