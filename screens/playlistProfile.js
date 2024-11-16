@@ -198,6 +198,7 @@ export default function PlaylistProfile({ navigation }) {
       <Text>{item.artist}</Text>
     </View>
   );
+
   console.log("test", emojiComponents);
   const EmojiComponent =
     mood && mood.emoji ? emojiComponents[mood.emoji] : Everywhere1;
@@ -207,7 +208,7 @@ export default function PlaylistProfile({ navigation }) {
       {mood && (
         <View>
           <View>
-            {EmojiComponent && <EmojiComponent width={25} height={25} />}
+            {EmojiComponent && <EmojiComponent width={150} height={150} />}
           </View>
           <Text>Mood: {mood.mood}</Text>
           <Text>Message: {mood.tagline}</Text>
