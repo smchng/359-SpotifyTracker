@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Button, Image } from "react-native";
 import { NavigationButton } from "../components/UI/buttons";
 import { Container } from "../components/Container";
 import WelcomeIcon from "../assets/svg/WelcomeIcon.svg";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Login with existing account
 export default function Enter({ navigation }) {

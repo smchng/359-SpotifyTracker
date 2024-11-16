@@ -16,6 +16,7 @@ import { Container } from "../components/Container"; // Assuming this is a custo
 import WelcomeIcon from "../assets/svg/WelcomeIcon.svg";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useUser } from "../components/UserAuth"; // Adjust the path as necessary
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState(""); // Controlled input for email
