@@ -50,13 +50,20 @@ export const ActionButton = ({ text, buttonStyle, textColor, onPress }) => {
   );
 };
 
-export function LogoutButton({ text, page, navigation, onPress }) {
+export function LogoutButton({ page, navigation, onPress }) {
   const handlePage = () => {
     if (onPress) onPress(); // Call onPress if provided
     navigation.navigate(page); // Navigate if navigation and page are provided
   };
 
-  return <Button title={text} onPress={handlePage} />;
+  return (
+    <CustomButton
+      text="Logout"
+      onPress={handlePage} // Corrected to pass only `handlePage` to the `CustomButton`
+      style={{ backgroundColor: "#303030" }}
+      textColor="white"
+    />
+  );
 }
 
 //Ciruclar button for Home, Map, x
