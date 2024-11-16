@@ -81,7 +81,7 @@ export function Map({ navigation }) {
             page="ProfileStorage"
             navigation={navigation}
           />
-          <MusicTimer userId={userId} />
+          <MusicTimer userId={userId} navigation={navigation} />
         </View>
 
         <EntryListWithPins

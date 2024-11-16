@@ -1,21 +1,28 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Text, View, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  Modal,
+} from "react-native";
 import { db } from "../data/firebaseConfig.js"; // Update with your Firebase config path
 import { doc, setDoc, collection } from "firebase/firestore"; // Firebase Firestore functions
 import { StorePin } from "./DropPins.js";
 import { showTrack, showTrackAF } from "./CurrentTrack.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { NavigationButton } from "../components/UI/buttons";
 
-const MusicTimer = ({ userId }) => {
+const MusicTimer = ({ userId, navigation }) => {
   const [isTimerActive, setIsTimerActive] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(30 * 60); // 30-minute countdown
+  const [timeLeft, setTimeLeft] = useState(1 * 60); // 30-minute countdown
   const [lastTrackId, setLastTrackId] = useState(null);
   const [formattedDate, setFormattedDate] = useState("");
   const [formattedTime, setFormattedTime] = useState("");
   const pollingIntervalRef = useRef(null);
   const timerRef = useRef(null);
-  const [timeOver, setTimeOver] = useState(false);
-
+  const [isModalVisible, setIsModalVisible] = useState(true);
   let pollingInterval;
 
   useEffect(() => {
@@ -59,12 +66,10 @@ const MusicTimer = ({ userId }) => {
       timerRef.current = setInterval(() => {
         setTimeLeft((prevTime) => prevTime - 1);
       }, 1000);
-      setTimeOver(false);
     } else if (timeLeft === 0) {
       setIsTimerActive(false);
       clearInterval(timerRef.current);
       clearInterval(pollingIntervalRef.current); // Stop polling when the timer ends
-      setTimeOver(true);
 
       console.log("Timer finished. Stopping track storage.");
     }
@@ -92,7 +97,7 @@ const MusicTimer = ({ userId }) => {
               clearInterval(timerRef.current);
               clearInterval(pollingIntervalRef.current);
               setTimeLeft(30 * 60); // Reset timer to 30 minutes
-              setTimeOver(true);
+
               console.log("Session ended and timer reset");
             },
           },
@@ -102,7 +107,7 @@ const MusicTimer = ({ userId }) => {
     } else {
       console.log("Timer active");
       setIsTimerActive(true);
-      setTimeOver(false);
+
       // Set the date and time when the timer is started
       const now = new Date();
       setFormattedDate(now.toLocaleDateString("en-GB").replace(/\//g, "-"));
@@ -131,6 +136,30 @@ const MusicTimer = ({ userId }) => {
           <Text style={styles.timer}>Start Session</Text>
         )}
       </TouchableOpacity>
+      {timeLeft === 0 && isModalVisible && (
+        <Modal transparent={true}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>
+                A new profile was generated!
+              </Text>
+              <NavigationButton
+                text="Go"
+                page="ProfileStorage"
+                navigation={navigation}
+                buttonStyle={styles.loginButton}
+                textColor="#FFFFFF"
+              />
+              <Text
+                style={styles.closeButton}
+                onPress={() => setIsModalVisible(false)} // Close the modal
+              >
+                Close
+              </Text>
+            </View>
+          </View>
+        </Modal>
+      )}
     </View>
   );
 };
@@ -191,6 +220,33 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 7,
     elevation: 2,
+  },
+
+  loginButton: {
+    backgroundColor: "#303030",
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContent: {
+    width: 200,
+    padding: 20,
+    backgroundColor: "white",
+    borderRadius: 10,
+  },
+  modalTitle: {
+    fontSize: 12,
+    color: "grey",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  modalItem: {},
+  closeButton: {
+    marginTop: 20,
+    color: "blue",
+    textAlign: "center",
   },
 });
 
