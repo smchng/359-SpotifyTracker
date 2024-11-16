@@ -117,6 +117,7 @@ export default function EntriesList({ navigation }) {
                     style={styles.timeDoc}
                     onPress={() => handlePage(timeDoc.id, entry)} // Wrap the function in an arrow function
                   >
+                    <Text style={styles.profile}>{timeDoc.mood}</Text>
                     <Text style={styles.timeDocTitle}>{timeDoc.id}</Text>
                     {/* You can render more details from the timeDoc here */}
                   </TouchableOpacity>
@@ -169,10 +170,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25, // Shadow opacity (simulating rgba(0, 0, 0, 0.25))
     shadowRadius: 7, // Shadow blur radius (simulating 7px)
     elevation: 2,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center", // Aligns items vertically in the center if needed
+    width: "100%",
   },
   timeDocTitle: {
-    fontWeight: "bold",
-    fontSize: 14,
+    fontSize: 12,
+    color: "grey",
   },
   timeDocDescription: {
     fontSize: 12,
