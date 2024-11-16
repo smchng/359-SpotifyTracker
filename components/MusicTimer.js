@@ -125,7 +125,11 @@ const MusicTimer = ({ userId }) => {
   return (
     <View style={styles.timerContainer}>
       <TouchableOpacity onPress={handlePress}>
-        <Text style={styles.timer}>{formatTimeLeft(timeLeft)}</Text>
+        {isTimerActive ? (
+          <Text style={styles.timer}>{formatTimeLeft(timeLeft)}</Text>
+        ) : (
+          <Text style={styles.timer}>Start Session</Text>
+        )}
       </TouchableOpacity>
     </View>
   );

@@ -76,6 +76,35 @@ export default function PlaylistProfile({ navigation }) {
     }
   };
 
+  const fetchMoodFromFirestore = async () => {
+    try {
+      // Reference to a specific document under "Time"
+      const moodDocRef = doc(
+        db,
+        "users",
+        userId,
+        "Entries",
+        entryId,
+        "Time",
+        timeId
+      );
+      const moodSnapshot = await getDoc(moodDocRef);
+
+      if (moodSnapshot.exists()) {
+        const moodData = moodSnapshot.data();
+        console.log("Fetched Mood Document:", moodData);
+        setMood(moodData);
+        return moodData;
+      } else {
+        console.log("No mood document found.");
+        return null;
+      }
+    } catch (error) {
+      console.error("Error fetching Mood document from Firestore:", error);
+      setLoading(false);
+    }
+  };
+
   const createProfile = async () => {
     try {
       console.log(tracks);
@@ -92,11 +121,11 @@ export default function PlaylistProfile({ navigation }) {
         await setDoc(entriesProfileRef, {
           mood: profile.mood, // Make sure profile.mood exists
           emoji: profile.img, // Make sure profile.img exists
-          string: profile.tagline,
+          tagline: profile.tagline,
         });
-        setMood(profile); // Set mood after saving profile
         console.log("Profile created:", profile);
       }
+      fetchMoodFromFirestore();
     } catch (error) {
       console.error("Error creating profile in Firestore:", error);
     }
@@ -131,6 +160,8 @@ export default function PlaylistProfile({ navigation }) {
       };
 
       checkMoodExists(); // Call the function to check mood before creating the profile
+
+      fetchMoodFromFirestore();
     }
   }, [tracks, userId, entryId, timeId]); // Dependencies: call only when tracks, userId, entryId, or timeId change
 
@@ -144,18 +175,20 @@ export default function PlaylistProfile({ navigation }) {
 
   return (
     <View style={{ padding: 10 }}>
-      {loading ? (
-        <Text>Loading...</Text>
-      ) : (
-        <>
-          <Text>You listened to:</Text>
-          <FlatList
-            data={tracks} // Set the data to the tracks fetched from Firestore
-            renderItem={renderTrack} // Use renderTrack to display each track
-            keyExtractor={(item) => item.id} // Use track id as the key
-          />
-        </>
+      {mood && (
+        <View>
+          <Text>Mood: {mood.mood}</Text>
+          <Text>Message: {mood.tagline}</Text>
+          <Text>Emoji: {mood.emoji}</Text>
+        </View>
       )}
+
+      <Text>You listened to:</Text>
+      <FlatList
+        data={tracks} // Set the data to the tracks fetched from Firestore
+        renderItem={renderTrack} // Use renderTrack to display each track
+        keyExtractor={(item) => item.id} // Use track id as the key
+      />
     </View>
   );
 }
