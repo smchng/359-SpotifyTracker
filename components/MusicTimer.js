@@ -16,7 +16,7 @@ import { NavigationButton } from "../components/UI/buttons";
 
 const MusicTimer = ({ userId, navigation }) => {
   const [isTimerActive, setIsTimerActive] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(1 * 60); // 30-minute countdown
+  const [timeLeft, setTimeLeft] = useState(30 * 60); // 30-minute countdown
   const [lastTrackId, setLastTrackId] = useState(null);
   const [formattedDate, setFormattedDate] = useState("");
   const [formattedTime, setFormattedTime] = useState("");
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 10,
   },
-  modalItem: {},
+
   closeButton: {
     marginTop: 20,
     color: "blue",

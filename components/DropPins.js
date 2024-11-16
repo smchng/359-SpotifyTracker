@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { db } from "../data/firebaseConfig.js"; // Update with your Firebase config path
 import { doc, setDoc, collection, getDocs } from "firebase/firestore"; // Firebase Firestore functions
 import { showTrack } from "./CurrentTrack.js";
+import MusicPin from "../assets/svg/pin.svg";
 
 // Function to fetch location and update state
 export const fetchLocation = async () => {
@@ -208,7 +209,9 @@ export const RenderPin = ({ userId, entryId }) => {
               </View>
             </Modal>
           )}
-          <View style={styles.circle} />
+          <View style={styles.circle}>
+            {MusicPin && <MusicPin width={25} height={25} />}
+          </View>
         </Marker>
       ))}
     </View>
@@ -217,10 +220,6 @@ export const RenderPin = ({ userId, entryId }) => {
 
 const styles = StyleSheet.create({
   circle: {
-    width: 10,
-    height: 10,
-    backgroundColor: "red", // Color of the dot
-    borderRadius: 5, // Half of the width/height to make it a circle
     zIndex: 15,
     // Customize the pin appearance
   },
