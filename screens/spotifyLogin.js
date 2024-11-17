@@ -1,4 +1,3 @@
-// Connect and login with spotify
 import React, { useState } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
 import SpotifyLoginButton from "../components/SpotifyLoginButton";
@@ -59,8 +58,6 @@ export default function SpotifyLogin({ navigation }) {
   return (
     <Container>
       <View style={styles.welcomeContainer}>
-        {/* image should go on this line */}
-        {/* <WelcomeIcon width="100%" height="100%" /> */}
         <Image
           source={require("../assets/imgs/spotify.png")}
           style={styles.image}
@@ -69,7 +66,7 @@ export default function SpotifyLogin({ navigation }) {
       </View>
       {isLoggedIn ? (
         <>
-          <Text>Welcome, {userProfile?.name}!</Text>
+          <Text style={styles.welcomeText}>Welcome, {userProfile?.name}!</Text>
           <NavigationButton
             text="Next"
             page="Map"
@@ -93,5 +90,16 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#303030",
+  },
+  welcomeContainer: {
+    alignItems: "center",
+    //marginTop: 40, // Add some space above the image
+  },
+  welcomeText: {
+    fontSize: 20, // Adjust font size for the welcome text
+    //fontWeight: "bold", // Make the text bold
+    color: "#303030", // Spotify green color, adjust as needed
+    //marginTop: 20, // Add some space below the image
+    textAlign: "center", // Center the text
   },
 });

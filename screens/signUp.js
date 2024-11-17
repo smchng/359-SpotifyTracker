@@ -84,8 +84,8 @@ export default function SignUp({ navigation }) {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <Container>
           <View style={styles.welcomeContainer}>
-            <Text style={styles.greetingText}>Welcome to</Text>
-            <Text style={styles.nameAppText}>Melody Moods!</Text>
+            <Text style={styles.greetingText}>WELCOME TO</Text>
+            <Text style={styles.nameAppText}>Moodz!</Text>
             {WelcomeIcon && <WelcomeIcon width={220} height={220} />}
           </View>
 
@@ -136,16 +136,17 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   greetingText: {
-    fontSize: 28,
-    fontWeight: "bold",
+    fontSize: 12,
+    //fontWeight: "bold",
     textAlign: "center",
     color: "#303030",
   },
   nameAppText: {
-    fontSize: 28,
+    fontSize: 50,
     fontWeight: "bold",
     textAlign: "center",
     color: "#303030",
+    marginTop: -6,
   },
   inputContainer: {
     width: "100%",
