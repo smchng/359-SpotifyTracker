@@ -237,10 +237,6 @@ export default function PlaylistProfile({ navigation }) {
         </View>
       )}
 
-      <View style={styles.circleButtonWrapper}>
-        <CircleButton SVGIcon={LocIcon} page="Map" navigation={navigation} />
-      </View>
-
       <View style={styles.circleButton}>
         <CircleButton
           SVGIcon={xMarkIcon}
