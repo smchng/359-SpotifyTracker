@@ -1,11 +1,10 @@
-// src/App.js
-
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { UserProvider } from "./components/UserAuth";
+import { TimerProvider } from "./components/TimerContext";
 
-//Import the Screens
+// Import the Screens
 import Enter from "./screens/enter";
 import Login from "./screens/login";
 import SignUp from "./screens/signUp";
@@ -18,17 +17,19 @@ export default function App() {
   const Stack = createStackNavigator();
   return (
     <UserProvider>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Enter">
-          <Stack.Screen name="Enter" component={Enter} />
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="SignUp" component={SignUp} />
-          <Stack.Screen name="SpotifyLogin" component={SpotifyLogin} />
-          <Stack.Screen name="Map" component={Map} />
-          <Stack.Screen name="ProfileStorage" component={ProfileStorage} />
-          <Stack.Screen name="PlaylistProfile" component={PlaylistProfile} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <TimerProvider>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Enter">
+            <Stack.Screen name="Enter" component={Enter} />
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="SignUp" component={SignUp} />
+            <Stack.Screen name="SpotifyLogin" component={SpotifyLogin} />
+            <Stack.Screen name="Map" component={Map} />
+            <Stack.Screen name="ProfileStorage" component={ProfileStorage} />
+            <Stack.Screen name="PlaylistProfile" component={PlaylistProfile} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </TimerProvider>
     </UserProvider>
   );
 }
