@@ -4,6 +4,10 @@ import { useRoute } from "@react-navigation/native";
 import { getDocs, collection, setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../data/firebaseConfig";
 import { profileHandler } from "../components/CreateProfile";
+import LocIcon from "../assets/svg/location.svg";
+import MusicTimer from "../components/MusicTimer";
+import { CircleButton } from "../components/UI/buttons";
+import xMarkIcon from "../assets/svg/xmark.svg";
 
 import Angry1 from "../assets/emojis/angry1.svg";
 import Angry2 from "../assets/emojis/angry2.svg";
@@ -194,49 +198,157 @@ export default function PlaylistProfile({ navigation }) {
   // Render item for FlatList
   const renderTrack = ({ item }) => (
     <View style={{ marginBottom: 10 }}>
-      <Text style={{ fontWeight: "bold" }}>{item.title}</Text>
-      <Text>{item.artist}</Text>
+      <Text style={styles.trackTitle}>{item.title}</Text>
+      <Text style={styles.trackArtist}>{item.artist}</Text>
     </View>
   );
+
 
   console.log("test", emojiComponents);
   const EmojiComponent =
     mood && mood.emoji ? emojiComponents[mood.emoji] : Everywhere1;
 
-  return (
-    <View style={{ padding: 10 }}>
-      {mood && (
-        <View>
-          <View>
-            {EmojiComponent && <EmojiComponent width={150} height={150} />}
+    return (
+      <View style={{ padding: 10, flex: 1, justifyContent: "center", alignItems: "center" }}>
+        {mood && (
+          <View style={styles.moodContainer}>
+            {/* Rectangle Container with Background */}
+            <View style={styles.rectangle}>
+              <View style={styles.emojiContainer}>
+                {EmojiComponent && <EmojiComponent width={150} height={150} />}
+              </View>
+              <Text style={styles.moodText}>Moodz: {mood.mood}</Text>
+              <Text style={styles.messageText}>Message: {mood.tagline}</Text>
+            </View>
           </View>
-          <Text>Mood: {mood.mood}</Text>
-          <Text>Message: {mood.tagline}</Text>
+        )}
+  
+        <View style={styles.circleButtonWrapper}>
+          <CircleButton SVGIcon={LocIcon} page="Map" navigation={navigation} />
+          <MusicTimer navigation={navigation} />
         </View>
-      )}
-
-      <View style={styles.container}>
-        <Text>You listened to:</Text>
-        <FlatList
-          data={tracks} // Set the data to the tracks fetched from Firestore
-          renderItem={renderTrack} // Use renderTrack to display each track
-          keyExtractor={(item) => item.id} // Use track id as the key
-          style={styles.flatList}
-        />
+  
+        <View style={styles.circleButton}>
+        <CircleButton SVGIcon={xMarkIcon} page="ProfileStorage" navigation={navigation} />
       </View>
-    </View>
-  );
-}
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    height: " 60%", // Set height to 40vh for the container
-  },
-  flatList: {
-    height: "100%", // Make FlatList occupy full height of the container
-  },
-  flatListContent: {
-    paddingBottom: 10, // Optional: adds padding to the bottom of the FlatList
-  },
-});
+        {/* Background Rectangle behind FlatList and container */}
+        <View style={styles.backgroundRectangle}></View>
+  
+        <View style={styles.container}>
+          <Text>You listened to:</Text>
+          <FlatList
+            data={tracks} // Set the data to the tracks fetched from Firestore
+            renderItem={renderTrack} // Use renderTrack to display each track
+            keyExtractor={(item) => item.id} // Use track id as the key
+            style={styles.flatList}
+          />
+        </View>
+      </View>
+    );
+  }
+  
+  const styles = StyleSheet.create({
+    container: {
+      
+      padding: 40,
+      height: "60%", // Set height to 60% for the container
+      width: "100%", // Ensure the container takes full width
+      alignItems: 'flex-start', // Align children to the left
+      justifyContent: 'flex-start', // Align items vertically at the top
+      zIndex: 2, 
+    
+    },
+    flatList: {
+      height: "100%", 
+      width: "100%",  
+    },
+    trackTitle: {
+      marginTop:10,
+      fontSize: 15,
+      fontWeight: "bold",
+      color: "black",
+
+    },
+    trackArtist: {
+      fontSize: 12,
+      color: "#555",
+      fontStyle: "italic",  
+    },
+    circleButtonWrapper: {
+      position: "absolute", 
+      top: 20, 
+      left: 10, 
+      right: 10, 
+      justifyContent: "center", 
+      alignItems: "center", 
+      zIndex: 10, 
+    },
+    circleButton: {
+      position: "absolute", 
+      top: 120, 
+      left: 10, 
+      right: 0, 
+    },
+    moodContainer: {
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 220, 
+      marginBottom: 10,
+      width: "100%",
+    },
+    rectangle: {
+      backgroundColor: "#FFFFFF", 
+      paddingVertical: 20,
+      paddingHorizontal: 120,
+      borderRadius: 10, 
+      alignItems: "center", 
+      shadowColor: "#000", 
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 4,
+      elevation: 4, 
+      position: "relative", 
+      marginTop: 60, 
+    },
+    emojiContainer: {
+      position: "absolute", 
+      top: -90, 
+      borderWidth: 10, 
+      borderColor: "#EBEFF2", 
+      borderRadius: 100, 
+      shadowColor: "#000", 
+      shadowOffset: { width: 0, height: 4 }, 
+      shadowOpacity: 0.2, 
+      shadowRadius: 6, 
+      elevation: 6, 
+    },
+    moodText: {
+      fontSize: 18,
+      fontWeight: "bold",
+      textAlign: "center",
+      marginTop: 70, 
+    },
+    messageText: {
+      fontSize: 16,
+      textAlign: "center",
+      color: "#555",
+      marginTop: 20, 
+    },
+    
+    backgroundRectangle: {
+      position: "absolute", 
+      top: 400, 
+      left: 30, 
+      right: 30, 
+      bottom: 90, 
+      backgroundColor: "#FFFFFF", 
+      borderRadius: 10,
+      shadowColor: "#bbb", 
+      shadowOffset: { width: 0, height: -4 }, 
+      shadowOpacity: 0.3, 
+      shadowRadius: 6,
+      elevation: 2, 
+      zIndex: 1, 
+    },
+  });

@@ -133,7 +133,7 @@ const MusicTimer = ({ userId, navigation }) => {
         {isTimerActive ? (
           <Text style={styles.timer}>{formatTimeLeft(timeLeft)}</Text>
         ) : (
-          <Text style={styles.timer}>Start Session</Text>
+          <Text style={styles.timer}>START SESSION</Text>
         )}
       </TouchableOpacity>
       {timeLeft === 0 && isModalVisible && (
@@ -201,7 +201,7 @@ const storeTrack = async (userId, formattedDate, formattedTime, track, af) => {
 // Styling for the timer container
 const styles = StyleSheet.create({
   timer: {
-    fontWeight: "bold",
+    //fontWeight: "bold",
   },
   timerContainer: {
     top: 20,
