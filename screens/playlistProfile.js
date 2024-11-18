@@ -206,7 +206,7 @@ export default function PlaylistProfile({ navigation }) {
       <View style={{ marginBottom: 10 }}>
         <Text style={styles.trackTitle}>{item.title}</Text>
         <Text style={styles.trackArtist}>{item.artist}</Text>
-        <Text style={styles.trackArtist}>{createdAt}</Text>
+        <Text style={styles.trackTime}>{createdAt}</Text>
       </View>
     );
   };
@@ -231,15 +231,14 @@ export default function PlaylistProfile({ navigation }) {
             <View style={styles.emojiContainer}>
               {EmojiComponent && <EmojiComponent width={150} height={150} />}
             </View>
-            <Text style={styles.moodText}>Moodz: {mood.mood}</Text>
-            <Text style={styles.messageText}>Message: {mood.tagline}</Text>
+            <Text style={styles.moodText}>{mood.mood}</Text>
+            <Text style={styles.messageText}>{mood.tagline}</Text>
           </View>
         </View>
       )}
 
       <View style={styles.circleButtonWrapper}>
         <CircleButton SVGIcon={LocIcon} page="Map" navigation={navigation} />
-        <MusicTimer navigation={navigation} />
       </View>
 
       <View style={styles.circleButton}>
@@ -290,32 +289,27 @@ const styles = StyleSheet.create({
     color: "#555",
     fontStyle: "italic",
   },
-  circleButtonWrapper: {
-    position: "absolute",
-    top: 20,
-    left: 10,
-    right: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 10,
+  trackTime: {
+    fontSize: 12,
+    color: "#555",
   },
   circleButton: {
     position: "absolute",
-    top: 120,
+    top: 20,
     left: 10,
     right: 0,
   },
   moodContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 220,
+    marginTop: 70,
     marginBottom: 10,
     width: "100%",
   },
   rectangle: {
     backgroundColor: "#FFFFFF",
-    paddingVertical: 20,
-    paddingHorizontal: 120,
+    paddingVertical: 10,
+    paddingHorizontal: 130,
     borderRadius: 10,
     alignItems: "center",
     shadowColor: "#000",
@@ -342,20 +336,20 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     textAlign: "center",
-    marginTop: 70,
+    marginTop: 80,
   },
   messageText: {
     fontSize: 16,
     textAlign: "center",
     color: "#555",
-    marginTop: 20,
+    marginTop: 15,
   },
 
   backgroundRectangle: {
     position: "absolute",
-    top: 400,
-    left: 30,
-    right: 30,
+    top: 350,
+    left: 25,
+    right: 25,
     bottom: 90,
     backgroundColor: "#FFFFFF",
     borderRadius: 10,
