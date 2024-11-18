@@ -177,13 +177,18 @@ const storeTrack = async (userId, formattedDate, formattedTime, track, af) => {
     await setDoc(entriesDateDocRef, {
       placeholder: formattedDate,
     });
+    const now = new Date();
+    const time = now.toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
 
     // Create the document for the new track
     await setDoc(entriesPlaylistDocRef, {
-      createdAt: new Date(),
+      createdAt: time,
       artist: track.artist,
       title: track.title,
-
       danceability: af.danceability,
       energy: af.energy,
       loudness: af.loudness,
