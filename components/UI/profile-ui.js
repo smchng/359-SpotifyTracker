@@ -10,6 +10,9 @@ import {
 import { useUser } from "../UserAuth";
 import { fetchSpotifyProfileFromFirestore } from "../../screens/spotifyLogin";
 import { fetchUserProfileFromFirestore } from "../UserProfile";
+// import WelcomeIcon from "../assets/svg/WelcomeIcon.svg";
+// import SpotifyLoginButton from "../components/SpotifyLoginButton";
+
 
 export function Profile() {
   const { userId } = useUser();
@@ -47,16 +50,16 @@ export function Profile() {
     <View style={styles.profileContainer}>
       <View style={styles.profile}>
         {userProfile ? (
-          <Text>{userProfile.displayName}</Text>
+          <Text style={styles.profileText}>{userProfile.displayName}</Text>
         ) : (
-          <Text>Hello!</Text>
+          <Text style={styles.profileText}>Hello!</Text>
         )}
       </View>
       <View style={styles.profile}>
         {userSpotifyProfile ? (
-          <Text>{userSpotifyProfile.name}</Text>
+          <Text style={styles.profileText}>{userSpotifyProfile.name}</Text>
         ) : (
-          <Text>Spotify</Text>
+          <Text style={styles.profileText}>Spotify</Text>
         )}
       </View>
     </View>
@@ -65,10 +68,14 @@ export function Profile() {
 
 const styles = StyleSheet.create({
   profileContainer: {
-    flexDirection: "row",
+    flexDirection: "row", // Stack profiles vertically
+    alignItems: "center", // Center all profiles horizontally
+    justifyContent: 'center', // Center vertically (optional)
   },
   profile: {
-    width: "50%",
+    width: "43%",
+    marginHorizontal: 10,
+    paddingVertical: 25,
     alignItems: "center",
     backgroundColor: "#EBEFF2",
     padding: 15,
@@ -78,5 +85,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 7,
     elevation: 2,
+  },
+  profileText: {
+    marginTop: 20, // Adds space above the text, pushing it lower
+    color:"#585858",
   },
 });

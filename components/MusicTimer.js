@@ -16,7 +16,7 @@ import { NavigationButton } from "../components/UI/buttons";
 
 const MusicTimer = ({ userId, navigation }) => {
   const [isTimerActive, setIsTimerActive] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(1 * 60); // 30-minute countdown
+  const [timeLeft, setTimeLeft] = useState(30 * 60); // 30-minute countdown
   const [lastTrackId, setLastTrackId] = useState(null);
   const [formattedDate, setFormattedDate] = useState("");
   const [formattedTime, setFormattedTime] = useState("");
@@ -133,7 +133,7 @@ const MusicTimer = ({ userId, navigation }) => {
         {isTimerActive ? (
           <Text style={styles.timer}>{formatTimeLeft(timeLeft)}</Text>
         ) : (
-          <Text style={styles.timer}>Start Session</Text>
+          <Text style={styles.timer}>START SESSION</Text>
         )}
       </TouchableOpacity>
       {timeLeft === 0 && isModalVisible && (
@@ -177,13 +177,18 @@ const storeTrack = async (userId, formattedDate, formattedTime, track, af) => {
     await setDoc(entriesDateDocRef, {
       placeholder: formattedDate,
     });
+    const now = new Date();
+    const time = now.toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
 
     // Create the document for the new track
     await setDoc(entriesPlaylistDocRef, {
-      createdAt: new Date(),
+      createdAt: time,
       artist: track.artist,
       title: track.title,
-
       danceability: af.danceability,
       energy: af.energy,
       loudness: af.loudness,
@@ -201,7 +206,7 @@ const storeTrack = async (userId, formattedDate, formattedTime, track, af) => {
 // Styling for the timer container
 const styles = StyleSheet.create({
   timer: {
-    fontWeight: "bold",
+    //fontWeight: "bold",
   },
   timerContainer: {
     top: 20,
