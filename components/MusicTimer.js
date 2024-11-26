@@ -24,6 +24,41 @@ const MusicTimer = ({ userId, navigation }) => {
   const timerRef = useRef(null);
   const [isModalVisible, setIsModalVisible] = useState(true);
   let pollingInterval;
+  useEffect(() => {
+    if (isTimerActive) {
+      AsyncStorage.setItem("isTimerActive", "true");
+      AsyncStorage.setItem("timeLeft", timeLeft.toString());
+    } else {
+      AsyncStorage.setItem("isTimerActive", "false");
+    }
+  }, [isTimerActive, timeLeft]);
+  // Load the timer state from AsyncStorage when the component mounts
+  useEffect(() => {
+    const loadTimerState = async () => {
+      try {
+        const storedIsTimerActive = await AsyncStorage.getItem("isTimerActive");
+        const storedTimeLeft = await AsyncStorage.getItem("timeLeft");
+        console.log("timer", storedIsTimerActive);
+        if (storedIsTimerActive === "true") {
+          setIsTimerActive(true);
+          setTimeLeft(parseInt(storedTimeLeft, 10));
+        } else {
+          setIsTimerActive(false);
+          setTimeLeft(30 * 60); // Reset timeLeft if the session is not active
+        }
+      } catch (error) {
+        console.error("Error loading timer state from AsyncStorage:", error);
+      }
+    };
+
+    loadTimerState();
+
+    // Clear interval when component unmounts
+    return () => {
+      clearInterval(pollingIntervalRef.current);
+      clearInterval(timerRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     if (isTimerActive) {
@@ -64,7 +99,11 @@ const MusicTimer = ({ userId, navigation }) => {
   useEffect(() => {
     if (isTimerActive && timeLeft > 0) {
       timerRef.current = setInterval(() => {
-        setTimeLeft((prevTime) => prevTime - 1);
+        setTimeLeft((prevTime) => {
+          const newTime = prevTime - 1;
+          AsyncStorage.setItem("timeLeft", newTime.toString()); // Save the timeLeft in AsyncStorage
+          return newTime;
+        });
       }, 1000);
     } else if (timeLeft === 0) {
       setIsTimerActive(false);
@@ -92,10 +131,13 @@ const MusicTimer = ({ userId, navigation }) => {
           {
             text: "Yes",
             onPress: () => {
+              AsyncStorage.setItem("timeLeft", 30 * 60);
+              AsyncStorage.setItem("isTimerActive", false);
               // Stop the timer and polling
               setIsTimerActive(false);
               clearInterval(timerRef.current);
               clearInterval(pollingIntervalRef.current);
+
               setTimeLeft(30 * 60); // Reset timer to 30 minutes
 
               console.log("Session ended and timer reset");
