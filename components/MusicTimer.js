@@ -133,7 +133,7 @@ const MusicTimer = ({ userId, navigation }) => {
         {isTimerActive ? (
           <Text style={styles.timer}>{formatTimeLeft(timeLeft)}</Text>
         ) : (
-          <Text style={styles.timer}>Start Session</Text>
+          <Text style={styles.timer}>START SESSION</Text>
         )}
       </TouchableOpacity>
       {timeLeft === 0 && isModalVisible && (
@@ -177,13 +177,18 @@ const storeTrack = async (userId, formattedDate, formattedTime, track, af) => {
     await setDoc(entriesDateDocRef, {
       placeholder: formattedDate,
     });
+    const now = new Date();
+    const time = now.toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
 
     // Create the document for the new track
     await setDoc(entriesPlaylistDocRef, {
-      createdAt: new Date(),
+      createdAt: time,
       artist: track.artist,
       title: track.title,
-
       danceability: af.danceability,
       energy: af.energy,
       loudness: af.loudness,
@@ -201,7 +206,7 @@ const storeTrack = async (userId, formattedDate, formattedTime, track, af) => {
 // Styling for the timer container
 const styles = StyleSheet.create({
   timer: {
-    fontWeight: "bold",
+    //fontWeight: "bold",
   },
   timerContainer: {
     top: 20,

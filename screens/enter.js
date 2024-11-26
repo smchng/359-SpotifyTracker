@@ -11,7 +11,8 @@ export default function Enter({ navigation }) {
     <Container>
       <View style={styles.welcomeContainer}>
         {WelcomeIcon && <WelcomeIcon width={220} height={220} />}
-        <Text style={styles.greetingText}>Hello there!</Text>
+        <Text style={styles.greetingText}>THIS IS</Text>
+        <Text style={styles.nameAppText}>Moodz</Text>
       </View>
 
       <View style={styles.buttonContainer}>
@@ -43,10 +44,17 @@ const styles = StyleSheet.create({
     height: 180,
   },
   greetingText: {
-    fontSize: 28,
-    fontWeight: "bold",
+    fontSize: 14,
+    //fontWeight: "bold",
     color: "#303030",
     marginTop: 10,
+  },
+  nameAppText: {
+    fontSize: 45,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#303030",
+    marginTop: -6,
   },
   loginButton: {
     backgroundColor: "#303030",

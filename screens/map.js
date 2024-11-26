@@ -113,11 +113,13 @@ export function Map({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1, // Allows the container to take up the full screen
+    
   },
   map: {
     ...StyleSheet.absoluteFillObject, // Fills the entire parent container
   },
   topNav: {
     flexDirection: "row",
+    
   },
 });

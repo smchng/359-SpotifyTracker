@@ -4,6 +4,10 @@ import { useRoute } from "@react-navigation/native";
 import { getDocs, collection, setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../data/firebaseConfig";
 import { profileHandler } from "../components/CreateProfile";
+import LocIcon from "../assets/svg/location.svg";
+import MusicTimer from "../components/MusicTimer";
+import { CircleButton } from "../components/UI/buttons";
+import xMarkIcon from "../assets/svg/xmark.svg";
 
 import Angry1 from "../assets/emojis/angry1.svg";
 import Angry2 from "../assets/emojis/angry2.svg";
@@ -192,28 +196,57 @@ export default function PlaylistProfile({ navigation }) {
   }, [tracks, userId, entryId, timeId]); // Dependencies: call only when tracks, userId, entryId, or timeId change
 
   // Render item for FlatList
-  const renderTrack = ({ item }) => (
-    <View style={{ marginBottom: 10 }}>
-      <Text style={{ fontWeight: "bold" }}>{item.title}</Text>
-      <Text>{item.artist}</Text>
-    </View>
-  );
+  const renderTrack = ({ item }) => {
+    // Check if createdAt is a timestamp object and convert it to a readable string
+    const createdAt = item.createdAt?.toDate
+      ? item.createdAt.toDate().toLocaleString()
+      : item.createdAt;
+
+    return (
+      <View style={{ marginBottom: 10 }}>
+        <Text style={styles.trackTitle}>{item.title}</Text>
+        <Text style={styles.trackArtist}>{item.artist}</Text>
+        <Text style={styles.trackTime}>{createdAt}</Text>
+      </View>
+    );
+  };
 
   console.log("test", emojiComponents);
   const EmojiComponent =
     mood && mood.emoji ? emojiComponents[mood.emoji] : Everywhere1;
 
   return (
-    <View style={{ padding: 10 }}>
+    <View
+      style={{
+        padding: 10,
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       {mood && (
-        <View>
-          <View>
-            {EmojiComponent && <EmojiComponent width={150} height={150} />}
+        <View style={styles.moodContainer}>
+          {/* Rectangle Container with Background */}
+          <View style={styles.rectangle}>
+            <View style={styles.emojiContainer}>
+              {EmojiComponent && <EmojiComponent width={150} height={150} />}
+            </View>
+            <Text style={styles.moodText}>{mood.mood}</Text>
+            <Text style={styles.messageText}>{mood.tagline}</Text>
           </View>
-          <Text>Mood: {mood.mood}</Text>
-          <Text>Message: {mood.tagline}</Text>
         </View>
       )}
+
+      <View style={styles.circleButton}>
+        <CircleButton
+          SVGIcon={xMarkIcon}
+          page="ProfileStorage"
+          navigation={navigation}
+        />
+      </View>
+
+      {/* Background Rectangle behind FlatList and container */}
+      <View style={styles.backgroundRectangle}></View>
 
       <View style={styles.container}>
         <Text>You listened to:</Text>
@@ -230,13 +263,97 @@ export default function PlaylistProfile({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
-    height: " 60%", // Set height to 40vh for the container
+    padding: 40,
+    height: "60%", // Set height to 60% for the container
+    width: "100%", // Ensure the container takes full width
+    alignItems: "flex-start", // Align children to the left
+    justifyContent: "flex-start", // Align items vertically at the top
+    zIndex: 2,
   },
   flatList: {
-    height: "100%", // Make FlatList occupy full height of the container
+    height: "100%",
+    width: "100%",
   },
-  flatListContent: {
-    paddingBottom: 10, // Optional: adds padding to the bottom of the FlatList
+  trackTitle: {
+    marginTop: 10,
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "black",
+  },
+  trackArtist: {
+    fontSize: 12,
+    color: "#555",
+    fontStyle: "italic",
+  },
+  trackTime: {
+    fontSize: 12,
+    color: "#555",
+  },
+  circleButton: {
+    position: "absolute",
+    top: 20,
+    left: 10,
+    right: 0,
+  },
+  moodContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 70,
+    marginBottom: 10,
+    width: "100%",
+  },
+  rectangle: {
+    backgroundColor: "#FFFFFF",
+    paddingVertical: 10,
+    paddingHorizontal: 130,
+    borderRadius: 10,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
+    position: "relative",
+    marginTop: 60,
+  },
+  emojiContainer: {
+    position: "absolute",
+    top: -90,
+    borderWidth: 10,
+    borderColor: "#EBEFF2",
+    borderRadius: 100,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 6,
+  },
+  moodText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginTop: 80,
+  },
+  messageText: {
+    fontSize: 16,
+    textAlign: "center",
+    color: "#555",
+    marginTop: 15,
+  },
+
+  backgroundRectangle: {
+    position: "absolute",
+    top: 350,
+    left: 25,
+    right: 25,
+    bottom: 90,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 10,
+    shadowColor: "#bbb",
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 2,
+    zIndex: 1,
   },
 });
