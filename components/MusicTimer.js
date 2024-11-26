@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Alert,
   Modal,
+  Vibration,
 } from "react-native";
 import { db } from "../data/firebaseConfig.js"; // Update with your Firebase config path
 import { doc, setDoc, collection } from "firebase/firestore"; // Firebase Firestore functions
@@ -70,7 +71,7 @@ const MusicTimer = ({ userId, navigation }) => {
       setIsTimerActive(false);
       clearInterval(timerRef.current);
       clearInterval(pollingIntervalRef.current); // Stop polling when the timer ends
-
+      Vibration.vibrate(300);
       console.log("Timer finished. Stopping track storage.");
     }
 
@@ -97,7 +98,7 @@ const MusicTimer = ({ userId, navigation }) => {
               clearInterval(timerRef.current);
               clearInterval(pollingIntervalRef.current);
               setTimeLeft(30 * 60); // Reset timer to 30 minutes
-
+              Vibration.vibrate(300);
               console.log("Session ended and timer reset");
             },
           },
@@ -107,7 +108,7 @@ const MusicTimer = ({ userId, navigation }) => {
     } else {
       console.log("Timer active");
       setIsTimerActive(true);
-
+      Vibration.vibrate(100);
       // Set the date and time when the timer is started
       const now = new Date();
       setFormattedDate(now.toLocaleDateString("en-GB").replace(/\//g, "-"));
