@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+
+// Average of the audio features
 const calculateAverage = (songs) => {
   const averages = {
     acousticness: 0,
@@ -28,7 +30,7 @@ const calculateAverage = (songs) => {
 
   return averages;
 };
-
+// Thresholds for each profile
 const determineProfile = (avgAttributes) => {
   const profiles = {
     Happy: {

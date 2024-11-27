@@ -80,7 +80,6 @@ export default function SignUp({ navigation }) {
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : "height"} // Adjust behavior based on platform
     >
-      {/* Optionally wrap in ScrollView to allow scrolling when keyboard shows */}
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <Container>
           <View style={styles.welcomeContainer}>
