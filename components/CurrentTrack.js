@@ -202,7 +202,7 @@ const fetchAudioFeatures = async (songId) => {
 
     return audioFeatures;
   } catch (error) {
-    console.error("Error fetching audio features:", error);
+    // console.error("Error fetching audio features:", error);
     return null; // Return null if there's an error
   }
 };
