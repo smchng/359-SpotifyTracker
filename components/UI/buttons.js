@@ -85,17 +85,17 @@ const styles = StyleSheet.create({
     flex: 1,
 
     position: "absolute", // Position the track display absolutely
-    top: 20, // Adjust bottom position as necessary
-    left: 20, // Adjust left position as necessary
+    top: 20, 
+    left: 20, 
     zIndex: 1,
     backgroundColor: "#EBEFF2",
     padding: 15,
     borderRadius: 100,
-    shadowColor: "#000", // Color of the shadow
-    shadowOffset: { width: 5, height: 2 }, // Offset shadow to the right by 5px (horizontal)
-    shadowOpacity: 0.25, // Shadow opacity (simulating rgba(0, 0, 0, 0.25))
-    shadowRadius: 7, // Shadow blur radius (simulating 7px)
-    elevation: 2, // For Android shadow effect
+    shadowColor: "#000", 
+    shadowOffset: { width: 5, height: 2 },
+    shadowOpacity: 0.25, 
+    shadowRadius: 7, 
+    elevation: 2, 
   },
   button: {
     //alignItems: 'center',

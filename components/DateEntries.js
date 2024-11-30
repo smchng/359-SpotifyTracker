@@ -1,48 +1,26 @@
-import { useEffect, useState } from "react"; // Import useState and useEffect
-import { getDocs, collection, getDoc, doc } from "firebase/firestore";
+import { useEffect, useState } from "react"; 
+import { getDocs, collection } from "firebase/firestore";
 import { db } from "../data/firebaseConfig";
 import { useUser } from "./UserAuth";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, ScrollView } from "react-native";
 
 const fetchEntriesFromFirestore = async (userId) => {
-  try {
-    // Reference to the "Entries" collection under the user's document
+  try {  
     const entriesCollectionRef = collection(db, "users", userId, "Entries");
-
-    // Get all the documents in the "Entries" collection
     const entriesSnapshot = await getDocs(entriesCollectionRef);
-
-    // Map through the documents and return only the document IDs
     const entryIds = entriesSnapshot.docs.map((doc) => doc.id);
-
-    console.log("Entry IDs under 'Entries':", entryIds);
-    return entryIds; // Return the document IDs (like "06-11-2024")
+    return entryIds;
   } catch (error) {
-    console.error(
-      "Error fetching entries collection IDs from Firestore:",
-      error
-    );
-    return []; // Return an empty array in case of error
+    console.error("Error fetching entries collection IDs from Firestore:", error);
+    return [];
   }
 };
 
 const fetchTimeDocsForEntry = async (userId, entryId) => {
   try {
-    const timeCollectionRef = collection(
-      db,
-      "users",
-      userId,
-      "Entries",
-      entryId,
-      "Time"
-    );
+    const timeCollectionRef = collection(db, "users", userId, "Entries", entryId, "Time");
     const timeSnapshot = await getDocs(timeCollectionRef);
-    const timeDocs = timeSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-
-    console.log("Time documents for entry", entryId, timeDocs);
+    const timeDocs = timeSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     return timeDocs;
   } catch (error) {
     console.error("Error fetching Time documents:", error);
@@ -51,43 +29,40 @@ const fetchTimeDocsForEntry = async (userId, entryId) => {
 };
 
 const parseDateFromId = (id) => {
-  const [day, month, year] = id.split("-"); // Split dd-mm-yyyy
-  return new Date(`${month}-${day}-${year}`); // Create a Date object
+  const [day, month, year] = id.split("-");
+  return new Date(`${month}-${day}-${year}`);
 };
 
 export default function EntriesList({ navigation }) {
-  const [entries, setEntries] = useState([]); // Initialize state for entries
-  const { userId } = useUser(); // Get the userId from the context
-  const [expandedEntry, setExpandedEntry] = useState(null); // Track which entry is expanded
-  const [timeDocs, setTimeDocs] = useState([]); // State to hold Time documents for expanded entry
+  const [entries, setEntries] = useState([]);
+  const { userId } = useUser();
+  const [expandedEntry, setExpandedEntry] = useState(null);
+  const [timeDocs, setTimeDocs] = useState([]);
 
-  // Fetch the entries when userId changes
   useEffect(() => {
     const loadEntries = async () => {
       if (userId) {
         const fetchedEntries = await fetchEntriesFromFirestore(userId);
         const sortedEntries = fetchedEntries.sort((a, b) => {
-          const dateA = parseDateFromId(a); // Parse date from entry ID
-          const dateB = parseDateFromId(b); // Parse date from entry ID
-          return dateB - dateA; // Sort in descending order (newest first)
+          const dateA = parseDateFromId(a);
+          const dateB = parseDateFromId(b);
+          return dateB - dateA;
         });
-        setEntries(fetchedEntries); // Set the state with fetched entries
+        setEntries(sortedEntries);
       }
     };
 
-    loadEntries(); // Call the function to load entries
-  }, [userId]); // Dependency on userId
+    loadEntries();
+  }, [userId]);
 
   const handleExpandEntry = async (entryId) => {
     if (expandedEntry === entryId) {
-      // If the entry is already expanded, collapse it
       setExpandedEntry(null);
-      setTimeDocs([]); // Clear time documents when collapsed
+      setTimeDocs([]);
     } else {
-      // If the entry is not expanded, expand it
       setExpandedEntry(entryId);
       const fetchedTimeDocs = await fetchTimeDocsForEntry(userId, entryId);
-      setTimeDocs(fetchedTimeDocs); // Set Time documents
+      setTimeDocs(fetchedTimeDocs);
     }
   };
 
@@ -96,73 +71,91 @@ export default function EntriesList({ navigation }) {
       timeId: timeId,
       entryId: entryId,
       userId: userId,
-    }); // Navigate to the page passed in as a prop
+    });
   };
 
-  return (
-    <View style={styles.container}>
-      {entries && entries.length > 0 ? (
-        entries.map((entry) => (
-          <View key={entry} style={styles.entry}>
-            <TouchableOpacity onPress={() => handleExpandEntry(entry)}>
-              <Text style={styles.entryTitle}>{entry}</Text>
-            </TouchableOpacity>
+  const renderItem = ({ item: entry }) => (
+    <View style={styles.entry}>
+      <TouchableOpacity onPress={() => handleExpandEntry(entry)}>
+        <Text style={styles.entryTitle}>{entry}</Text>
+      </TouchableOpacity>
 
-            {/* Conditionally render the Time documents if entry is expanded */}
-            {expandedEntry === entry && timeDocs.length > 0 && (
-              <View style={styles.timeDocsContainer}>
-                {timeDocs.map((timeDoc) => (
-                  <TouchableOpacity
-                    key={timeDoc.id}
-                    style={styles.timeDoc}
-                    onPress={() => handlePage(timeDoc.id, entry)} // Wrap the function in an arrow function
-                  >
-                    <Text
-                      style={[
-                        styles.profile,
-                        !timeDoc.mood && { fontWeight: "bold" }, // Apply bold style if mood is null
-                      ]}
-                    >
-                      {timeDoc.mood ? timeDoc.mood : "New!"}
-                    </Text>
-                    <Text style={styles.timeDocTitle}>{timeDoc.id}</Text>
-                    {/* You can render more details from the timeDoc here */}
-                  </TouchableOpacity>
-                ))}
-              </View>
-            )}
-          </View>
-        ))
-      ) : (
-        <Text>No entries available.</Text>
+      {expandedEntry === entry && timeDocs.length > 0 && (
+        <View style={styles.timeDocsContainer}>
+          {timeDocs.map((timeDoc) => (
+            <TouchableOpacity
+              key={timeDoc.id}
+              style={styles.timeDoc}
+              onPress={() => handlePage(timeDoc.id, entry)}
+            >
+              <Text
+                style={[styles.profile, !timeDoc.mood && { fontWeight: "bold" }]}
+              >
+                {timeDoc.mood ? timeDoc.mood : "New!"}
+              </Text>
+              <Text style={styles.timeDocTitle}>{timeDoc.id}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
       )}
+    </View>
+  );
+
+  return (
+    <View style={styles.wrapper}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <View style={styles.container}>
+          {entries.length > 0 ? (
+            <FlatList
+              data={entries}
+              renderItem={renderItem}
+              keyExtractor={(item) => item}
+              extraData={entries} // Re-render when entries change
+              keyboardShouldPersistTaps="handled" // Ensure tap on list doesn't dismiss keyboard
+            />
+          ) : (
+            <Text>No entries available.</Text>
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 16,
+  wrapper: {
+    flex: 1,
+    marginTop: 20, 
   },
+  scrollViewContent: {
+    //paddingBottom: 50, // Optional: Add space at the bottom of the ScrollView content
+  },
+
+  // This ensures the container takes up the full width and respects the padding
+  container: {
+    width: "100%", 
+    paddingBottom: 10, 
+  },
+
   entry: {
     marginBottom: 10,
     backgroundColor: "#EBEFF2",
-    padding: 15,
+    padding: 20,
     borderRadius: 15,
-    shadowColor: "#000", // Color of the shadow
-    shadowOffset: { width: 5, height: 2 }, // Offset shadow to the right by 5px (horizontal)
-    shadowOpacity: 0.25, // Shadow opacity (simulating rgba(0, 0, 0, 0.25))
-    shadowRadius: 7, // Shadow blur radius (simulating 7px)
-    elevation: 2, // For Android shadow effect
+    shadowColor: "#000",
+    shadowOffset: { width: 8, height: 8 },
+    shadowOpacity: 0.25,
+    shadowRadius: 6,
+    elevation: 2,
+    width: "90%", // Adjusts width of each entry
+    alignSelf: "center", // Centers the entry
   },
+
   entryTitle: {
     fontWeight: "bold",
     fontSize: 16,
   },
-  entryDescription: {
-    fontSize: 14,
-    color: "gray",
-  },
+
   timeDocsContainer: {
     paddingTop: 10,
     paddingLeft: 10,
@@ -172,22 +165,22 @@ const styles = StyleSheet.create({
     backgroundColor: "#F0F4F8",
     padding: 20,
     borderRadius: 10,
-    shadowColor: "#000", // Color of the shadow
-    shadowOffset: { width: 5, height: 2 }, // Offset shadow to the right by 5px (horizontal)
-    shadowOpacity: 0.25, // Shadow opacity (simulating rgba(0, 0, 0, 0.25))
-    shadowRadius: 7, // Shadow blur radius (simulating 7px)
+    shadowColor: "#000",
+    shadowOffset: { width: 5, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 7,
     elevation: 2,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center", // Aligns items vertically in the center if needed
-    width: "100%",
+    alignItems: "center",
+    width: "100%", // Ensures each time document is full width
   },
   timeDocTitle: {
     fontSize: 12,
     color: "grey",
   },
-  timeDocDescription: {
-    fontSize: 12,
-    color: "gray",
+  profile: {
+    fontSize: 14,
+    color: "#333",
   },
 });

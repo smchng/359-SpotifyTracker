@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     padding: 16, 
     
   },
+ 
   circleButtonWrapper: {
     justifyContent: "center", 
     alignItems: "center", 
@@ -65,8 +66,8 @@ const styles = StyleSheet.create({
   contentWrapper: {
     flex: 1, 
     justifyContent: "flex-start", 
-    marginTop: 100, 
-    
+    marginTop: 85, 
+    //marginBottom: 30,
   },
   logoutButtonWrapper: {
     alignItems: 'center',
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
   },
   profileImages: {
     position: "absolute",
-    top: 105,
+    top: 80,
     alignSelf: "center",
     flexDirection: "row", 
     justifyContent: "space-between", 

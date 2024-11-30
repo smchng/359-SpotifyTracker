@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList, StyleSheet, ScrollView } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { getDocs, collection, setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "../data/firebaseConfig";
@@ -215,145 +215,138 @@ export default function PlaylistProfile({ navigation }) {
   const EmojiComponent =
     mood && mood.emoji ? emojiComponents[mood.emoji] : Everywhere1;
 
-  return (
-    <View
-      style={{
-        padding: 10,
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      {mood && (
-        <View style={styles.moodContainer}>
-          {/* Rectangle Container with Background */}
-          <View style={styles.rectangle}>
-            <View style={styles.emojiContainer}>
-              {EmojiComponent && <EmojiComponent width={150} height={150} />}
+    return (
+      <View style={{ padding: 10, flex: 1, justifyContent: "center", alignItems: "center" }}>
+        {mood && (
+          <View style={styles.moodContainer}>
+            <View style={styles.rectangle}>
+              <View style={styles.emojiContainer}>
+                {EmojiComponent && <EmojiComponent width={150} height={150} />}
+              </View>
+              <Text style={styles.moodText}>{mood.mood}</Text>
+              <Text style={styles.messageText}>{mood.tagline}</Text>
             </View>
-            <Text style={styles.moodText}>{mood.mood}</Text>
-            <Text style={styles.messageText}>{mood.tagline}</Text>
           </View>
+        )}
+  
+        <View style={styles.circleButton}>
+          <CircleButton
+            SVGIcon={xMarkIcon}
+            page="ProfileStorage"
+            navigation={navigation}
+          />
         </View>
-      )}
-
-      <View style={styles.circleButton}>
-        <CircleButton
-          SVGIcon={xMarkIcon}
-          page="ProfileStorage"
-          navigation={navigation}
-        />
+  
+        <View style={styles.backgroundRectangle}></View>
+  
+        {/* Fixed-height Rectangle for Song List */}
+        <View style={styles.songListContainer}>
+          <Text style={styles.songsTitle}>You listened to:</Text>
+  
+          <ScrollView style={styles.songList}>
+            <FlatList
+              data={tracks}
+              renderItem={renderTrack}
+              keyExtractor={(item) => item.id}
+              scrollEnabled={true} // Ensures scrolling
+            />
+          </ScrollView>
+        </View>
       </View>
+    );
+  }
+  
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 10,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    
+    moodContainer: {
+      marginBottom: 20,
+      alignItems: "center",
+    },
+    rectangle: {
+      backgroundColor: "#FFFFFF",
+      borderRadius: 10,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 4,
+      elevation: 4,
+      position: "relative",
+      marginTop: 60,
+      height: 220, // Fixed height for the rectangle
+      justifyContent: "center", // Center the content vertically
+      width: 330, // Set a fixed width (90% or any other value you prefer)
+      alignSelf: "center", // Center the rectangle horizontally
+    },
+    emojiContainer: {
+      position: "absolute",
+      top: -90,
+      borderWidth: 10,
+      borderColor: "#EBEFF2",
+      borderRadius: 100,
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.2,
+      shadowRadius: 6,
+      elevation: 6,
+    },
+    moodText: {
+      fontSize: 20, // Increase font size to fit more on one line
+      fontWeight: "bold",
+      textAlign: "center",
+      marginTop: 50,
+      flexWrap: "wrap", // Allows text to wrap within the container
+      width: "90%", // Set to the same width as the rectangle
+      paddingHorizontal: 20, // Add horizontal padding for better layout
+    },
+    messageText: {
+      fontSize: 16, // Keep font size smaller if more text is expected
+      marginTop: 20,
+      textAlign: "center",
+      color: "#555",
+      flexWrap: "wrap", // Allows text to wrap
+      overflow: "hidden", // Prevent overflow if text is too long
+      width: "90%", // Ensure the text takes the full width of the container
+      paddingHorizontal: 20, // Add padding to avoid text touching the edges
+    },
+    songListContainer: {
+      width: 330,
+      padding: 20,
+      backgroundColor: "#fff",
+      borderRadius: 10,
+      marginTop: 20,
+      height: 300, // Set a fixed height for the song list
+      overflow: "hidden", // Prevents overflow
+    },
+    songsTitle: {
+      fontSize: 16,
+      fontWeight: "bold",
+      marginBottom: 10,
+    },
+    songList: {
+      flex: 1,
+    },
+    trackTitle: {
+      fontWeight: "bold",
+    },
+    trackArtist: {
+      color: "gray",
+    },
+    trackTime: {
+      color: "gray",
+      fontSize: 12,
+    },
+    circleButton: {
+      position: "absolute",
+      top: 30,
+      left: 10,
+      right: 0,
+    },
+  });
 
-      {/* Background Rectangle behind FlatList and container */}
-      <View style={styles.backgroundRectangle}></View>
-
-      <View style={styles.container}>
-        <Text>You listened to:</Text>
-        <FlatList
-          data={tracks} // Set the data to the tracks fetched from Firestore
-          renderItem={renderTrack} // Use renderTrack to display each track
-          keyExtractor={(item) => item.id} // Use track id as the key
-          style={styles.flatList}
-        />
-      </View>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 40,
-    height: "60%", // Set height to 60% for the container
-    width: "100%", // Ensure the container takes full width
-    alignItems: "flex-start", // Align children to the left
-    justifyContent: "flex-start", // Align items vertically at the top
-    zIndex: 2,
-  },
-  flatList: {
-    height: "100%",
-    width: "100%",
-  },
-  trackTitle: {
-    marginTop: 10,
-    fontSize: 15,
-    fontWeight: "bold",
-    color: "black",
-  },
-  trackArtist: {
-    fontSize: 12,
-    color: "#555",
-    fontStyle: "italic",
-  },
-  trackTime: {
-    fontSize: 12,
-    color: "#555",
-  },
-  circleButton: {
-    position: "absolute",
-    top: 20,
-    left: 10,
-    right: 0,
-  },
-  moodContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 70,
-    marginBottom: 10,
-    width: "100%",
-  },
-  rectangle: {
-    backgroundColor: "#FFFFFF",
-    paddingVertical: 10,
-    paddingHorizontal: 130,
-    borderRadius: 10,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-    position: "relative",
-    marginTop: 60,
-  },
-  emojiContainer: {
-    position: "absolute",
-    top: -90,
-    borderWidth: 10,
-    borderColor: "#EBEFF2",
-    borderRadius: 100,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
-    elevation: 6,
-  },
-  moodText: {
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginTop: 80,
-  },
-  messageText: {
-    fontSize: 16,
-    textAlign: "center",
-    color: "#555",
-    marginTop: 15,
-  },
-
-  backgroundRectangle: {
-    position: "absolute",
-    top: 350,
-    left: 25,
-    right: 25,
-    bottom: 90,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 10,
-    shadowColor: "#bbb",
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 2,
-    zIndex: 1,
-  },
-});

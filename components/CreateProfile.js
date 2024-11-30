@@ -187,19 +187,19 @@ const profileDetails = [
       {
         happy1: {
           img: "Happy1",
-          string: "Happy string1",
+          string: "Very yipeee wahoo!",
         },
       },
       {
         happy2: {
           img: "Happy2",
-          string: "Happy string2",
+          string: "HAPPPY VIBES ONLY",
         },
       },
       {
         happy3: {
           img: "Happy3",
-          string: "Happy string3",
+          string: "Today's a good day!",
         },
       },
     ],
@@ -209,19 +209,19 @@ const profileDetails = [
       {
         sad1: {
           img: "Sad1",
-          string: "Sad string1",
+          string: "Suspiciously too emo... Who hurt you?",
         },
       },
       {
         sad2: {
           img: "Sad2",
-          string: "Sad string2",
+          string: "Damnn.. Keep your head up king",
         },
       },
       {
         sad3: {
           img: "Sad3",
-          string: "Sad string3",
+          string: "The voices are loud today..",
         },
       },
     ],
@@ -231,19 +231,19 @@ const profileDetails = [
       {
         freak1: {
           img: "Freak1",
-          string: "Freak string1",
+          string: "A little freakster",
         },
       },
       {
         freak2: {
           img: "Freak2",
-          string: "Freak string2",
+          string: "It's FREAK o'clock",
         },
       },
       {
         freak3: {
           img: "Freak3",
-          string: "Freak string3",
+          string: "A freaky gyal aren't ya",
         },
       },
     ],
@@ -253,19 +253,19 @@ const profileDetails = [
       {
         chilling1: {
           img: "Chilling1",
-          string: "Chilling string1",
+          string: "Didn't know you were chill like that",
         },
       },
       {
         chilling2: {
           img: "Chilling2",
-          string: "Chilling string2",
+          string: "Chilling like a villian",
         },
       },
       {
         chilling3: {
           img: "Chilling3",
-          string: "Chilling string3",
+          string: "no thoughts behind those eyes",
         },
       },
     ],
@@ -275,19 +275,19 @@ const profileDetails = [
       {
         angry1: {
           img: "Angry1",
-          string: "Angry string1",
+          string: "RAAAAHHHH",
         },
       },
       {
         angry2: {
           img: "Angry2",
-          string: "Angry string2",
+          string: "Rage room when?",
         },
       },
       {
         angry3: {
           img: "Angry3",
-          string: "Angry string3",
+          string: "Mad huh.. Teeth clenched and everything",
         },
       },
     ],
@@ -295,21 +295,21 @@ const profileDetails = [
   {
     Everywhere: [
       {
-        everywhere1: {
+        everywhere1: { 
           img: "Everywhere1",
-          string: "Everywhere string1",
+          string: "Oh my.. Everthing and everywhere.",
         },
       },
       {
         everywhere2: {
           img: "Everywhere2",
-          string: "Everywhere string2",
+          string: "Real messy",
         },
       },
       {
         everywhere3: {
           img: "Everywhere3",
-          string: "Everywhere string3",
+          string: "Music taste is everywhere. Respect that",
         },
       },
     ],
@@ -319,19 +319,19 @@ const profileDetails = [
       {
         sleepy1: {
           img: "Sleepy1",
-          string: "Sleepy string1",
+          string: "Sleepy, time for bed",
         },
       },
       {
         sleepy2: {
           img: "Sleepy2",
-          string: "Sleepy string2",
+          string: "SNOOZE FEST",
         },
       },
       {
         sleepy3: {
           img: "Sleepy3",
-          string: "Sleepy string3",
+          string: "ZZZ snoozing for real..",
         },
       },
     ],
@@ -341,19 +341,19 @@ const profileDetails = [
       {
         late1: {
           img: "LateNight1",
-          string: "Late Night Feels string1",
+          string: "In your feels for real",
         },
       },
       {
         late2: {
           img: "LateNight2",
-          string: "Late Night Feels string2",
+          string: "Time for a late night drive",
         },
       },
       {
         late3: {
           img: "LateNight3",
-          string: "Late Night Feels string3",
+          string: "Deep in thought",
         },
       },
     ],
@@ -363,19 +363,19 @@ const profileDetails = [
       {
         classical1: {
           img: "Classical1",
-          string: "Classical string1",
+          string: "Classy vibes",
         },
       },
       {
         classical2: {
           img: "Classical2",
-          string: "Classical string2",
+          string: "Studying hard? or hardly studying",
         },
       },
       {
         classical3: {
           img: "Classical3",
-          string: "Classical string3",
+          string: "Throwback to the renaissance period",
         },
       },
     ],

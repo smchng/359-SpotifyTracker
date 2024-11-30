@@ -229,6 +229,12 @@ const styles = StyleSheet.create({
 
   loginButton: {
     backgroundColor: "#303030",
+    width: 150, // Adjust the width to make the button smaller
+    paddingVertical: 15, // Optional: Adjust padding for better proportions
+    alignItems: "center",
+    alignSelf:"center",
+    justifyContent: "center",
+    borderRadius: 10, // Rounded corners for the button
   },
   modalContainer: {
     flex: 1,
