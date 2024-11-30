@@ -1,26 +1,46 @@
-import { useEffect, useState } from "react"; 
+import { useEffect, useState } from "react";
 import { getDocs, collection } from "firebase/firestore";
 import { db } from "../data/firebaseConfig";
 import { useUser } from "./UserAuth";
-import { StyleSheet, View, Text, TouchableOpacity, FlatList, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  ScrollView,
+} from "react-native";
 
 const fetchEntriesFromFirestore = async (userId) => {
-  try {  
+  try {
     const entriesCollectionRef = collection(db, "users", userId, "Entries");
     const entriesSnapshot = await getDocs(entriesCollectionRef);
     const entryIds = entriesSnapshot.docs.map((doc) => doc.id);
     return entryIds;
   } catch (error) {
-    console.error("Error fetching entries collection IDs from Firestore:", error);
+    console.error(
+      "Error fetching entries collection IDs from Firestore:",
+      error
+    );
     return [];
   }
 };
 
 const fetchTimeDocsForEntry = async (userId, entryId) => {
   try {
-    const timeCollectionRef = collection(db, "users", userId, "Entries", entryId, "Time");
+    const timeCollectionRef = collection(
+      db,
+      "users",
+      userId,
+      "Entries",
+      entryId,
+      "Time"
+    );
     const timeSnapshot = await getDocs(timeCollectionRef);
-    const timeDocs = timeSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    const timeDocs = timeSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
     return timeDocs;
   } catch (error) {
     console.error("Error fetching Time documents:", error);
@@ -89,7 +109,10 @@ export default function EntriesList({ navigation }) {
               onPress={() => handlePage(timeDoc.id, entry)}
             >
               <Text
-                style={[styles.profile, !timeDoc.mood && { fontWeight: "bold" }]}
+                style={[
+                  styles.profile,
+                  !timeDoc.mood && { fontWeight: "bold" },
+                ]}
               >
                 {timeDoc.mood ? timeDoc.mood : "New!"}
               </Text>
@@ -103,7 +126,7 @@ export default function EntriesList({ navigation }) {
 
   return (
     <View style={styles.wrapper}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <View contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.container}>
           {entries.length > 0 ? (
             <FlatList
@@ -117,7 +140,7 @@ export default function EntriesList({ navigation }) {
             <Text>No entries available.</Text>
           )}
         </View>
-      </ScrollView>
+      </View>
     </View>
   );
 }
@@ -125,7 +148,7 @@ export default function EntriesList({ navigation }) {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    marginTop: 20, 
+    marginTop: 20,
   },
   scrollViewContent: {
     //paddingBottom: 50, // Optional: Add space at the bottom of the ScrollView content
@@ -133,8 +156,8 @@ const styles = StyleSheet.create({
 
   // This ensures the container takes up the full width and respects the padding
   container: {
-    width: "100%", 
-    paddingBottom: 10, 
+    width: "100%",
+    paddingBottom: 10,
   },
 
   entry: {

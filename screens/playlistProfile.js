@@ -250,14 +250,14 @@ export default function PlaylistProfile({ navigation }) {
       <View style={styles.songListContainer}>
         <Text style={styles.songsTitle}>You listened to:</Text>
 
-        <ScrollView style={styles.songList}>
+        <View style={styles.songList}>
           <FlatList
             data={tracks}
             renderItem={renderTrack}
             keyExtractor={(item) => item.id}
             scrollEnabled={true} // Ensures scrolling
           />
-        </ScrollView>
+        </View>
       </View>
     </View>
   );
