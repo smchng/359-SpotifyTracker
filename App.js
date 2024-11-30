@@ -1,5 +1,3 @@
-// src/App.js
-
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -17,6 +15,7 @@ import PlaylistProfile from "./screens/playlistProfile";
 export default function App() {
   const Stack = createStackNavigator();
   return (
+    // Stores user ID for each page
     <UserProvider>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Enter">

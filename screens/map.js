@@ -13,9 +13,9 @@ import { EntryListWithPins } from "../components/PinFilter";
 
 export function Map({ navigation }) {
   const { userId } = useUser();
-  const [location, setLocation] = useState(null); // State to store the user's location
-  const [errorMsg, setErrorMsg] = useState(null); // State to store any potential error message
-  const [initialRegion, setInitialRegion] = useState(null); // State to store the initial region for the map
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [initialRegion, setInitialRegion] = useState(null);
   const mapRef = useRef(null); // Ref for the MapView to persist without re-rendering
   const [selectedEntry, setSelectedEntry] = useState(null);
 
@@ -51,7 +51,7 @@ export function Map({ navigation }) {
         locationSubscription.remove(); // Stop watching for location when component unmounts
       };
     })();
-  }, []); // Empty dependency array to run only once
+  }, []);
 
   const handleEntryUpdate = async (entryId) => {
     setSelectedEntry(entryId); // Update the selected entry state
@@ -113,13 +113,11 @@ export function Map({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1, // Allows the container to take up the full screen
-    
   },
   map: {
     ...StyleSheet.absoluteFillObject, // Fills the entire parent container
   },
   topNav: {
     flexDirection: "row",
-    
   },
 });

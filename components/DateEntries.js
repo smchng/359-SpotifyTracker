@@ -11,6 +11,7 @@ import {
   ScrollView,
 } from "react-native";
 
+// Fetches how many different date entries in firestore
 const fetchEntriesFromFirestore = async (userId) => {
   try {
     const entriesCollectionRef = collection(db, "users", userId, "Entries");
@@ -26,6 +27,7 @@ const fetchEntriesFromFirestore = async (userId) => {
   }
 };
 
+// Fetches the specific time entries depedning on the date selected
 const fetchTimeDocsForEntry = async (userId, entryId) => {
   try {
     const timeCollectionRef = collection(
@@ -53,12 +55,14 @@ const parseDateFromId = (id) => {
   return new Date(`${month}-${day}-${year}`);
 };
 
+// Displays all the date entries available
 export default function EntriesList({ navigation }) {
   const [entries, setEntries] = useState([]);
   const { userId } = useUser();
   const [expandedEntry, setExpandedEntry] = useState(null);
   const [timeDocs, setTimeDocs] = useState([]);
 
+  // Loads the entries in order
   useEffect(() => {
     const loadEntries = async () => {
       if (userId) {
@@ -75,6 +79,7 @@ export default function EntriesList({ navigation }) {
     loadEntries();
   }, [userId]);
 
+  // Expands the entries list
   const handleExpandEntry = async (entryId) => {
     if (expandedEntry === entryId) {
       setExpandedEntry(null);
@@ -126,7 +131,7 @@ export default function EntriesList({ navigation }) {
 
   return (
     <View style={styles.wrapper}>
-      <View contentContainerStyle={styles.scrollViewContent}>
+      <View>
         <View style={styles.container}>
           {entries.length > 0 ? (
             <FlatList
@@ -150,11 +155,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 20,
   },
-  scrollViewContent: {
-    //paddingBottom: 50, // Optional: Add space at the bottom of the ScrollView content
-  },
 
-  // This ensures the container takes up the full width and respects the padding
   container: {
     width: "100%",
     paddingBottom: 10,

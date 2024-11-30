@@ -206,23 +206,22 @@ const fetchAudioFeatures = async (songId) => {
     return null; // Return null if there's an error
   }
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    position: "absolute", // Position the track display absolutely
-    bottom: 20, // Adjust bottom position as necessary
-    left: 20, // Adjust left position as necessary
+    position: "absolute",
+    bottom: 20,
+    left: 20,
     zIndex: 1,
     backgroundColor: "#EBEFF2",
     width: "90%",
     padding: 20,
     borderRadius: 20,
-    shadowColor: "#000", // Color of the shadow
-    shadowOffset: { width: 5, height: 2 }, // Offset shadow to the right by 5px (horizontal)
-    shadowOpacity: 0.25, // Shadow opacity (simulating rgba(0, 0, 0, 0.25))
-    shadowRadius: 7, // Shadow blur radius (simulating 7px)
-    elevation: 2, // For Android shadow effect
+    shadowColor: "#000",
+    shadowOffset: { width: 5, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 7,
+    elevation: 2,
   },
   title: {
     fontSize: 18,
@@ -232,30 +231,29 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   trackInfoContainer: {
-    flexDirection: "row", // Arrange children in a row
-    alignItems: "center", // Center vertically
+    flexDirection: "row",
+    alignItems: "center",
   },
   trackDetails: {
     flex: 1,
   },
   albumCoverContainer: {
-    width: 50, // Set the width of the album cover container
-    height: 50, // Set the height of the album cover container
-    borderRadius: 10, // Round the corners of the container
-    borderWidth: 2, // Width of the stroke
-    borderColor: "#D9D9D9", // Color of the stroke (change as needed)
-    backgroundColor: "#D9D9D9", // Fill color
-    shadowColor: "#000", // Color of the shadow
-    shadowOffset: { width: 5, height: 2 }, // Offset shadow to the right by 5px (horizontal)
-    shadowOpacity: 0.25, // Shadow opacity (simulating rgba(0, 0, 0, 0.25))
-    shadowRadius: 7, // Shadow blur radius (simulating 7px)
-    elevation: 2, // For Android shadow effect
-    marginRight: 10, // Space between the album cover and text
-    overflow: "hidden", // Ensures that the image doesn't overflow the border
+    width: 50,
+    height: 50,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#D9D9D9",
+    backgroundColor: "#D9D9D9",
+    shadowColor: "#000",
+    shadowOffset: { width: 5, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 7,
+    elevation: 2,
+    marginRight: 10,
+    overflow: "hidden",
   },
-
   albumCover: {
-    width: "100%", // Set the width of the album cover to fill the container
-    height: "100%", // Set the height of the album cover to fill the container
+    width: "100%",
+    height: "100%",
   },
 });

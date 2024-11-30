@@ -20,8 +20,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState(""); // Controlled input for email
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState(""); // Controlled input for password
+  const [password, setPassword] = useState("");
   const { setUserId } = useUser(); // Get the setUserId function from context
 
   // Function to handle user login
@@ -116,17 +115,16 @@ export const loginUser = async (email, password) => {
 const styles = StyleSheet.create({
   welcomeContainer: {
     alignItems: "center",
-    marginTop: -50, // Adjust top margin to push the content higher (similar to SignUp)
-    marginBottom: 30, // Add some spacing below the text
+    marginTop: -50,
+    marginBottom: 30,
   },
   image: {
     width: 180,
     height: 180,
-    marginTop: 15, // Adjust image margin to space it out properly
+    marginTop: 15,
   },
   greetingText: {
     fontSize: 12,
-    //fontWeight: "bold",
     textAlign: "center",
     color: "#303030",
   },
@@ -139,7 +137,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: "100%",
-    marginTop: 70, // Adjust top margin to ensure inputs are spaced from the welcome section
+    marginTop: 70,
   },
   loginButton: {
     backgroundColor: "#303030",

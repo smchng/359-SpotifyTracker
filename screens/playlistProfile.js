@@ -119,7 +119,7 @@ export default function PlaylistProfile({ navigation }) {
         timeId
       );
       const moodSnapshot = await getDoc(moodDocRef);
-
+      // Checks if the mood already exists so it doesnt gernerate another one
       if (moodSnapshot.exists()) {
         const moodData = moodSnapshot.data();
         console.log("Fetched Mood Document:", moodData);
@@ -211,6 +211,7 @@ export default function PlaylistProfile({ navigation }) {
     );
   };
 
+  // Renders the correct emoji with a default one in case
   console.log("test", emojiComponents);
   const EmojiComponent =
     mood && mood.emoji ? emojiComponents[mood.emoji] : Everywhere1;

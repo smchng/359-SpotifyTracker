@@ -61,8 +61,8 @@ export function RecentlyPlayed({ navigation }) {
     <View style={styles.container}>
       {tracks.length > 0 ? (
         <FlatList
-          data={tracks} // Set the data prop to the tracks state
-          renderItem={recentlyPlayedTracks} // Set the render function for items
+          data={tracks}
+          renderItem={recentlyPlayedTracks}
           keyExtractor={(item) => item.id} // Set unique key for each item
         />
       ) : (
@@ -83,12 +83,12 @@ const recentlyPlayedTracks = ({ item }) => (
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    height: " 60%", // Set height to 40vh for the container
+    height: " 60%",
   },
   flatList: {
-    height: "100%", // Make FlatList occupy full height of the container
+    height: "100%",
   },
   flatListContent: {
-    paddingBottom: 10, // Optional: adds padding to the bottom of the FlatList
+    paddingBottom: 10,
   },
 });

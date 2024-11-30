@@ -132,9 +132,9 @@ const MusicTimer = ({ userId, navigation }) => {
     <View style={styles.timerContainer}>
       <TouchableOpacity onPress={handlePress}>
         {isTimerActive ? (
-          <Text style={styles.timer}>{formatTimeLeft(timeLeft)}</Text>
+          <Text>{formatTimeLeft(timeLeft)}</Text>
         ) : (
-          <Text style={styles.timer}>START SESSION</Text>
+          <Text>START SESSION</Text>
         )}
       </TouchableOpacity>
       {timeLeft === 0 && isModalVisible && (
@@ -186,6 +186,7 @@ const storeTrack = async (userId, formattedDate, formattedTime, track, af) => {
     });
 
     // Create the document for the new track
+    // Stores the track details depending on ethe data passed in
     await setDoc(entriesPlaylistDocRef, {
       createdAt: time,
       artist: track.artist,
@@ -206,9 +207,6 @@ const storeTrack = async (userId, formattedDate, formattedTime, track, af) => {
 
 // Styling for the timer container
 const styles = StyleSheet.create({
-  timer: {
-    //fontWeight: "bold",
-  },
   timerContainer: {
     top: 20,
     left: 85,
@@ -230,12 +228,12 @@ const styles = StyleSheet.create({
 
   loginButton: {
     backgroundColor: "#303030",
-    width: 150, // Adjust the width to make the button smaller
-    paddingVertical: 15, // Optional: Adjust padding for better proportions
+    width: 150,
+    paddingVertical: 15,
     alignItems: "center",
-    alignSelf:"center",
+    alignSelf: "center",
     justifyContent: "center",
-    borderRadius: 10, // Rounded corners for the button
+    borderRadius: 10,
   },
   modalContainer: {
     flex: 1,

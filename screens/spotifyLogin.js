@@ -43,6 +43,7 @@ export default function SpotifyLogin({ navigation }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const handleLogin = async (status, profile) => {
     setIsLoggedIn(status);
+    //Stores access token for locting ID later
     await AsyncStorage.setItem("accessToken", profile.accessToken);
 
     // Fetch user profile from Firestore after login
@@ -70,7 +71,7 @@ export default function SpotifyLogin({ navigation }) {
             text="Next"
             page="Map"
             navigation={navigation}
-            buttonStyle={styles.button} // Styling for the button
+            buttonStyle={styles.button}
             textColor="#FFFFFF"
           />
         </>

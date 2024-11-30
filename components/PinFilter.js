@@ -141,14 +141,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#EBEFF2",
     padding: 15,
     borderRadius: 10,
-    shadowColor: "#000", // Color of the shadow
-    shadowOffset: { width: 5, height: 2 }, // Offset shadow to the right by 5px (horizontal)
-    shadowOpacity: 0.25, // Shadow opacity (simulating rgba(0, 0, 0, 0.25))
-    shadowRadius: 7, // Shadow blur radius (simulating 7px)
-    elevation: 2, // For Android shadow effect
+    shadowColor: "#000",
+    shadowOffset: { width: 5, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 7,
+    elevation: 2,
   },
   expandedContainer: {
-    paddingVertical: 10, // Increase padding when expanded
+    paddingVertical: 10,
     paddingHorizontal: 20,
   },
   buttonText: {

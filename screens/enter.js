@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
   },
   greetingText: {
     fontSize: 14,
-    //fontWeight: "bold",
     color: "#303030",
     marginTop: 10,
   },

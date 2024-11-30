@@ -53,7 +53,7 @@ export default function SignUp({ navigation }) {
       navigation.navigate("Login");
     } catch (error) {
       console.error("Error signing up:", error);
-
+      // Alerts user if the email is already in use
       if (error.code === "auth/email-already-in-use") {
         Alert.alert(
           "Email already in use",
@@ -109,7 +109,7 @@ export default function SignUp({ navigation }) {
             />
           </View>
 
-          <View style={styles.buttonContainer}>
+          <View>
             <ActionButton
               text="Sign Up"
               page="SpotifyLogin"
@@ -136,7 +136,6 @@ const styles = StyleSheet.create({
   },
   greetingText: {
     fontSize: 12,
-    //fontWeight: "bold",
     textAlign: "center",
     color: "#303030",
   },
@@ -153,8 +152,5 @@ const styles = StyleSheet.create({
   },
   signUpButton: {
     backgroundColor: "#303030",
-  },
-  buttonContainer: {
-    //marginTop: 20, // Optional: Add some spacing between inputs and the button
   },
 });

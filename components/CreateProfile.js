@@ -146,6 +146,7 @@ const determineProfile = (avgAttributes) => {
   return closestVibe;
 };
 
+// Generates the new profile and selects a random variation of the emoji
 export const profileHandler = (songs) => {
   const avgAttributes = calculateAverage(songs);
   const mood = determineProfile(avgAttributes);
@@ -183,6 +184,7 @@ export const profileHandler = (songs) => {
   return mood;
 };
 
+// Different types of possible profiles
 const profileDetails = [
   {
     Happy: [
@@ -297,7 +299,7 @@ const profileDetails = [
   {
     Everywhere: [
       {
-        everywhere1: { 
+        everywhere1: {
           img: "Everywhere1",
           string: "Oh my.. Everthing and everywhere.",
         },
