@@ -287,10 +287,10 @@ const styles = StyleSheet.create({
     elevation: 4,
     position: "relative",
     marginTop: 60,
-    height: 220, // Fixed height for the rectangle
-    justifyContent: "center", // Center the content vertically
-    width: 330, // Set a fixed width (90% or any other value you prefer)
-    alignSelf: "center", // Center the rectangle horizontally
+    height: 220,
+    justifyContent: "center",
+    width: 330,
+    alignSelf: "center",
   },
   emojiContainer: {
     position: "absolute",
@@ -305,23 +305,23 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   moodText: {
-    fontSize: 20, // Increase font size to fit more on one line
+    fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
     marginTop: 50,
-    flexWrap: "wrap", // Allows text to wrap within the container
-    width: "90%", // Set to the same width as the rectangle
-    paddingHorizontal: 20, // Add horizontal padding for better layout
+    flexWrap: "wrap",
+    width: "90%",
+    paddingHorizontal: 20,
   },
   messageText: {
-    fontSize: 16, // Keep font size smaller if more text is expected
+    fontSize: 16,
     marginTop: 20,
     textAlign: "center",
     color: "#555",
-    flexWrap: "wrap", // Allows text to wrap
-    overflow: "hidden", // Prevent overflow if text is too long
-    width: "90%", // Ensure the text takes the full width of the container
-    paddingHorizontal: 20, // Add padding to avoid text touching the edges
+    flexWrap: "wrap",
+    overflow: "hidden",
+    width: "90%",
+    paddingHorizontal: 20,
   },
   songListContainer: {
     width: 330,
@@ -329,8 +329,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 10,
     marginTop: 20,
-    height: 300, // Set a fixed height for the song list
-    overflow: "hidden", // Prevents overflow
+    height: 300,
+    overflow: "hidden",
   },
   songsTitle: {
     fontSize: 16,

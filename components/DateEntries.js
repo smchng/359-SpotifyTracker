@@ -11,6 +11,64 @@ import {
   ScrollView,
 } from "react-native";
 
+import Angry1 from "../assets/emojis/angry1.svg";
+import Angry2 from "../assets/emojis/angry2.svg";
+import Angry3 from "../assets/emojis/angry3.svg";
+import Chilling1 from "../assets/emojis/chilling1.svg";
+import Chilling2 from "../assets/emojis/chilling2.svg";
+import Chilling3 from "../assets/emojis/chilling3.svg";
+import Class1 from "../assets/emojis/class1.svg";
+import Class2 from "../assets/emojis/class2.svg";
+import Class3 from "../assets/emojis/class3.svg";
+import Everywhere1 from "../assets/emojis/everywhere1.svg";
+import Everywhere2 from "../assets/emojis/everywhere2.svg";
+import Everywhere3 from "../assets/emojis/everywhere3.svg";
+import Freak1 from "../assets/emojis/freak1.svg";
+import Freak2 from "../assets/emojis/freak2.svg";
+import Freak3 from "../assets/emojis/freak3.svg";
+import Happy1 from "../assets/emojis/happy1.svg";
+import Happy2 from "../assets/emojis/happy2.svg";
+import Happy3 from "../assets/emojis/happy3.svg";
+import Late1 from "../assets/emojis/late1.svg";
+import Late2 from "../assets/emojis/late2.svg";
+import Late3 from "../assets/emojis/late3.svg";
+import Sad1 from "../assets/emojis/sad1.svg";
+import Sad2 from "../assets/emojis/sad2.svg";
+import Sad3 from "../assets/emojis/sad3.svg";
+import Sleepy1 from "../assets/emojis/sleep1.svg";
+import Sleepy2 from "../assets/emojis/sleepy2.svg";
+import Sleepy3 from "../assets/emojis/sleepy3.svg";
+import Empty from "../assets/svg/WelcomeIcon.svg";
+const emojiComponents = {
+  Happy1: Happy1,
+  Happy2: Happy2,
+  Happy3: Happy3,
+  Sad1: Sad1,
+  Sad2: Sad2,
+  Sad3: Sad3,
+  Freak1: Freak1,
+  Freak2: Freak2,
+  Freak3: Freak3,
+  Chilling1: Chilling1,
+  Chilling2: Chilling2,
+  Chilling3: Chilling3,
+  Angry1: Angry1,
+  Angry2: Angry2,
+  Angry3: Angry3,
+  Everywhere1: Everywhere1,
+  Everywhere2: Everywhere2,
+  Everywhere3: Everywhere3,
+  Sleepy1: Sleepy1,
+  Sleepy2: Sleepy2,
+  Sleepy3: Sleepy3,
+  LateNight1: Late1,
+  LateNight2: Late2,
+  LateNight3: Late3,
+  Classical1: Class1,
+  Classical2: Class2,
+  Classical3: Class3,
+};
+
 // Fetches how many different date entries in firestore
 const fetchEntriesFromFirestore = async (userId) => {
   try {
@@ -107,23 +165,35 @@ export default function EntriesList({ navigation }) {
 
       {expandedEntry === entry && timeDocs.length > 0 && (
         <View style={styles.timeDocsContainer}>
-          {timeDocs.map((timeDoc) => (
-            <TouchableOpacity
-              key={timeDoc.id}
-              style={styles.timeDoc}
-              onPress={() => handlePage(timeDoc.id, entry)}
-            >
-              <Text
-                style={[
-                  styles.profile,
-                  !timeDoc.mood && { fontWeight: "bold" },
-                ]}
+          {timeDocs.map((timeDoc) => {
+            // Dynamically assign the emoji based on `timeDoc.emoji`
+            let EmojiComponent = Empty;
+            if (timeDoc.emoji && emojiComponents[timeDoc.emoji]) {
+              EmojiComponent = emojiComponents[timeDoc.emoji];
+            }
+
+            return (
+              <TouchableOpacity
+                key={timeDoc.id}
+                style={styles.timeDoc}
+                onPress={() => handlePage(timeDoc.id, entry)}
               >
-                {timeDoc.mood ? timeDoc.mood : "New!"}
-              </Text>
-              <Text style={styles.timeDocTitle}>{timeDoc.id}</Text>
-            </TouchableOpacity>
-          ))}
+                <View style={styles.emojiContainer}>
+                  {EmojiComponent && <EmojiComponent width={25} height={25} />}
+                  <Text
+                    style={[
+                      styles.profile,
+                      !timeDoc.mood && { fontWeight: "bold" },
+                    ]}
+                  >
+                    {timeDoc.mood ? timeDoc.mood : "New!"}
+                  </Text>
+                </View>
+
+                <Text style={styles.timeDocTitle}>{timeDoc.id}</Text>
+              </TouchableOpacity>
+            );
+          })}
         </View>
       )}
     </View>
@@ -179,15 +249,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
   },
+  emojiContainer: {
+    flexDirection: "row",
+    gap: 6,
 
+    alignItems: "center",
+  },
   timeDocsContainer: {
     paddingTop: 10,
-    paddingLeft: 10,
   },
   timeDoc: {
     marginBottom: 10,
     backgroundColor: "#F0F4F8",
-    padding: 20,
+    padding: 15,
     borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: { width: 5, height: 2 },
