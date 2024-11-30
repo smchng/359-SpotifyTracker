@@ -226,145 +226,133 @@ export default function PlaylistProfile({ navigation }) {
     >
       {mood && (
         <View style={styles.moodContainer}>
-          {/* Rectangle Container with Background */}
           <View style={styles.rectangle}>
             <View style={styles.emojiContainer}>
               {EmojiComponent && <EmojiComponent width={150} height={150} />}
             </View>
             <Text style={styles.moodText}>{mood.mood}</Text>
             <Text style={styles.messageText}>{mood.tagline}</Text>
-    return (
-      <View style={{ padding: 10, flex: 1, justifyContent: "center", alignItems: "center" }}>
-        {mood && (
-          <View style={styles.moodContainer}>
-            <View style={styles.rectangle}>
-              <View style={styles.emojiContainer}>
-                {EmojiComponent && <EmojiComponent width={150} height={150} />}
-              </View>
-              <Text style={styles.moodText}>{mood.mood}</Text>
-              <Text style={styles.messageText}>{mood.tagline}</Text>
-            </View>
           </View>
-        )}
-  
-        <View style={styles.circleButton}>
-          <CircleButton
-            SVGIcon={xMarkIcon}
-            page="ProfileStorage"
-            navigation={navigation}
-          />
         </View>
-  
-        <View style={styles.backgroundRectangle}></View>
-  
-        {/* Fixed-height Rectangle for Song List */}
-        <View style={styles.songListContainer}>
-          <Text style={styles.songsTitle}>You listened to:</Text>
-  
-          <ScrollView style={styles.songList}>
-            <FlatList
-              data={tracks}
-              renderItem={renderTrack}
-              keyExtractor={(item) => item.id}
-              scrollEnabled={true} // Ensures scrolling
-            />
-          </ScrollView>
-        </View>
-      </View>
-    );
-  }
-  
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 10,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    
-    moodContainer: {
-      marginBottom: 20,
-      alignItems: "center",
-    },
-    rectangle: {
-      backgroundColor: "#FFFFFF",
-      borderRadius: 10,
-      alignItems: "center",
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.2,
-      shadowRadius: 4,
-      elevation: 4,
-      position: "relative",
-      marginTop: 60,
-      height: 220, // Fixed height for the rectangle
-      justifyContent: "center", // Center the content vertically
-      width: 330, // Set a fixed width (90% or any other value you prefer)
-      alignSelf: "center", // Center the rectangle horizontally
-    },
-    emojiContainer: {
-      position: "absolute",
-      top: -90,
-      borderWidth: 10,
-      borderColor: "#EBEFF2",
-      borderRadius: 100,
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.2,
-      shadowRadius: 6,
-      elevation: 6,
-    },
-    moodText: {
-      fontSize: 20, // Increase font size to fit more on one line
-      fontWeight: "bold",
-      textAlign: "center",
-      marginTop: 50,
-      flexWrap: "wrap", // Allows text to wrap within the container
-      width: "90%", // Set to the same width as the rectangle
-      paddingHorizontal: 20, // Add horizontal padding for better layout
-    },
-    messageText: {
-      fontSize: 16, // Keep font size smaller if more text is expected
-      marginTop: 20,
-      textAlign: "center",
-      color: "#555",
-      flexWrap: "wrap", // Allows text to wrap
-      overflow: "hidden", // Prevent overflow if text is too long
-      width: "90%", // Ensure the text takes the full width of the container
-      paddingHorizontal: 20, // Add padding to avoid text touching the edges
-    },
-    songListContainer: {
-      width: 330,
-      padding: 20,
-      backgroundColor: "#fff",
-      borderRadius: 10,
-      marginTop: 20,
-      height: 300, // Set a fixed height for the song list
-      overflow: "hidden", // Prevents overflow
-    },
-    songsTitle: {
-      fontSize: 16,
-      fontWeight: "bold",
-      marginBottom: 10,
-    },
-    songList: {
-      flex: 1,
-    },
-    trackTitle: {
-      fontWeight: "bold",
-    },
-    trackArtist: {
-      color: "gray",
-    },
-    trackTime: {
-      color: "gray",
-      fontSize: 12,
-    },
-    circleButton: {
-      position: "absolute",
-      top: 30,
-      left: 10,
-      right: 0,
-    },
-  });
+      )}
 
+      <View style={styles.circleButton}>
+        <CircleButton
+          SVGIcon={xMarkIcon}
+          page="ProfileStorage"
+          navigation={navigation}
+        />
+      </View>
+
+      <View style={styles.backgroundRectangle}></View>
+
+      {/* Fixed-height Rectangle for Song List */}
+      <View style={styles.songListContainer}>
+        <Text style={styles.songsTitle}>You listened to:</Text>
+
+        <ScrollView style={styles.songList}>
+          <FlatList
+            data={tracks}
+            renderItem={renderTrack}
+            keyExtractor={(item) => item.id}
+            scrollEnabled={true} // Ensures scrolling
+          />
+        </ScrollView>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  moodContainer: {
+    marginBottom: 20,
+    alignItems: "center",
+  },
+  rectangle: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 10,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
+    position: "relative",
+    marginTop: 60,
+    height: 220, // Fixed height for the rectangle
+    justifyContent: "center", // Center the content vertically
+    width: 330, // Set a fixed width (90% or any other value you prefer)
+    alignSelf: "center", // Center the rectangle horizontally
+  },
+  emojiContainer: {
+    position: "absolute",
+    top: -90,
+    borderWidth: 10,
+    borderColor: "#EBEFF2",
+    borderRadius: 100,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 6,
+  },
+  moodText: {
+    fontSize: 20, // Increase font size to fit more on one line
+    fontWeight: "bold",
+    textAlign: "center",
+    marginTop: 50,
+    flexWrap: "wrap", // Allows text to wrap within the container
+    width: "90%", // Set to the same width as the rectangle
+    paddingHorizontal: 20, // Add horizontal padding for better layout
+  },
+  messageText: {
+    fontSize: 16, // Keep font size smaller if more text is expected
+    marginTop: 20,
+    textAlign: "center",
+    color: "#555",
+    flexWrap: "wrap", // Allows text to wrap
+    overflow: "hidden", // Prevent overflow if text is too long
+    width: "90%", // Ensure the text takes the full width of the container
+    paddingHorizontal: 20, // Add padding to avoid text touching the edges
+  },
+  songListContainer: {
+    width: 330,
+    padding: 20,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    marginTop: 20,
+    height: 300, // Set a fixed height for the song list
+    overflow: "hidden", // Prevents overflow
+  },
+  songsTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  songList: {
+    flex: 1,
+  },
+  trackTitle: {
+    fontWeight: "bold",
+  },
+  trackArtist: {
+    color: "gray",
+  },
+  trackTime: {
+    color: "gray",
+    fontSize: 12,
+  },
+  circleButton: {
+    position: "absolute",
+    top: 30,
+    left: 10,
+    right: 0,
+  },
+});
