@@ -215,6 +215,24 @@ export default function PlaylistProfile({ navigation }) {
   const EmojiComponent =
     mood && mood.emoji ? emojiComponents[mood.emoji] : Everywhere1;
 
+  return (
+    <View
+      style={{
+        padding: 10,
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {mood && (
+        <View style={styles.moodContainer}>
+          {/* Rectangle Container with Background */}
+          <View style={styles.rectangle}>
+            <View style={styles.emojiContainer}>
+              {EmojiComponent && <EmojiComponent width={150} height={150} />}
+            </View>
+            <Text style={styles.moodText}>{mood.mood}</Text>
+            <Text style={styles.messageText}>{mood.tagline}</Text>
     return (
       <View style={{ padding: 10, flex: 1, justifyContent: "center", alignItems: "center" }}>
         {mood && (

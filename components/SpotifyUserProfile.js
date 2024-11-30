@@ -2,7 +2,7 @@
 
 import { getAccessToken } from "../ApiAccess/TokenStorage.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { doc, setDoc, collection } from "firebase/firestore";
+import { doc, setDoc, getDoc, collection } from "firebase/firestore";
 import { db } from "../data/firebaseConfig.js";
 import { useUser } from "./UserAuth";
 
@@ -38,13 +38,7 @@ const saveUserProfileToFile = async (profile, userId) => {
     console.error("Profile data is null or undefined");
     return;
   }
-  // try {
-  //   await AsyncStorage.setItem("userProfile", profileData);
-  //   console.log("User profile saved to AsyncStorage");
-  //   console.log("Display Name:", profile.display_name);
-  // } catch (error) {
-  //   console.error("Error saving user profile to AsyncStorage:", error);
-  // }
+
   if (userId) {
     try {
       await storeSpotifyProfileFirebase(
@@ -76,16 +70,26 @@ const storeSpotifyProfileFirebase = async (userId, email, id, name) => {
     const spotifyUserCollectionRef = collection(userDocRef, "spotify-user");
     // Reference for the document in the "spotify-user" subcollection
     const spotifyProfileDocRef = doc(spotifyUserCollectionRef, id); // Use Spotify ID as document ID
+    const checkProfileExists = async () => {
+      const docSnapshot = await getDoc(spotifyProfileDocRef);
+      if (docSnapshot.exists()) {
+        const existingData = docSnapshot.data();
+        if (existingData && existingData.id) {
+          console.log("Profile already exists, skipping profile creation.");
+          return;
+        }
+      }
+      // Add user information to Firestore
+      await setDoc(spotifyProfileDocRef, {
+        email, // This will be stored as the field "email"
+        id, // This will be stored as the field "id"
+        name, // This will be stored as the field "name"
+        timestamp: new Date(), // Add a timestamp field
+      });
+      console.log("User stored with ID: ", spotifyProfileDocRef.id); // Fixed to use spotifyProfileDocRef.id
+    };
 
-    // Add user information to Firestore
-    await setDoc(spotifyProfileDocRef, {
-      email, // This will be stored as the field "email"
-      id, // This will be stored as the field "id"
-      name, // This will be stored as the field "name"
-      timestamp: new Date(), // Add a timestamp field
-    });
-
-    console.log("User stored with ID: ", spotifyProfileDocRef.id); // Fixed to use spotifyProfileDocRef.id
+    checkProfileExists();
   } catch (error) {
     console.error("Error saving to Firebase:", error);
   }

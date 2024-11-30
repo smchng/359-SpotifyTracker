@@ -20,7 +20,6 @@ export const fetchSpotifyProfileFromFirestore = async (userId) => {
       const spotifyUserDocs = await getDocs(spotifyUserCollectionRef);
 
       if (!spotifyUserDocs.empty) {
-        // Assuming you want the first document in the collection
         const spotifyUserDoc = spotifyUserDocs.docs[0].data();
         console.log("Fetched Spotify User Data:", spotifyUserDoc); // Log the fetched data
         return spotifyUserDoc; // Return the spotify user data
@@ -93,13 +92,10 @@ const styles = StyleSheet.create({
   },
   welcomeContainer: {
     alignItems: "center",
-    //marginTop: 40, // Add some space above the image
   },
   welcomeText: {
-    fontSize: 20, // Adjust font size for the welcome text
-    //fontWeight: "bold", // Make the text bold
-    color: "#303030", // Spotify green color, adjust as needed
-    //marginTop: 20, // Add some space below the image
-    textAlign: "center", // Center the text
+    fontSize: 20,
+    color: "#303030",
+    textAlign: "center",
   },
 });
